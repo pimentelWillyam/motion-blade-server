@@ -66,7 +66,7 @@ class AttributesFetcher {
       attributesGenerated.agility += 1
     } else if (fatherProfession === 'caçador') {
       attributesGenerated.technique += 4
-    }
+    } else throw new Error('Profissão paterna inválida')
 
     if (youthProfession === 'soldado') {
       attributesGenerated.strength += 3
@@ -130,7 +130,8 @@ class AttributesFetcher {
       attributesGenerated.agility += 1
     } else if (youthProfession === 'caçador') {
       attributesGenerated.technique += 4
-    }
+    } else throw new Error('Profissão da juventude inválida')
+
     return attributesGenerated
   }
 }
