@@ -1,4 +1,4 @@
-type Attributes = {
+interface Attributes {
   agility: number
   technique: number
   strength: number
