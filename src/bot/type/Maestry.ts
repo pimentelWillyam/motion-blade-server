@@ -1,5 +1,5 @@
 interface Maestry {
-  nakedHanded: number
+  bareHanded: number
   oneHanded: number
   twoHanded: number
   polearm: number
