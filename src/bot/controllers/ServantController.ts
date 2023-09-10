@@ -231,6 +231,7 @@ class ServantController {
       this.deleteServant(servant.name)
       return 'Dead'
     }
+    this.updateServant(servant.name, servant)
     return 'Alive'
   }
 }
