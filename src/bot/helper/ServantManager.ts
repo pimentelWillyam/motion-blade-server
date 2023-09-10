@@ -3,13 +3,10 @@ import type Servant from '../model/Servant'
 import type Profession from '../type/Profession'
 import type Attributes from '../type/Attributes'
 import type IUuidGenerator from '../interface/IUuidGenerator'
-import type AttackResult from '../type/AttackResult'
+import type AttackResult from '../type/AttackTestResult'
 
-class ServantManager implements IServantManager {
-  servantDatabase: Servant[]
-  constructor (readonly uuidGenerator: IUuidGenerator) {
-    this.servantDatabase = []
-  }
+class ServantManager {
+  constructor (readonly uuidGenerator: IUuidGenerator) {}
 
   createServant = (masterId: string, name: string, profession: Profession): Servant => {
     if (this.getServantPositionByName(name) === -1) {
