@@ -5,7 +5,7 @@ import type Attributes from '../type/Attributes'
 import type ArmorFetcher from '../fetchers/ArmorFetcher'
 import type AttributesFetcher from '../fetchers/AttributesFetcher'
 import type Maestry from '../type/Maestry'
-import type WeaponFetcher from '../fetchers/WeaponFetcher';
+import type WeaponFetcher from '../fetchers/WeaponFetcher'
 
 class Servant {
   readonly id: string
@@ -13,8 +13,8 @@ class Servant {
   readonly name: string
   readonly fatherProfession: Profession
   readonly youthProfession: Profession
-  attributes: Attributes
-  fullHealth: Attributes
+  currentAttributes: Attributes
+  maximumAttributes: Attributes
   armor: Armor
   weaponList: Weapon[]
   currentWeapon: Weapon
@@ -28,10 +28,10 @@ class Servant {
     this.youthProfession = youthProfession
     this.weaponList = [weaponFetcher.fetchWeaponByType('mão nua'), weaponFetcher.fetchWeaponByType('mão nua'), weaponFetcher.fetchWeaponByType('mão nua')]
     this.currentWeapon = this.weaponList[0]
-    this.attributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
-    this.fullHealth = this.attributes
-    this.armor = this.armorFetcher.fetchArmorBasedOnFortitude(this.attributes.fortitude)
-    this.maestry = { bow: 0, crossbow: 0, nakedHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
+    this.currentAttributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
+    this.maximumAttributes = this.currentAttributes
+    this.armor = this.armorFetcher.fetchArmorBasedOnFortitude(this.currentAttributes.fortitude)
+    this.maestry = { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
   }
 }
 
