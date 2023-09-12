@@ -9,7 +9,6 @@ import RandomNumberGenerator from './bot/helper/RandomNumberGenerator'
 import Sleeper from './helper/Sleeper'
 
 // importing servant manager
-import ServantManager from './bot/helper/ServantManager'
 
 // importing command manager
 import CommandManager from './bot/helper/CommandManager'
@@ -56,6 +55,28 @@ import LogRepository from './api/repository/LogRepository'
 // importing app
 import App from './api/App'
 import DatabaseHelper from './helper/DatabaseHelper'
+import ServantController from './bot/controllers/ServantController'
+import MemoryDataSource from './data/memory/MemoryDataSource'
+import WeaponFetcher from './bot/fetchers/WeaponFetcher'
+import Axe from './bot/model/weapons/Axe'
+import BareHand from './bot/model/weapons/BareHand'
+import BastardSword from './bot/model/weapons/BastardSword'
+import BattleAxe from './bot/model/weapons/BattleAxe'
+import Bow from './bot/model/weapons/Bow'
+import Crossbow from './bot/model/weapons/Crossbow'
+import Dagger from './bot/model/weapons/Dagger'
+import Hammer from './bot/model/weapons/Hammer'
+import Mace from './bot/model/weapons/Mace'
+import Spear from './bot/model/weapons/Spear'
+import Staff from './bot/model/weapons/Staff'
+import Sword from './bot/model/weapons/Sword'
+import AttributesFetcher from './bot/fetchers/AttributesFetcher'
+import ArmorFetcher from './bot/fetchers/ArmorFetcher'
+import Cloth from './bot/model/armors/Cloth'
+import Leather from './bot/model/armors/Leather'
+import Chainmail from './bot/model/armors/Chainmail'
+import Plate from './bot/model/armors/Plate'
+import Pleather from './bot/model/armors/Pleather'
 
 // instanciating discord bot related classes
 
@@ -64,11 +85,19 @@ const uuidGenerator = new UuidGenerator()
 // instanciating the random number generator
 const randomNumberGenerator = new RandomNumberGenerator()
 
-// instanciating the servant manager
-const servantManager = new ServantManager(uuidGenerator)
+// instanciating weapon fetcher
+const weaponFetcher = new WeaponFetcher(new Axe(), new BareHand(), new BastardSword(), new BattleAxe(), new Bow(), new Crossbow(), new Dagger(), new Hammer(), new Mace(), new Spear(), new Staff(), new Sword())
+
+// instanciating armor fetcher
+const armorFetcher = new ArmorFetcher(new Cloth(), new Leather(), new Chainmail(), new Plate(), new Pleather())
+// instanciating memory data source
+const memoryDataSource = new MemoryDataSource(uuidGenerator, weaponFetcher, new AttributesFetcher(), armorFetcher)
+
+// instanciating the servant controller
+const servantController = new ServantController(memoryDataSource)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, servantManager, new Sleeper())
+const commandManager = new CommandManager(randomNumberGenerator, memoryDataSource, new Sleeper(), servantController)
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
