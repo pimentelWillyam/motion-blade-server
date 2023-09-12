@@ -13,7 +13,7 @@ class ArmorFetcher {
     else if (fortitude > this.plate.minimumFortitude) return this.plate
     else if (fortitude > this.chainmail.minimumFortitude) return this.chainmail
     else if (fortitude > this.leather.minimumFortitude) return this.leather
-    else if (fortitude > this.cloth.minimumFortitude) return this.cloth
+    else if (fortitude >= this.cloth.minimumFortitude) return this.cloth
     else throw new Error('Fortitude inválida')
   }
 }
