@@ -174,6 +174,13 @@ class ServantController {
     else return 'Hit armor'
   }
 
+  getDamageToDeal (attacker: Servant, attackerDiceResult: number, attackerWeapon: Weapon, defender: Servant, defenderArmorType: ArmorType, defenderDiceResult: number): number {
+    console.log('dado do atacante:', attackerDiceResult)
+    console.log('dado do defensor:', defenderDiceResult)
+    console.log('fortitude do defensor:', defender.currentAttributes.fortitude)
+    console.log('tipo de arma do atacante:', attackerWeapon.type)
+    console.log('tipo de armadura do defensor:', defenderArmorType)
+    console.log('mastria na arma usada = ', this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon))
     let attackerTestResult = attacker.currentAttributes.strength + attackerDiceResult
     const defenderTestResult = attacker.currentAttributes.fortitude + defenderDiceResult
     attackerTestResult += this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon)
