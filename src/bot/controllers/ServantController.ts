@@ -1,12 +1,15 @@
 import type Servant from '../model/Servant'
 import type Profession from '../type/Profession'
-import type IUuidGenerator from '../interface/IUuidGenerator'
 import type AttackTestResult from '../type/AttackTestResult'
 import type MemoryDataSource from '../../data/memory/MemoryDataSource'
 import type AttackType from '../type/AttackType'
 import type Weapon from '../type/Weapon'
 import type ArmorType from '../type/ArmorType'
 import type ServantLifeStatus from '../type/ServantLifeStatus'
+import type ArmorEvasionTestResult from '../type/ArmorEvasionTestResult'
+import type Attributes from '../type/Attributes'
+import type Maestry from '../type/Maestry'
+import type WeaponType from '../type/WeaponType'
 
 class ServantController {
   constructor (readonly uuidGenerator: IUuidGenerator, private readonly memoryDataSource: MemoryDataSource) {}
