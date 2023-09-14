@@ -24,7 +24,8 @@ class ServantController {
   getServant = (name: string): Servant => {
     const fetchedServant = this.memoryDataSource.fetchServantByName(name)
     if (fetchedServant != null) return fetchedServant
-    throw new Error('Não é possível encontrar um servo que não existe')
+    throw new Error(`O servo ${name} não existe`)
+  }
   }
 
   updateServant = (name: string, contentToUpdate: Servant): Servant => {
