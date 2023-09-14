@@ -195,8 +195,8 @@ class ServantController {
       defenderTestResult = defender.currentAttributes.technique + defender.currentAttributes.guard + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
       if (!attacker.currentWeapon.throwable) throw new Error('Não é possível lançar a arma que este servo possui em mãos')
       if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
-      if (defenderTestResult >= attackerTestResult * 2) return ('Desequilíbrio')
-      else if (defenderTestResult >= attackerTestResult) return ('Desvio')
+      if (defenderTestResult >= attackerTestResult * 2) return 'Desequilíbrio'
+      else if (defenderTestResult >= attackerTestResult) return 'Defesa'
       else return 'Acerto'
     }
   }
