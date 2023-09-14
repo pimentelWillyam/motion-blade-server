@@ -12,7 +12,7 @@ import type Maestry from '../type/Maestry'
 import type WeaponType from '../type/WeaponType'
 
 class ServantController {
-  constructor (readonly uuidGenerator: IUuidGenerator, private readonly memoryDataSource: MemoryDataSource) {}
+  constructor (private readonly memoryDataSource: MemoryDataSource) {}
 
   createServant = (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession): Servant => {
     if (this.memoryDataSource.fetchServantByName(name) == null) {
