@@ -38,6 +38,12 @@ class ServantController {
     if (fetchedServant != null) return fetchedServant.maximumAttributes
     throw new Error(`O servo ${name} não existe`)
   }
+
+  getServantMaestry = (name: string): Maestry => {
+    const fetchedServant = this.memoryDataSource.fetchServantByName(name)
+    if (fetchedServant != null) return fetchedServant.maestry
+    throw new Error(`O servo ${name} não existe`)
+  }
   }
 
   updateServant = (name: string, contentToUpdate: Servant): Servant => {
