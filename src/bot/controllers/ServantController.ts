@@ -57,6 +57,14 @@ class ServantController {
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
+  keepWeapon = (servantName: string, weaponType: WeaponType): Servant => {
+    const fetchedServant = this.memoryDataSource.fetchServantByName(servantName)
+    if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
+    else if (fetchedServant.inventory.length >= 2) throw new Error(`O servo ${fetchedServant.name} já está carregando muitas armas, jogue alguma fora para aumentar o espaço disponível`)
+    fetchedServant.inventory.push(this.memoryDataSource.fetchWeapon(weaponType))
+    this.updateServant(servantName, fetchedServant)
+    return fetchedServant
+  }
   deleteServant = (name: string): Servant => {
     const servantToBeDeleted = this.memoryDataSource.fetchServantByName(name)
     if (servantToBeDeleted != null) return this.memoryDataSource.deleteServantByName(name)
