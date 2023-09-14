@@ -18,7 +18,7 @@ class ServantController {
     if (this.memoryDataSource.fetchServantByName(name) == null) {
       return this.memoryDataSource.insertServantRegistry(masterId, name, fatherProfession, youthProfession)
     }
-    throw new Error('Já existe um usuário com esse nome')
+    throw new Error('Já existe um servo com esse nome')
   }
 
   getServant = (name: string): Servant => {
