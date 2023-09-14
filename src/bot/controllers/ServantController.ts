@@ -44,6 +44,11 @@ class ServantController {
     if (fetchedServant != null) return fetchedServant.maestry
     throw new Error(`O servo ${name} não existe`)
   }
+
+  getServantInventory = (name: string): Weapon[] => {
+    const fetchedServant = this.memoryDataSource.fetchServantByName(name)
+    if (fetchedServant != null) return fetchedServant.inventory
+    throw new Error(`O servo ${name} não existe`)
   }
 
   updateServant = (name: string, contentToUpdate: Servant): Servant => {
