@@ -65,6 +65,16 @@ class ServantController {
     this.updateServant(servantName, fetchedServant)
     return fetchedServant
   }
+
+  dropWeapon = (servantName: string, weaponType: WeaponType): Servant => {
+    const fetchedServant = this.memoryDataSource.fetchServantByName(servantName)
+    if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
+    if (fetchedServant.inventory[0].type === weaponType) fetchedServant.inventory.splice(0, 1)
+    else if (fetchedServant.inventory[1].type === weaponType) fetchedServant.inventory.splice(1, 1)
+    else throw new Error(`O servo ${servantName} não possui nenhua arma do tipo ${weaponType} para que ele possa descartar`)
+    this.updateServant(servantName, fetchedServant)
+    return fetchedServant
+  }
   deleteServant = (name: string): Servant => {
     const servantToBeDeleted = this.memoryDataSource.fetchServantByName(name)
     if (servantToBeDeleted != null) return this.memoryDataSource.deleteServantByName(name)
