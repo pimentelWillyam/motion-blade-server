@@ -226,7 +226,6 @@ class ServantController {
     }
   }
 
-  getDamageToDeal (attacker: Servant, attackerDiceResult: number, attackerWeapon: Weapon, defenderArmorType: ArmorType, defenderDiceResult: number): number {
   armorEvasionTest (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): ArmorEvasionTestResult {
     if (attacker.currentAttributes.technique + attackerDiceResult > defender.currentAttributes.technique + defenderDiceResult) return 'Evaded armor'
     else return 'Hit armor'
