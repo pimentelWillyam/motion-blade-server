@@ -101,7 +101,7 @@ class CommandManager {
     await message.reply('Servo criado com sucesso.')
   }
 
-  async getServantInfo (message: Message<boolean>, name: string): Promise<void> {
+  async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = this.memoryDataSource.fetchServantByName(name)
     if (servant === null) throw new Error(`O servo ${name} não existe `)
     const servantAttributesMessage = `
