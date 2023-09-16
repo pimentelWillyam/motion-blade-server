@@ -495,6 +495,10 @@ class CommandManager {
     }
   }
 
+  async healServant (message: Message<boolean>, name: string): Promise<void> {
+    this.servantController.healServant(name)
+    await message.reply(`O servo ${name} foi curado de todos seus ferimentos`)
+  }
 }
 
 export default CommandManager
