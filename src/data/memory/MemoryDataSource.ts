@@ -4,6 +4,9 @@ import type Profession from '../../bot/type/Profession'
 import type WeaponFetcher from '../../bot/fetchers/WeaponFetcher'
 import type ArmorFetcher from '../../bot/fetchers/ArmorFetcher'
 import type UuidGenerator from '../../bot/helper/UuidGenerator'
+import type Weapon from '../../bot/type/Weapon'
+import type WeaponType from '../../bot/type/WeaponType'
+import type Npc from '../../bot/model/Npc'
 
 class MemoryDataSource {
   private servantList: Servant[] = []
