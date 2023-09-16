@@ -1,8 +1,10 @@
 import type IMessageHandler from '../interface/IMessageHandler'
-import type ICommandManager from '../interface/ICommandManager'
 
 import { type Message } from 'discord.js'
 import type Profession from '../type/Profession'
+import type CommandManager from '../helper/CommandManager'
+import type WeaponType from '../type/WeaponType'
+import type Attribute from '../type/Attribute'
 
 class MessageHandler implements IMessageHandler {
   constructor (private readonly commandManager: ICommandManager) {}
