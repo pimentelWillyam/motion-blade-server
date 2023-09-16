@@ -63,7 +63,6 @@ class CommandManager {
     await message.reply(guideMessage)
   }
 
-  async classes (message: Message): Promise<void> {
   async rollDice (message: Message<boolean>, diceSize: number): Promise<void> {
     await message.reply(this.randomNumberGenerator.generate(1, diceSize).toString())
   }
