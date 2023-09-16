@@ -199,8 +199,8 @@ class ServantController {
     if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.currentAttributes.guard) {
       attackerTestResult = attacker.currentAttributes.agility + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.agility + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
-      // if (attacker.currentWeapon.type === 'mão nua') attackerTestResult -= 5
-      // if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
+      if (attacker.currentWeapon.type === 'mão nua') defenderTestResult += 5
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
       if (defenderTestResult >= attackerTestResult * 2) {
         return 'Contra-ataque'
       } else if (defenderTestResult >= attackerTestResult) return 'Desvio'
