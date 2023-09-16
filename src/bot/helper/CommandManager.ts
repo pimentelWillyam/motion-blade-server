@@ -179,7 +179,7 @@ class CommandManager {
     await message.reply(`O servo ${name} jogou um(a) ${weaponType} fora`)
   }
 
-  async rollServantGuard (message: Message<boolean>, name: string): Promise<void> {
+  async applyServantGuard (message: Message<boolean>, name: string): Promise<void> {
     const guard = this.randomNumberGenerator.generate(1, 4)
     await this.sleeper.sleep(2000)
     this.servantController.applyGuardOnServant(name, guard)
