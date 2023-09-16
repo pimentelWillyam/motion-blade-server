@@ -7,7 +7,7 @@ import type WeaponType from '../type/WeaponType'
 import type Attribute from '../type/Attribute'
 
 class MessageHandler implements IMessageHandler {
-  constructor (private readonly commandManager: ICommandManager) {}
+  constructor (private readonly commandManager: CommandManager) {}
 
   async handle (message: Message): Promise<void> {
     try {
