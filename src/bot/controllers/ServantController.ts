@@ -208,8 +208,8 @@ class ServantController {
     } else {
       attackerTestResult = attacker.currentAttributes.agility + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.technique + defender.currentAttributes.guard + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
-      // if (attacker.currentWeapon.type === 'mão nua') attackerTestResult -= 5
-      // if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
+      if (attacker.currentWeapon.type === 'mão nua') defenderTestResult += 5
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
       if (defenderTestResult >= attackerTestResult * 2) return ('Desarme')
       else if (defenderTestResult >= attackerTestResult) return ('Defesa')
       else return 'Acerto'
@@ -225,7 +225,7 @@ class ServantController {
       attackerTestResult = attacker.currentAttributes.technique + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.agility + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
       if (!attacker.currentWeapon.throwable) throw new Error(`Não é possível lançar a arma que o servo ${attacker.name} possui em mãos`)
-      if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
       if (defenderTestResult >= attackerTestResult * 2) {
         return 'Desequilíbrio'
       } else if (defenderTestResult >= attackerTestResult) return 'Erro'
@@ -233,7 +233,7 @@ class ServantController {
     } else {
       attackerTestResult = attacker.currentAttributes.technique + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.technique + defender.currentAttributes.guard + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
-      if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
       if (defenderTestResult >= attackerTestResult * 2) return 'Desequilíbrio'
       else if (defenderTestResult >= attackerTestResult) return 'Defesa'
       else return 'Acerto'
@@ -248,7 +248,7 @@ class ServantController {
     if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.currentAttributes.guard) {
       attackerTestResult = attacker.currentAttributes.technique + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.agility + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
-      if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
       if (defenderTestResult >= attackerTestResult * 2) {
         return 'Recarga demorada'
       } else if (defenderTestResult >= attackerTestResult) return 'Desvio'
