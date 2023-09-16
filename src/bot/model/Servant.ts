@@ -16,7 +16,7 @@ class Servant {
   currentAttributes: Attributes
   maximumAttributes: Attributes
   armor: Armor
-  weaponList: Weapon[]
+  inventory: Weapon[]
   currentWeapon: Weapon
   maestry: Maestry
 
