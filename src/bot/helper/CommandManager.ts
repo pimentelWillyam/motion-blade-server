@@ -174,6 +174,9 @@ class CommandManager {
     await message.reply(`O servo ${name} sacou um(a) ${weaponType}`)
   }
 
+  async servantDropWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
+    this.servantController.dropWeapon(name, weaponType)
+    await message.reply(`O servo ${name} jogou um(a) ${weaponType} fora`)
   }
 
   async rollServantGuard (message: Message<boolean>, name: string): Promise<void> {
