@@ -60,6 +60,10 @@ class MemoryDataSource {
     }
     throw new Error('Servo não encontrado')
   }
+
+  fetchWeapon = (weaponType: WeaponType): Weapon => {
+    return this.weaponFetcher.fetchWeaponByType(weaponType)
+  }
 }
 
 export default MemoryDataSource
