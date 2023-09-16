@@ -27,16 +27,42 @@ class MessageHandler implements IMessageHandler {
       } else if (treatedMessage[1] === 'atributos' && treatedMessage[2] === 'maximos' && treatedMessage.length === 3) {
         await this.commandManager.getServantMaximumAttributes(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'maestria' && treatedMessage.length === 2) {
+        await this.commandManager.getServantMaestry(message, treatedMessage[0])
+      } else if (treatedMessage[1] === 'inventario' && treatedMessage.length === 2) {
+        await this.commandManager.getServantInventory(message, treatedMessage[0])
+      } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 3) {
+        await this.commandManager.servantKeepWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'descarta' && treatedMessage.length === 3) {
+        await this.commandManager.servantDropWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'saca' && treatedMessage.length === 3) {
+        await this.commandManager.servantDrawWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'testa' && treatedMessage.length === 3) {
+        await this.commandManager.servantTestsAttribute(message, treatedMessage[0], treatedMessage[2] as Attribute)
+      } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 2) {
+        await this.commandManager.applyServantGuard(message, treatedMessage[0])
       } else if (treatedMessage[0] === 'bufar' && treatedMessage.length === 3) {
-        this.commandManager.buffServant(message, treatedMessage[1], parseInt(treatedMessage[2]))
+        await this.commandManager.buffServant(message, treatedMessage[1], parseInt(treatedMessage[2]))
       } else if (treatedMessage[0] === 'remover' && treatedMessage[1] === 'buff' && treatedMessage.length === 3) {
-        this.commandManager.removeServantBuff(message, treatedMessage[2])
+        await this.commandManager.removeServantBuff(message, treatedMessage[2])
       } else if (treatedMessage[0] === 'debufar' && treatedMessage.length === 3) {
-        this.commandManager.debuffServant(message, treatedMessage[1], parseInt(treatedMessage[2]))
+        await this.commandManager.debuffServant(message, treatedMessage[1], parseInt(treatedMessage[2]))
       } else if (treatedMessage[0] === 'remover' && treatedMessage[1] === 'debuff' && treatedMessage.length === 3) {
-        this.commandManager.removeServantDebuff(message, treatedMessage[2])
-      } else if (treatedMessage[1] === 'derrotou' && treatedMessage.length === 3) {
-        this.commandManager.levelUpServant(message, treatedMessage[0], treatedMessage[2])
+        await this.commandManager.removeServantDebuff(message, treatedMessage[2])
+      } else if (treatedMessage[1] === 'acerta' && treatedMessage.length === 3) {
+        await this.commandManager.strike(message, treatedMessage[0], treatedMessage[2])
+      } else if (treatedMessage[1] === 'lança' && treatedMessage.length === 3) {
+        await this.commandManager.throw(message, treatedMessage[0], treatedMessage[2])
+      } else if (treatedMessage[1] === 'atira' && treatedMessage.length === 3) {
+        await this.commandManager.shoot(message, treatedMessage[0], treatedMessage[2])
+      } else if (treatedMessage[1] === 'sofre' && treatedMessage.length === 3) {
+        await this.commandManager.servantTakesDamage(message, treatedMessage[0], parseInt(treatedMessage[2]))
+      } else if (treatedMessage[0] === 'curar' && treatedMessage.length === 2) {
+        await this.commandManager.healServant(message, treatedMessage[1])
+      } else if (treatedMessage[1] === 'melhora' && (treatedMessage[2] === ' agilidade' || treatedMessage[2] === ' tecnica' || treatedMessage[2] === ' força' || treatedMessage[2] === 'fortitude' || treatedMessage[2] === 'haste' || treatedMessage[2] === 'arco' || treatedMessage[2] === 'besta') && treatedMessage.length === 4) {
+        await this.commandManager.upgradeServant(message, treatedMessage[0], treatedMessage[2], parseInt(treatedMessage[3]))
+      } else if (treatedMessage[1] === 'melhora' && treatedMessage.length === 5) {
+        const maestryToUpgrade = treatedMessage[2] + ' ' + treatedMessage[3]
+        await this.commandManager.upgradeServant(message, treatedMessage[0], maestryToUpgrade, parseInt(treatedMessage[3]))
       } else {
         await message.reply('Comando inexistente')
       }
