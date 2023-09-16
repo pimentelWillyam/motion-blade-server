@@ -276,9 +276,11 @@ class ServantController {
     console.log('tipo de armadura do defensor:', defenderArmorType)
     console.log('mastria na arma usada = ', this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon))
     let attackerTestResult = attacker.currentAttributes.strength + attackerDiceResult
-    const defenderTestResult = attacker.currentAttributes.fortitude + defenderDiceResult
+    const defenderTestResult = defender.currentAttributes.fortitude + defenderDiceResult
     attackerTestResult += this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon)
     attackerTestResult += this.getWeaponArmourDamageRelation(attacker.currentWeapon, defenderArmorType)
+    console.log(attackerTestResult)
+    console.log(defenderTestResult)
     return attackerTestResult - defenderTestResult
   }
 
