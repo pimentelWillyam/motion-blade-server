@@ -132,6 +132,12 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
+  async getServantMaestry (message: Message<boolean>, name: string): Promise<void> {
+    const servant = this.memoryDataSource.fetchServantByName(name)
+    if (servant === null) throw new Error(`O servo ${name} não existe `)
+    const servantAttributesMessage = `
+    As maestrias do servo ${name} são:
+
       maestria com mãos nuas: ${servant.maestry.bareHanded}
       maestria com armas de uma mão: ${servant.maestry.oneHanded}
       maestria com armas de duas mãos: ${servant.maestry.twoHanded}
