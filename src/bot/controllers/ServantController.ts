@@ -342,10 +342,7 @@ class ServantController {
         return 'Dead'
       }
     }
-    if (servant.currentAttributes.agility === 0 && servant.currentAttributes.technique === 0 && servant.currentAttributes.strength === 0 && servant.currentAttributes.fortitude === 0) {
-      this.deleteServant(servant.name)
-      return 'Dead'
-    }
+    console.log(servant)
     this.updateServant(servant.name, servant)
     return 'Alive'
   }
