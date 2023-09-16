@@ -519,7 +519,7 @@ class CommandManager {
           await message.reply(`${defenderName} não sofreu dano algum`)
         }
       }
-    } else if (attackResultMessage === 'Desequilíbrio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou se desequilibrando e caindo no chão`)
+    } else if (attackResultMessage === 'Recarga demorada') await message.reply(`${attackerName} tentou acertar ${defenderName} mas errou o alvo e ainda demorou para recarregar sua arma`)
     else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
   }
