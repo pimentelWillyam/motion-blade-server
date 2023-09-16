@@ -104,9 +104,11 @@ class ServantController {
     const fetchedServant = this.memoryDataSource.fetchServantByName(servantName)
     if (fetchedServant === null) throw new Error('Não é possível encontrar um servo que não existe')
     for (let i = 0; i < 2; i++) {
-      if (fetchedServant.inventory[i].type === weaponType) {
+      if (fetchedServant.inventory[i] !== undefined && fetchedServant.inventory[i].type === weaponType) {
         fetchedServant.currentWeapon = fetchedServant.inventory[i]
+        fetchedServant.inventory.splice(i, 1)
         this.updateServant(servantName, fetchedServant)
+        return fetchedServant
       }
     }
     throw new Error(`O servo ${servantName} não possui nenhuma arma do tipo ${weaponType}`)
