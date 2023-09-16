@@ -107,19 +107,16 @@ class CommandManager {
     const servantAttributesMessage = `
     Os atributos do servo ${name} são:
 
-    nome do mestre ${servant.masterId}
-      nome: ${servant.name}
-      profissão paterna: ${servant.fatherProfession}
-      profissão da juventude: ${servant.youthProfession}
-      agilidade: ${servant.currentAttributes.agility} de um máximo de ${servant.maximumAttributes.agility}
-      tecnica: ${servant.currentAttributes.technique} de um máximo de ${servant.maximumAttributes.technique}
-      força: ${servant.currentAttributes.strength} de um máximo de ${servant.maximumAttributes.strength}
-      fortitude: ${servant.currentAttributes.fortitude} de um máximo de ${servant.maximumAttributes.fortitude}
-      guarda: ${servant.currentAttributes.guard} de um máximo de ${servant.maximumAttributes.guard}
+      agilidade: ${servant.currentAttributes.agility}
+      tecnica: ${servant.currentAttributes.technique}
+      força: ${servant.currentAttributes.strength}
+      fortitude: ${servant.currentAttributes.fortitude}
+      guarda: ${servant.currentAttributes.guard}
       buff: ${servant.currentAttributes.buff}
-      debuff: ${servant.currentAttributes.buff}
-      armadura: ${servant.armor.type}
-      Arma em mãos: ${servant.currentWeapon.type}
+      debuff: ${servant.currentAttributes.debuff}
+    `
+    await message.reply(servantAttributesMessage)
+  }
       maestria com mãos nuas: ${servant.maestry.bareHanded}
       maestria com armas de uma mão: ${servant.maestry.oneHanded}
       maestria com armas de duas mãos: ${servant.maestry.twoHanded}
