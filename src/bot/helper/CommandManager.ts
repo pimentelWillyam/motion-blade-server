@@ -219,30 +219,95 @@ class CommandManager {
     await message.reply(`O servo ${name} não possui mais nenhum debuff`)
   }
 
-  // async levelUpServant (message: Message<boolean>, name: string, enemyStrenghtLevel: string): Promise<void> {
-  //   const randomNumber = this.randomNumberGenerator.generate(1, 4)
-  //   await this.sleeper.sleep(2000)
-  //   if ((enemyStrenghtLevel === 'fraco' && randomNumber < 4) || (enemyStrenghtLevel === 'medio' && randomNumber < 3) || (enemyStrenghtLevel === 'forte' && randomNumber < 2)) {
-  //     await message.reply(`O servo ${name} não foi capaz de melhorar nenhum atributo`)
-  //     return
-  //   }
-  //   await message.reply(`O servo ${name} conseguiu melhorar um atributo!`)
-  //   const attributeToLevelUp = this.randomNumberGenerator.generate(1, 4)
-  //   await this.sleeper.sleep(2000)
-  //   if (attributeToLevelUp === 1) {
-  //     this.servantManager.healServant(name, 'agilidade', 1)
-  //     await message.reply(`Servo ${name} melhorou sua agilidade`)
-  //   } else if (attributeToLevelUp === 2) {
-  //     this.servantManager.healServant(name, 'tecnica', 1)
-  //     await message.reply(`Servo ${name} melhorou sua tecnica`)
-  //   } else if (attributeToLevelUp === 3) {
-  //     this.servantManager.healServant(name, 'força', 1)
-  //     await message.reply(`Servo ${name} melhorou sua força`)
-  //   } else if (attributeToLevelUp === 4) {
-  //     this.servantManager.healServant(name, 'fortitude', 1)
-  //     await message.reply(`Servo ${name} melhorou sua fortitude`)
-  //   }
-  // }
+  async strike (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> {
+    const attacker = this.servantController.getServant(attackerName)
+    if (!attacker.currentWeapon.strikable) throw new Error(`A arma que ${attacker.name} possui em mãos não pode ser usada para acertar alguém`)
+    const defender = this.servantController.getServant(defenderName)
+    let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
+    let damageToDeal
+    await this.sleeper.sleep(2000)
+    await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de agilidade`)
+    let defenderDiceResult = this.randomNumberGenerator.generate(1, 20)
+    await this.sleeper.sleep(2000)
+    if (defender.currentAttributes.technique + defender.currentAttributes.guard >= defender.currentAttributes.agility) await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de técnica`)
+    else await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de agilidade`)
+    const attackResultMessage = this.servantController.attackTest(attacker, attackerDiceResult, defender, defenderDiceResult, 'strike')
+    await this.sleeper.sleep(2000)
+    if (attackResultMessage === 'Acerto') {
+      await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu!`)
+      if (defender.armor.type === 'roupa') {
+        attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
+        defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
+        const damageToDeal = this.servantController.getDamageToDeal(attacker, attackerDiceResult, attacker.currentWeapon, defender, defender.armor.type, defenderDiceResult)
+        const servantLifeStatus = this.servantController.dealDamage(defender, damageToDeal)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
+        await this.sleeper.sleep(2000)
+        if (servantLifeStatus === 'Dead') await message.reply(`${defenderName} foi morto em combate por ${attackerName}`)
+      } else if (defender.armor.type === 'couro' || defender.armor.type === 'cota de malha' || defender.armor.type === 'placa') {
+        attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de técnica `)
+        defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de técnica `)
+        const armorEvasionTestResult = this.servantController.armorEvasionTest(attacker, attackerDiceResult, defender, defenderDiceResult)
+        if (armorEvasionTestResult === 'Hit armor') {
+          await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} mas acabou acertando a armadura`)
+          damageToDeal = this.servantController.getDamageToDeal(attacker, attackerDiceResult, attacker.currentWeapon, defender, defender.armor.type, defenderDiceResult)
+        } else if (armorEvasionTestResult === 'Evaded armor') {
+          await message.reply(`${attackerName} tentou partes menos protegidas da armadura dede ${defenderName} e teve sucesso em faze-lo`)
+          damageToDeal = this.servantController.getDamageToDeal(attacker, attackerDiceResult, attacker.currentWeapon, defender, 'roupa', defenderDiceResult)
+        } else throw new Error('Erro ao testar evasão da armadura')
+        const servantLifeStatus = this.servantController.dealDamage(defender, damageToDeal)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
+        await this.sleeper.sleep(2000)
+        if (servantLifeStatus === 'Dead') await message.reply(`${defenderName} foi morto em combate por ${attackerName}`)
+      } else if (defender.armor.type === 'pouro') {
+        attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de técnica `)
+        defenderDiceResult = this.randomNumberGenerator.generate(1, 20)
+        await this.sleeper.sleep(2000)
+        await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de técnica `)
+        const armorEvasionTestResult = this.servantController.armorEvasionTest(attacker, attackerDiceResult, defender, defenderDiceResult)
+        if (armorEvasionTestResult === 'Hit armor') {
+          await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} mas acabou acertando a armadura`)
+          attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
+          await this.sleeper.sleep(2000)
+          await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
+          defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
+          await this.sleeper.sleep(2000)
+          await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
+          damageToDeal = this.servantController.getDamageToDeal(attacker, attackerDiceResult, attacker.currentWeapon, defender, 'placa', defenderDiceResult)
+        } else if (armorEvasionTestResult === 'Evaded armor') {
+          await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} e conseguiu`)
+          attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
+          await this.sleeper.sleep(2000)
+          await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
+          defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
+          await this.sleeper.sleep(2000)
+          await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
+          damageToDeal = this.servantController.getDamageToDeal(attacker, attackerDiceResult, attacker.currentWeapon, defender, 'couro', defenderDiceResult)
+        } else throw new Error('Erro ao testar evasão da armadura')
+
+        await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
+        const servantLifeStatus = this.servantController.dealDamage(defender, damageToDeal)
+        await this.sleeper.sleep(2000)
+        await this.sleeper.sleep(2000)
+        if (servantLifeStatus === 'Dead') await message.reply(`${defenderName} foi morto em combate por ${attackerName}`)
+      }
+    } else if (attackResultMessage === 'Contra-ataque') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sofrendo um contra-ataque`)
+    else if (attackResultMessage === 'Desarme') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sendo desarmado`)
+    else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
+    else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
+  }
+
 }
 
 export default CommandManager
