@@ -314,8 +314,12 @@ class CommandManager {
         }
       }
     } else if (attackResultMessage === 'Contra-ataque') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sofrendo um contra-ataque`)
-    else if (attackResultMessage === 'Desarme') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sendo desarmado`)
-    else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
+    else if (attackResultMessage === 'Desarme') {
+      await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sendo desarmado`)
+      const weaponToDiscard = attacker.currentWeapon.type
+      this.servantController.keepWeapon(attackerName, weaponToDiscard)
+      this.servantController.dropWeapon(attackerName, weaponToDiscard)
+    } else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
   }
 
