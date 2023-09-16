@@ -29,7 +29,7 @@ class Servant {
     this.inventory = []
     this.currentWeapon = this.weaponFetcher.fetchWeaponByType('mão nua')
     this.currentAttributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
-    this.maximumAttributes = this.currentAttributes
+    this.maximumAttributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
     this.armor = this.armorFetcher.fetchArmorBasedOnFortitude(this.currentAttributes.fortitude)
     this.maestry = { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
   }
