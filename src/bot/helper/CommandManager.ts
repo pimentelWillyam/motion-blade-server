@@ -97,6 +97,8 @@ class CommandManager {
   }
 
   async createServant (message: Message<boolean>, name: string, fatherProfession: Profession, youthProfession: Profession): Promise<void> {
+    this.memoryDataSource.insertServantRegistry(message.author.username, name, fatherProfession, youthProfession)
+    await message.reply('Servo criado com sucesso.')
   }
 
   async getServantInfo (message: Message<boolean>, name: string): Promise<void> {
