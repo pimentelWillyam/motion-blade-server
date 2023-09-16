@@ -26,8 +26,8 @@ class Servant {
     this.name = name
     this.fatherProfession = fatherProfession
     this.youthProfession = youthProfession
-    this.weaponList = [weaponFetcher.fetchWeaponByType('mão nua'), weaponFetcher.fetchWeaponByType('mão nua'), weaponFetcher.fetchWeaponByType('mão nua')]
-    this.currentWeapon = this.weaponList[0]
+    this.inventory = []
+    this.currentWeapon = this.weaponFetcher.fetchWeaponByType('mão nua')
     this.currentAttributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
     this.maximumAttributes = this.currentAttributes
     this.armor = this.armorFetcher.fetchArmorBasedOnFortitude(this.currentAttributes.fortitude)
