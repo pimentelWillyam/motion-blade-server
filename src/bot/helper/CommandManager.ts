@@ -96,37 +96,7 @@ class CommandManager {
     await message.reply(classesMessage)
   }
 
-  async roll (message: Message, diceSides: number): Promise<void> {
-    await message.reply(this.randomNumberGenerator.generate(1, diceSides).toString())
-  }
-
   async createServant (message: Message<boolean>, name: string, fatherProfession: Profession, youthProfession: Profession): Promise<void> {
-    const servant = this.memoryDataSource.insertServantRegistry(message.author.username, name, fatherProfession, youthProfession)
-    await message.reply(`
-    Servo criado com sucesso.
-    
-    Dados do servo:
-
-    nome do mestre ${servant.masterId}
-    nome: ${servant.name}
-    profissão paterna: ${servant.fatherProfession}
-    profissão da juventude: ${servant.youthProfession}
-    agilidade: ${servant.currentAttributes.agility} de um máximo de ${servant.maximumAttributes.agility}
-    tecnica: ${servant.currentAttributes.technique} de um máximo de ${servant.maximumAttributes.technique}
-    força: ${servant.currentAttributes.strength} de um máximo de ${servant.maximumAttributes.strength}
-    fortitude: ${servant.currentAttributes.fortitude} de um máximo de ${servant.maximumAttributes.fortitude}
-    guarda: ${servant.currentAttributes.guard} de um máximo de ${servant.maximumAttributes.guard}
-    buff: ${servant.currentAttributes.buff}
-    debuff: ${servant.currentAttributes.buff}
-    armadura: ${servant.armor.type}
-    Arma em mãos: ${servant.currentWeapon.type}
-    maestria com mãos nuas: ${servant.maestry.bareHanded}
-    maestria com armas de uma mão: ${servant.maestry.oneHanded}
-    maestria com armas de duas mãos: ${servant.maestry.twoHanded}
-    maestria com armas de hastes: ${servant.maestry.polearm}
-    maestria com arcos: ${servant.maestry.bow}
-    maestria com bestas: ${servant.maestry.crossbow}
-    `)
   }
 
   async getServantInfo (message: Message<boolean>, name: string): Promise<void> {
