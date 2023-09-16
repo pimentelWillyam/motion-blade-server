@@ -164,37 +164,9 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
-  async rollServantAttack (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> {
-    let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
-    let defenderDiceResult = this.randomNumberGenerator.generate(1, 20)
-    const attackResultMessage = this.servantManager.attack(attackerName, attackerDiceResult, defenderName, defenderDiceResult)
-    await this.sleeper.sleep(2000)
-    await message.reply(`${attackerName} tirou ${attackerDiceResult} nos dados`)
-    await this.sleeper.sleep(2000)
-    await message.reply(`${defenderName} tirou ${defenderDiceResult} nos dados`)
-    await this.sleeper.sleep(2000)
-    if (attackResultMessage === 'Acerto') {
-      await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu atingir seu inimigo!`)
-      attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
-      await this.sleeper.sleep(2000)
-      await message.reply(`${attackerName} tirou ${attackerDiceResult} nos dados`)
-      defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
-      await this.sleeper.sleep(2000)
-      await message.reply(`${defenderName} tirou ${defenderDiceResult} nos dados`)
-      const damageToBeDealt = this.servantManager.servantDatabase[this.servantManager.getServantPositionByName(attackerName)].attributes.strength + attackerDiceResult - (this.servantManager.servantDatabase[this.servantManager.getServantPositionByName(defenderName)].attributes.fortitude + defenderDiceResult)
-      await this.sleeper.sleep(2000)
-      if (damageToBeDealt > 0) {
-        const defenderAttributes = this.servantManager.applyDamageToServant(defenderName, damageToBeDealt)
-        await message.reply(`${defenderName} sofreu um dano de ${damageToBeDealt}!`)
-        if (defenderAttributes === null) await message.reply(`${defenderName} foi morto por ${attackerName}`)
-      } else {
-        await message.reply(`A variação de dano foi de ${damageToBeDealt} portanto ${defenderName} não foi ferido!`)
-      }
-    }
-    if (attackResultMessage === 'Contra-ataque') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sofrendo um contra-ataque`)
-    if (attackResultMessage === 'Desarme') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sendo desarmado`)
-    if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
-    if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
+  async servantKeepWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
+    this.servantController.keepWeapon(name, weaponType)
+    await message.reply(`O servo ${name} guardou um(a) ${weaponType} em seu inventário`)
   }
 
   async rollServantShoot (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> {
