@@ -15,8 +15,8 @@ class BareHand {
     this.maestryType = 'mão nua'
     this.damageType = 'impacto'
     this.strikable = true
-    this.throwable = true
-    this.shootable = true
+    this.throwable = false
+    this.shootable = false
   }
 }
 
