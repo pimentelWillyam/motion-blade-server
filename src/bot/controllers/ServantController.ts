@@ -315,24 +315,31 @@ class ServantController {
     while (damageNotDealt !== 0) {
       if (servant.currentAttributes.agility !== 0 && servant.currentAttributes.agility >= damageNotDealt) {
         servant.currentAttributes.agility -= damageNotDealt
+        damageNotDealt = 0
       } else if (servant.currentAttributes.agility !== 0 && servant.currentAttributes.agility < damageNotDealt) {
         damageNotDealt -= servant.currentAttributes.agility
         servant.currentAttributes.agility = 0
       } else if (servant.currentAttributes.technique !== 0 && servant.currentAttributes.technique >= damageNotDealt) {
         servant.currentAttributes.technique -= damageNotDealt
+        damageNotDealt = 0
       } else if (servant.currentAttributes.technique !== 0 && servant.currentAttributes.technique < damageNotDealt) {
         damageNotDealt -= servant.currentAttributes.technique
         servant.currentAttributes.technique = 0
       } else if (servant.currentAttributes.strength !== 0 && servant.currentAttributes.strength >= damageNotDealt) {
         servant.currentAttributes.strength -= damageNotDealt
+        damageNotDealt = 0
       } else if (servant.currentAttributes.strength !== 0 && servant.currentAttributes.strength < damageNotDealt) {
         damageNotDealt -= servant.currentAttributes.strength
         servant.currentAttributes.strength = 0
       } else if (servant.currentAttributes.fortitude !== 0 && servant.currentAttributes.fortitude >= damageNotDealt) {
         servant.currentAttributes.fortitude -= damageNotDealt
+        damageNotDealt = 0
       } else if (servant.currentAttributes.fortitude !== 0 && servant.currentAttributes.fortitude < damageNotDealt) {
         damageNotDealt -= servant.currentAttributes.fortitude
         servant.currentAttributes.fortitude = 0
+      } else if (servant.currentAttributes.agility === 0 && servant.currentAttributes.technique === 0 && servant.currentAttributes.strength === 0 && servant.currentAttributes.fortitude === 0) {
+        this.deleteServant(servant.name)
+        return 'Dead'
       }
     }
     if (servant.currentAttributes.agility === 0 && servant.currentAttributes.technique === 0 && servant.currentAttributes.strength === 0 && servant.currentAttributes.fortitude === 0) {
