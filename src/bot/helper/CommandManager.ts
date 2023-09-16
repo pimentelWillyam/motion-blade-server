@@ -484,6 +484,17 @@ class CommandManager {
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
   }
 
+  async servantTakesDamage (message: Message<boolean>, name: string, damageToDeal: number): Promise<void> {
+    const servant = this.memoryDataSource.fetchServantByName(name)
+    if (servant === null) throw new Error(`O servo ${name} não existe `)
+    if (this.servantController.dealDamage(servant, damageToDeal) === 'Dead') {
+      await message.reply(`O servo ${name} sofreu ${damageToDeal} de dano!`)
+      await message.reply(`O servo ${name} foi morto`)
+    } else {
+      await message.reply(`O servo ${name} sofreu ${damageToDeal} de dano!`)
+    }
+  }
+
 }
 
 export default CommandManager
