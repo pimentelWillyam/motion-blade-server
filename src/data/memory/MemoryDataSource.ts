@@ -41,7 +41,7 @@ class MemoryDataSource {
   updateServantByName = (name: string, contentToUpdate: Servant): Servant => {
     for (let i = 0; i < this.servantList.length; i++) {
       if (this.servantList[i].name === name) {
-        if (contentToUpdate.weaponList !== undefined) this.servantList[i].weaponList = contentToUpdate.weaponList
+        if (contentToUpdate.inventory !== undefined) this.servantList[i].inventory = contentToUpdate.inventory
         if (contentToUpdate.currentWeapon !== undefined) this.servantList[i].currentWeapon = contentToUpdate.currentWeapon
         if (contentToUpdate.armor !== undefined) this.servantList[i].armor = contentToUpdate.armor
         if (contentToUpdate.currentAttributes !== undefined) this.servantList[i].currentAttributes = contentToUpdate.currentAttributes
