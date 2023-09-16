@@ -59,6 +59,37 @@ class ServantController {
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
+  upgradeServant = (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Servant => {
+    const contentToUpgrade = this.memoryDataSource.fetchServantByName(name)
+    if (contentToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
+    if (propertyToUpgrade === 'agilidade') {
+      contentToUpgrade.maximumAttributes.agility += quantityToUpgrade
+      contentToUpgrade.currentAttributes.agility += quantityToUpgrade
+    } else if (propertyToUpgrade === 'tecnica') {
+      contentToUpgrade.maximumAttributes.technique += quantityToUpgrade
+      contentToUpgrade.currentAttributes.technique += quantityToUpgrade
+    } else if (propertyToUpgrade === 'força') {
+      contentToUpgrade.maximumAttributes.strength += quantityToUpgrade
+      contentToUpgrade.currentAttributes.strength += quantityToUpgrade
+    } else if (propertyToUpgrade === 'fortitude') {
+      contentToUpgrade.maximumAttributes.fortitude += quantityToUpgrade
+      contentToUpgrade.currentAttributes.fortitude += quantityToUpgrade
+    } else if (propertyToUpgrade === 'mão nua') {
+      contentToUpgrade.maestry.bareHanded += quantityToUpgrade
+    } else if (propertyToUpgrade === 'uma mão') {
+      contentToUpgrade.maestry.oneHanded += quantityToUpgrade
+    } else if (propertyToUpgrade === 'duas mãos') {
+      contentToUpgrade.maestry.twoHanded += quantityToUpgrade
+    } else if (propertyToUpgrade === 'haste') {
+      contentToUpgrade.maestry.polearm += quantityToUpgrade
+    } else if (propertyToUpgrade === 'arco') {
+      contentToUpgrade.maestry.bow += quantityToUpgrade
+    } else if (propertyToUpgrade === 'besta') {
+      contentToUpgrade.maestry.crossbow += quantityToUpgrade
+    } else throw new Error('Ofereça um atributo ou maestria válido')
+    return this.memoryDataSource.updateServantByName(name, contentToUpgrade)
+  }
+
   keepWeapon = (servantName: string, weaponType: WeaponType): Servant => {
     const fetchedServant = this.memoryDataSource.fetchServantByName(servantName)
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
