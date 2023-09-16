@@ -6,7 +6,6 @@ import type ArmorFetcher from '../../bot/fetchers/ArmorFetcher'
 import type UuidGenerator from '../../bot/helper/UuidGenerator'
 import type Weapon from '../../bot/type/Weapon'
 import type WeaponType from '../../bot/type/WeaponType'
-import type Npc from '../../bot/model/Npc'
 
 class MemoryDataSource {
   private servantList: Servant[] = []
@@ -23,6 +22,12 @@ class MemoryDataSource {
 
   insertServantRegistry = (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession): Servant => {
     const servant: Servant = new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, this.weaponFetcher, this.attributesFetcher, this.armorFetcher)
+    this.servantList.push(servant)
+    return servant
+  }
+
+  insertCustomAttributesServantRegistry = (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, agility: number, technique: number, strength: number, fortitude: number): Servant => {
+    const servant: Servant = new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, this.weaponFetcher, this.attributesFetcher, this.armorFetcher, true, agility, technique, strength, fortitude)
     this.servantList.push(servant)
     return servant
   }
