@@ -148,22 +148,6 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
-  async attack (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> { // falta fazer
-    let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
-    await this.sleeper.sleep(2000)
-    await message.reply(`${attackerName} tirou ${attackerDiceResult} nos dados`)
-    let defenderDiceResult = this.randomNumberGenerator.generate(1, 20)
-    await this.sleeper.sleep(2000)
-    await message.reply(`${defenderName} tirou ${defenderDiceResult} nos dados`)
-    const attackResultMessage = this.servantController.attackTest(attackerName, attackerDiceResult, defenderName, defenderDiceResult)
-    await this.sleeper.sleep(2000)
-    if (attackResultMessage === 'Acerto') {
-      await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu!`)
-      attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
-      await this.sleeper.sleep(2000)
-      const defender = this.servantController.getServant(defenderName)
-      if (defender.armor.type !== 'roupa') {
-      } else {
 
       }
       await message.reply(`${attackerName} tirou ${attackerDiceResult} nos dados`)
