@@ -67,8 +67,31 @@ class CommandManager {
     await message.reply(this.randomNumberGenerator.generate(1, diceSize).toString())
   }
 
+  async getProfessionsInfo (message: Message): Promise<void> {
     const classesMessage = `
-    preciso corrigir tudo
+    As profissões e os respectivos atributos que elas fornecem são: 
+    soldado: força 3, fortitude 1
+    bandido: força 3, agilidade 1
+    ferreiro: força 3, técnica 1  
+    barbaro: força 4    
+    açougueiro: força 2, fortitude 2
+    lenhador: agilidade 2, força 2 
+    guerreiro: força 2, técnica 2  
+    batedor: agilidade 3, força 1
+    saqueador: agilidade 3, fortitude 1
+    assassino: agilidade 3, técnica 1 
+    ladrao: agilidade 4
+    nomade:  agilidade 2, fortitude 2
+    monge: agilidade 2, técnica 2
+    infante: fortitude 3, força 1
+    patrulheiro: fortitude 3, agilidade 1
+    nobre: fortitude 3, técnica 1
+    escravo: fortitude 4
+    arqueiro: fortitude 2, técnica 2
+    acrobata: técnica 3, força 1
+    cavaleiro:  técnica 3, fortitude 1
+    malabarista: técnica 3, agilidade 1
+    caçador: técnica 4
     `
     await message.reply(classesMessage)
   }
