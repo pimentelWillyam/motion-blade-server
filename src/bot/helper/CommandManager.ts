@@ -11,7 +11,53 @@ class CommandManager {
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `
-    preciso corrigir tudo
+    Os comandos que existem são:
+
+    1- !ajuda
+
+    2- !profissoes
+
+    3- !rolar
+
+    4- !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
+
+    5- !(nomeServo) atributos
+
+    6- !(nomeServo) atributos maximos
+
+    7- !(nomeServo) maestria
+
+    8- !(nomeServo) inventário
+
+    9- !(nomeServo) guarda (nomeArma)
+
+    10- !(nomeServo) descarta (nomeArma)
+
+    11- !(nomeServo) saca (nomeArma)
+
+    12- !(nomeServo) testa (atributo)
+
+    13- !(nomeServo) guarda
+
+    14- !bufar (nomeServo) (valorBuff)
+
+    15- !remover buff(nomeServo)
+
+    16- !debufar (nomeServo) (valorDebuff)
+
+    17- !remover debuff(nomeServo)
+
+    18- !(nomeAtacante) acerta (nomeDefensor)
+
+    19- !(nomeAtacante) lança (nomeDefensor)
+
+    20- !(nomeAtacante) atira (nomeDefensor)
+
+    21- !(nomeServo) sofre (danoASofrer)
+
+    22- !curar (nomeServo)
+
+    23- !(nomeServo) melhora (nomeAtributo | nomeMaestria)
     `
 
     await message.reply(guideMessage)
