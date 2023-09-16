@@ -499,6 +499,38 @@ class CommandManager {
     this.servantController.healServant(name)
     await message.reply(`O servo ${name} foi curado de todos seus ferimentos`)
   }
+
+  async upgradeServant (message: Message<boolean>, name: string, propertyToUpgrade: string, quantityToUpgrade: number): Promise<void> {
+    if (propertyToUpgrade === 'mao nua') {
+      this.servantController.upgradeServant(name, 'mão nua', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria em combate desarmado em ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'uma mao') {
+      this.servantController.upgradeServant(name, 'uma mão', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria com armas de uma mão em ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'duas maos') {
+      this.servantController.upgradeServant(name, 'duas mãos', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria com armas de duas mãos em ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'haste') {
+      this.servantController.upgradeServant(name, 'haste', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria com armas de haste em ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'arco') {
+      this.servantController.upgradeServant(name, 'arco', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria arcos ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'besta') {
+      this.servantController.upgradeServant(name, 'besta', quantityToUpgrade)
+      await message.reply(`O servo ${name} aprimorou sua maestria com bestas ${quantityToUpgrade}`)
+      return
+    } else if (propertyToUpgrade === 'agilidade') this.servantController.upgradeServant(name, 'agilidade', quantityToUpgrade)
+    else if (propertyToUpgrade === 'tecnica') this.servantController.upgradeServant(name, 'tecnica', quantityToUpgrade)
+    else if (propertyToUpgrade === 'força') this.servantController.upgradeServant(name, 'força', quantityToUpgrade)
+    else if (propertyToUpgrade === 'fortitude') this.servantController.upgradeServant(name, 'fortitude', quantityToUpgrade)
+    await message.reply(`O servo ${name} aprimorou sua ${propertyToUpgrade} em ${quantityToUpgrade}`)
+  }
 }
 
 export default CommandManager
