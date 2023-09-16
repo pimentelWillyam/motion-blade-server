@@ -346,6 +346,14 @@ class ServantController {
     this.updateServant(servant.name, servant)
     return 'Alive'
   }
+
+  healServant (servantName: string): Servant {
+    const servantToBeUpdated = this.memoryDataSource.fetchServantByName(servantName)
+    if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
+    servantToBeUpdated.currentAttributes = servantToBeUpdated.maximumAttributes
+    this.updateServant(servantName, servantToBeUpdated)
+    return servantToBeUpdated
+  }
 }
 
 export default ServantController
