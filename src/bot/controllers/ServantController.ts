@@ -167,7 +167,7 @@ class ServantController {
   debuffServant (name: string, debuffValue: number): Servant {
     const servant = this.getServant(name)
     if (servant != null) {
-      servant.currentAttributes.buff += debuffValue
+      servant.currentAttributes.debuff += debuffValue
       this.updateServant(name, servant)
       return servant
     }
