@@ -4,6 +4,7 @@ import type MemoryDataSource from '../../data/memory/MemoryDataSource'
 import type RandomNumberGenerator from './RandomNumberGenerator'
 import type Sleeper from './Sleeper'
 import type ServantController from '../controllers/ServantController'
+import type WeaponType from '../type/WeaponType'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly memoryDataSource: MemoryDataSource, private readonly sleeper: Sleeper, private readonly servantController: ServantController) {}
