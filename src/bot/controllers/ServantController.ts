@@ -10,6 +10,8 @@ import type ArmorEvasionTestResult from '../type/ArmorEvasionTestResult'
 import type Attributes from '../type/Attributes'
 import type Maestry from '../type/Maestry'
 import type WeaponType from '../type/WeaponType'
+import type MaestryType from '../type/MaestryType'
+import type Attribute from '../type/Attribute'
 
 class ServantController {
   constructor (private readonly memoryDataSource: MemoryDataSource) {}
