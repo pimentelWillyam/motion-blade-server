@@ -186,10 +186,18 @@ class CommandManager {
     await message.reply(`${name} entrou em uma guarde de ${guard} pontos`)
   }
 
-  // async armServant (message: Message<boolean>, name: string): Promise<void> {
-  //   this.servantManager.armServant(name)
-  //   await message.reply(`${name} voltou a se armar`)
-  // }
+  async servantTestsAttribute (message: Message<boolean>, name: string, attributeToBeTested: 'agilidade' | 'tecnica' | 'força' | 'fortitude'): Promise<void> {
+    const servant = this.memoryDataSource.fetchServantByName(name)
+    if (servant === null) throw new Error(`O servo ${name} não existe `)
+    let testResult: number
+    if (attributeToBeTested === 'agilidade') testResult = servant.currentAttributes.agility + this.randomNumberGenerator.generate(1, 20)
+    else if (attributeToBeTested === 'tecnica') testResult = servant.currentAttributes.technique + this.randomNumberGenerator.generate(1, 20)
+    else if (attributeToBeTested === 'força') testResult = servant.currentAttributes.strength + this.randomNumberGenerator.generate(1, 10)
+    else if (attributeToBeTested === 'fortitude') testResult = servant.currentAttributes.fortitude + this.randomNumberGenerator.generate(1, 10)
+    else throw new Error('Atributo inválido')
+
+    await message.reply(`O servo ${name} testou sua ${attributeToBeTested} e tirou ${testResult.toString()}`)
+  }
 
   async buffServant (message: Message<boolean>, name: string, buffValue: number): Promise<void> {
     this.servantController.buffServant(name, buffValue)
