@@ -256,8 +256,8 @@ class ServantController {
     } else {
       attackerTestResult = attacker.currentAttributes.technique + attacker.currentAttributes.buff - attacker.currentAttributes.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.technique + defender.currentAttributes.guard + defender.currentAttributes.buff - defender.currentAttributes.debuff + defenderDiceResult
-      if (defender.currentWeapon.type === 'mão nua') attackerTestResult -= 5
-      if (defenderTestResult >= attackerTestResult * 2) return ('Desequilíbrio')
+      if (defender.currentWeapon.type === 'mão nua') attackerTestResult += 5
+      if (defenderTestResult >= attackerTestResult * 2) return ('Recarga demorada')
       else if (defenderTestResult >= attackerTestResult) return ('Desvio')
       else return 'Acerto'
     }
