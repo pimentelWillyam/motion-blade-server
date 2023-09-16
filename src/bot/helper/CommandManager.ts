@@ -417,6 +417,9 @@ class CommandManager {
           await message.reply(`${defenderName} não sofreu dano algum`)
         }
       }
+      const weaponThrown = attacker.currentWeapon.type
+      this.servantController.keepWeapon(attacker.name, weaponThrown)
+      this.servantController.dropWeapon(attacker.name, weaponThrown)
     } else if (attackResultMessage === 'Desequilíbrio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou se desequilibrando e caindo no chão`)
     else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
