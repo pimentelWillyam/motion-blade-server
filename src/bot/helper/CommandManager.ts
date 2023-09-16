@@ -64,6 +64,10 @@ class CommandManager {
   }
 
   async classes (message: Message): Promise<void> {
+  async rollDice (message: Message<boolean>, diceSize: number): Promise<void> {
+    await message.reply(this.randomNumberGenerator.generate(1, diceSize).toString())
+  }
+
     const classesMessage = `
     preciso corrigir tudo
     `
