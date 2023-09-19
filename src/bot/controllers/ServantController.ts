@@ -90,6 +90,14 @@ class ServantController {
     return this.memoryDataSource.updateServantByName(name, contentToUpgrade)
   }
 
+  wearArmor = (servant: Servant, armorType: ArmorType): Servant => {
+    this.memoryDataSource.fet
+  }
+
+  removeArmor = (servant: Servant, armorType: ArmorType): Servant => {
+    servant.armor = this.memoryDataSource.fetchArmor()
+  }
+
   keepWeapon = (servantName: string, weaponType: WeaponType): Servant => {
     const fetchedServant = this.memoryDataSource.fetchServantByName(servantName)
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
