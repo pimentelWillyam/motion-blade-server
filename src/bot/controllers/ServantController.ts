@@ -91,7 +91,11 @@ class ServantController {
   }
 
   wearArmor = (servant: Servant, armorType: ArmorType): Servant => {
-    this.memoryDataSource.fet
+    const armorToBeUsed = this.memoryDataSource.fetchArmor(armorType)
+    if (servant.maximumAttributes.fortitude < armorToBeUsed.minimumFortitude) throw new Error(`O servo ${servant.name} não possui fortitude o suficiente para usar uma armadura de ${armorType}`)
+    servant.armor = armorToBeUsed
+    this.memoryDataSource.updateServantByName(servant.name, servant)
+    return servant
   }
 
   removeArmor = (servant: Servant, armorType: ArmorType): Servant => {
