@@ -1,5 +1,8 @@
 import { type Request, type Response } from 'express'
 
+import type ServantValidator from '../validator/ServantValidator'
+import type ServantService from '../service/ServantService'
+
 enum ServantError {
   SERVANT_INVALID_REQUEST = 'A requisição inserida foi considerada inválida',
   SERVANT_LIST_ERROR = 'Houve um erro quando tentamos buscar a lista',
