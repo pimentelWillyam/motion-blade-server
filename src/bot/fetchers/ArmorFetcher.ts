@@ -4,6 +4,7 @@ import type Chainmail from '../model/armors/Chainmail'
 import type Plate from '../model/armors/Plate'
 import type Pleather from '../model/armors/Pleather'
 import type Armor from '../type/Armor'
+import type ArmorType from '../type/ArmorType'
 
 class ArmorFetcher {
   constructor (private readonly cloth: Cloth, private readonly leather: Leather, private readonly chainmail: Chainmail, private readonly plate: Plate, private readonly pleather: Pleather) {}
