@@ -5,10 +5,10 @@ import type DateManager from '../../helper/DateManager'
 import type ServantRepository from '../repository/ServantRepository'
 
 class ServantService {
-  constructor (readonly ServantRepository: IServantRepository, readonly uuidGenerator: IUuidGenerator, readonly dateManager: IDateManager) {}
+  constructor (readonly servantRepository: ServantRepository, readonly uuidGenerator: UuidGenerator, readonly dateManager: DateManager) {}
 
-  async create (message: string): Promise<IServantEntity> {
-    return await this.ServantRepository.create(this.uuidGenerator.generate(), message, this.dateManager.getCurrentDateTime())
+  create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession): Servant {
+    return this.servantRepository.create(masterId, name, fatherProfession, youthProfession)
   }
 
   async getAll (): Promise<IServantEntity[]> {
