@@ -11,8 +11,8 @@ class ServantService {
     return this.servantRepository.create(masterId, name, fatherProfession, youthProfession)
   }
 
-  async getAll (): Promise<IServantEntity[]> {
-    return await this.ServantRepository.getAll()
+  getAll (): Servant[] {
+    return this.servantRepository.getAll()
   }
 
   async get (id: string): Promise<IServantEntity | null> {
