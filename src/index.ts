@@ -77,6 +77,11 @@ import Leather from './bot/model/armors/Leather'
 import Chainmail from './bot/model/armors/Chainmail'
 import Plate from './bot/model/armors/Plate'
 import Pleather from './bot/model/armors/Pleather'
+import ServantRouter from './api/router/ServantRouter'
+import ServantApiController from './api/controller/ServantController'
+import ServantService from './api/service/ServantService'
+import ServantValidator from './api/validator/ServantValidator'
+import ServantRepository from './api/repository/ServantRepository'
 
 // instanciating discord bot related classes
 
@@ -119,21 +124,26 @@ const mariadbDataSource = new MariadbDataSource(databaseHelper)
 // instanciating repositories
 // using repositories with mariadb
 const logRepository = new LogRepository(mariadbDataSource, uuidGenerator, dateManager)
+const servantRepository = new ServantRepository(memoryDataSource)
 
 // instanciating services
 const logService = new LogService(logRepository, uuidGenerator, dateManager)
+const servantService = new ServantService(servantRepository, uuidGenerator, dateManager)
 
 // instanciating validators
 const logValidator = new LogValidator()
+const servantValidator = new ServantValidator()
 
 // instanciating controllers
 const logController = new LogController(logService, logValidator)
+const servantApiController = new ServantApiController(servantService, servantValidator)
 
 // instanciating routers
 const logRouter = new LogRouter(logController)
+const servantRouter = new ServantRouter(servantApiController)
 
 // instanciating app related classes
-const api = new Api(express(), apiMiddleware, logRouter)
+const api = new Api(express(), apiMiddleware, logRouter, servantRouter)
 const app = new App(api, server)
 
 // getting .env configuration
