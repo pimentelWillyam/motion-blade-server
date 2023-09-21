@@ -5,6 +5,7 @@ import type ILogRouter from '../api/interface/ILogRouter'
 import * as bodyParser from 'body-parser'
 import * as cors from 'cors'
 import { json } from 'express'
+import type ServantRouter from '../api/router/ServantRouter'
 
 class Api {
   constructor (readonly server: Express, readonly apiMiddleware: IApiMiddleware, readonly logRouter: ILogRouter) {
