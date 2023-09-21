@@ -6,6 +6,8 @@ import type ArmorFetcher from '../../bot/fetchers/ArmorFetcher'
 import type UuidGenerator from '../../bot/helper/UuidGenerator'
 import type Weapon from '../../bot/type/Weapon'
 import type WeaponType from '../../bot/type/WeaponType'
+import type ArmorType from '../../bot/type/ArmorType'
+import type Armor from '../../bot/type/Armor'
 
 class MemoryDataSource {
   private servantList: Servant[] = []
