@@ -9,8 +9,14 @@ class ServantRepository {
     return this.dataSource.insertServantRegistry(masterId, name, fatherProfession, youthProfession)
   }
 
-  async getAll (): Promise<IServantEntity[]> {
-    return await this.dataSource.getEveryServantRegistry()
+  // async createCustomServant (masterId: string, id: string, name: string, fatherProfession: string, youthProfession: string): Promise<IServantEntity> {
+  //   const log = { id, date, message }
+  //   await this.dataSource.insertCustomAttributesServantRegistry(masterId, name, fatherProfession, youthProfession, agility, technique, strength, fortitude)
+  //   return log
+  // }
+
+  getAll (): Servant[] {
+    return this.dataSource.fetchEveryServantRegistry()
   }
 
   async get (id: string): Promise<IServantEntity | null> {
