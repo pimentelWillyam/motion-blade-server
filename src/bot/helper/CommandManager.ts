@@ -100,6 +100,7 @@ class CommandManager {
   }
 
   async createServant (message: Message<boolean>, name: string, fatherProfession: Profession, youthProfession: Profession): Promise<void> {
+    if (this.memoryDataSource.fetchServantByName(name) != null) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
     this.memoryDataSource.insertServantRegistry(message.author.username, name, fatherProfession, youthProfession)
     await message.reply('Servo criado com sucesso.')
   }
