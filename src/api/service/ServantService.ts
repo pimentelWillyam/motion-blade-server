@@ -15,8 +15,8 @@ class ServantService {
     return this.servantRepository.getAll()
   }
 
-  async get (id: string): Promise<IServantEntity | null> {
-    return await this.ServantRepository.get(id)
+  get (id: string): Servant | null {
+    return this.servantRepository.get(id)
   }
 }
 
