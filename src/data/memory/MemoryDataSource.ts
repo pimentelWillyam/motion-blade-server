@@ -74,6 +74,10 @@ class MemoryDataSource {
   fetchWeapon = (weaponType: WeaponType): Weapon => {
     return this.weaponFetcher.fetchWeaponByType(weaponType)
   }
+
+  fetchArmor = (armorType: ArmorType): Armor => {
+    return this.armorFetcher.fetchArmorByType(armorType)
+  }
 }
 
 export default MemoryDataSource
