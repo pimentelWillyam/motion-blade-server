@@ -30,35 +30,37 @@ class CommandManager {
 
     8- !(nomeServo) inventário
 
-    9- !(nomeServo) guarda (nomeArma)
+    9- !(nomeServo) equipa (nomeArmadura)
 
-    10- !(nomeServo) descarta (nomeArma)
+    10- !(nomeServo) guarda (nomeArma)
 
-    11- !(nomeServo) saca (nomeArma)
+    11- !(nomeServo) descarta (nomeArma)
 
-    12- !(nomeServo) testa (atributo)
+    12- !(nomeServo) saca (nomeArma)
 
-    13- !(nomeServo) guarda
+    13- !(nomeServo) testa (atributo)
 
-    14- !bufar (nomeServo) (valorBuff)
+    14- !(nomeServo) guarda
 
-    15- !remover buff(nomeServo)
+    15- !bufar (nomeServo) (valorBuff)
 
-    16- !debufar (nomeServo) (valorDebuff)
+    16- !remover buff(nomeServo)
 
-    17- !remover debuff(nomeServo)
+    17- !debufar (nomeServo) (valorDebuff)
 
-    18- !(nomeAtacante) acerta (nomeDefensor)
+    18- !remover debuff(nomeServo)
 
-    19- !(nomeAtacante) lança (nomeDefensor)
+    19- !(nomeAtacante) acerta (nomeDefensor)
 
-    20- !(nomeAtacante) atira (nomeDefensor)
+    20- !(nomeAtacante) lança (nomeDefensor)
 
-    21- !(nomeServo) sofre (danoASofrer)
+    21- !(nomeAtacante) atira (nomeDefensor)
 
-    22- !curar (nomeServo)
+    22- !(nomeServo) sofre (danoASofrer)
 
-    23- !(nomeServo) melhora (nomeAtributo | nomeMaestria)
+    23- !curar (nomeServo)
+
+    24- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
     `
 
     await message.reply(guideMessage)
