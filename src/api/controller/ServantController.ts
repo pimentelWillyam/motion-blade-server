@@ -15,8 +15,8 @@ class ServantController {
 
   async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      if (this.servantValidator.isServantValid(req.body.message)) {
-        const servant = await this.servantService.create(req.body.message)
+      if (this.servantValidator.isServantValid('need to test better')) {
+        const servant = this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession)
         return res.status(200).json(servant)
       }
     } catch (erro) {
