@@ -1,4 +1,6 @@
-import type MemoryDataSource from "../../data/memory/MemoryDataSource"
+import type Servant from '../../bot/model/Servant'
+import type Profession from '../../bot/type/Profession'
+import type MemoryDataSource from '../../data/memory/MemoryDataSource'
 
 class ServantRepository {
   constructor (readonly dataSource: MemoryDataSource) {}
