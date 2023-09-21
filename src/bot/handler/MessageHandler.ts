@@ -5,6 +5,7 @@ import type Profession from '../type/Profession'
 import type CommandManager from '../helper/CommandManager'
 import type WeaponType from '../type/WeaponType'
 import type Attribute from '../type/Attribute'
+import type ArmorType from '../type/ArmorType'
 
 class MessageHandler implements IMessageHandler {
   constructor (private readonly commandManager: CommandManager) {}
