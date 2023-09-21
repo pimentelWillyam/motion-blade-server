@@ -19,13 +19,8 @@ class ServantRepository {
     return this.dataSource.fetchEveryServantRegistry()
   }
 
-  async get (id: string): Promise<IServantEntity | null> {
-    const logList = await this.dataSource.getServantBy('id', id)
-    const log = logList
-    if (log == null) {
-      return null
-    }
-    return log
+  get (name: string): Servant | null {
+    return this.dataSource.fetchServantByName(name)
   }
 }
 
