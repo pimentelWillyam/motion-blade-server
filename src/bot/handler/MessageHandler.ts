@@ -65,6 +65,8 @@ class MessageHandler implements IMessageHandler {
         await this.commandManager.healServant(message, treatedMessage[1])
       } else if (treatedMessage[1] === 'melhora' && (treatedMessage[2] === 'agilidade' || treatedMessage[2] === 'tecnica' || treatedMessage[2] === 'força' || treatedMessage[2] === 'fortitude' || treatedMessage[2] === 'haste' || treatedMessage[2] === 'arco' || treatedMessage[2] === 'besta') && treatedMessage.length === 4) {
         await this.commandManager.upgradeServant(message, treatedMessage[0], treatedMessage[2], parseInt(treatedMessage[3]))
+      } else if (treatedMessage[0] === 'criar' && treatedMessage[1] === 'servo' && treatedMessage.length === 3) {
+        await this.commandManager.createCustomServant(message, treatedMessage[2])
       } else if (treatedMessage[1] === 'melhora' && treatedMessage.length === 5) {
         const maestryToUpgrade = treatedMessage[2] + ' ' + treatedMessage[3]
         await this.commandManager.upgradeServant(message, treatedMessage[0], maestryToUpgrade, parseInt(treatedMessage[3]))
