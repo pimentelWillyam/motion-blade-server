@@ -8,11 +8,12 @@ import { json } from 'express'
 import type ServantRouter from '../api/router/ServantRouter'
 
 class Api {
-  constructor (readonly server: Express, readonly apiMiddleware: IApiMiddleware, readonly logRouter: ILogRouter) {
+  constructor (readonly server: Express, readonly apiMiddleware: IApiMiddleware, readonly logRouter: ILogRouter, readonly servantRouter: ServantRouter) {
     this.server.use(bodyParser.json())
     this.server.use(json())
     this.server.use(cors())
     this.server.use('/api', logRouter.routes)
+    this.server.use('/api', servantRouter.routes)
   }
 }
 
