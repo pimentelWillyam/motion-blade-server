@@ -29,6 +29,8 @@ class MessageHandler implements IMessageHandler {
         await this.commandManager.getServantMaximumAttributes(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'maestria' && treatedMessage.length === 2) {
         await this.commandManager.getServantMaestry(message, treatedMessage[0])
+      } else if (treatedMessage[1] === 'veste' && treatedMessage.length === 3) {
+        await this.commandManager.servantWearArmor(message, treatedMessage[0], treatedMessage[2] as ArmorType)
       } else if (treatedMessage[1] === 'inventario' && treatedMessage.length === 2) {
         await this.commandManager.getServantInventory(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 3) {
