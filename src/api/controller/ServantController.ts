@@ -10,7 +10,7 @@ enum ServantError {
   SERVANT_NOT_UPDATED = 'Não foi possível atualizar este usuário',
   SERVANT_NOT_DELETED = 'Não foi possível deletar este usuário',
 }
-class ServantController implements IServantController {
+class ServantController {
   constructor (readonly servantService: ServantService, readonly servantValidator: ServantValidator) {}
 
   async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
