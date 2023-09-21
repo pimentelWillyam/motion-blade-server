@@ -174,6 +174,25 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
+  async servantWearArmor (message: Message<boolean>, name: string, armorType: ArmorType): Promise<void> {
+    const servant = this.memoryDataSource.fetchServantByName(name)
+    if (servant === null) throw new Error(`O servo ${name} não existe `)
+    if (servant.armor.type !== 'roupa') {
+      await message.reply(`O servo ${name} removeu sua armadura de ${servant.armor.type} e a jogou fora`)
+      this.servantController.removeArmor(servant)
+    }
+    this.servantController.wearArmor(servant, armorType)
+    await message.reply(`O servo ${name} vestiu uma armadura de ${armorType}`)
+  }
+
+  async servantRemoveArmor (message: Message<boolean>, name: string): Promise<void> {
+    const servant = this.memoryDataSource.fetchServantByName(name)
+    if (servant === null) throw new Error(`O servo ${name} não existe `)
+    if (servant.armor.type === 'roupa') throw new Error(`O servo ${name} não possui armadura para remover`)
+    this.servantController.removeArmor(servant)
+    await message.reply(`O servo ${name} removeu sua armadura de ${servant.armor.type} e a jogou fora`)
+  }
+
   async servantKeepWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
     this.servantController.keepWeapon(name, weaponType)
     await message.reply(`O servo ${name} guardou um(a) ${weaponType} em seu inventário`)
