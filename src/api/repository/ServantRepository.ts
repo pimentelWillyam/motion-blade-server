@@ -5,10 +5,8 @@ import type MemoryDataSource from '../../data/memory/MemoryDataSource'
 class ServantRepository {
   constructor (readonly dataSource: MemoryDataSource) {}
 
-  async create (id: string, message: string, date: string): Promise<IServantEntity> {
-    const log = { id, date, message }
-    await this.dataSource.insertCustomAttributesServantRegistry(masterId, name, fatherProfession, youthProfession, agility, technique, strength, fortitude)
-    return log
+  create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession): Servant {
+    return this.dataSource.insertServantRegistry(masterId, name, fatherProfession, youthProfession)
   }
 
   async getAll (): Promise<IServantEntity[]> {
