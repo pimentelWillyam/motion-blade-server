@@ -20,47 +20,53 @@ class CommandManager {
 
     3- !rolar
 
-    4- !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
+    4- !criar servo (nomeServo)
+    
+    5- !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
 
-    5- !(nomeServo) atributos
+    6- !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
 
-    6- !(nomeServo) atributos maximos
+    7- !(nomeServo) atributos
 
-    7- !(nomeServo) maestria
+    8- !(nomeServo) atributos maximos
 
-    8- !(nomeServo) inventário
+    9- !(nomeServo) maestria
 
-    9- !(nomeServo) equipa (nomeArmadura)
+    10- !(nomeServo) inventário
 
-    10- !(nomeServo) guarda (nomeArma)
+    11- !(nomeServo) veste (nomeArmadura)
 
-    11- !(nomeServo) descarta (nomeArma)
+    12- !(nomeServo) remove (nomeArmadura)
 
-    12- !(nomeServo) saca (nomeArma)
+    13- !(nomeServo) guarda (nomeArma)
 
-    13- !(nomeServo) testa (atributo)
+    14- !(nomeServo) descarta (nomeArma)
 
-    14- !(nomeServo) guarda
+    15- !(nomeServo) saca (nomeArma)
 
-    15- !bufar (nomeServo) (valorBuff)
+    16- !(nomeServo) testa (atributo)
 
-    16- !remover buff(nomeServo)
+    17- !(nomeServo) guarda
 
-    17- !debufar (nomeServo) (valorDebuff)
+    18- !bufar (nomeServo) (valorBuff)
 
-    18- !remover debuff(nomeServo)
+    19- !remover buff(nomeServo)
 
-    19- !(nomeAtacante) acerta (nomeDefensor)
+    20- !debufar (nomeServo) (valorDebuff)
 
-    20- !(nomeAtacante) lança (nomeDefensor)
+    21- !remover debuff(nomeServo)
 
-    21- !(nomeAtacante) atira (nomeDefensor)
+    22- !(nomeAtacante) acerta (nomeDefensor)
 
-    22- !(nomeServo) sofre (danoASofrer)
+    23- !(nomeAtacante) lança (nomeDefensor)
 
-    23- !curar (nomeServo)
+    24- !(nomeAtacante) atira (nomeDefensor)
 
-    24- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
+    25- !(nomeServo) sofre (danoASofrer)
+
+    26- !curar (nomeServo)
+
+    27- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
     `
 
     await message.reply(guideMessage)
