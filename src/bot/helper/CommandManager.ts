@@ -105,6 +105,12 @@ class CommandManager {
     await message.reply('Servo criado com sucesso.')
   }
 
+  async createCustomServant (message: Message<boolean>, name: string, agility = 0, technique = 0, strength = 0, fortitude = 0): Promise<void> {
+    if (this.memoryDataSource.fetchServantByName(name) != null) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
+    this.memoryDataSource.insertCustomAttributesServantRegistry('', name, 'soldado', 'soldado', agility, technique, strength, fortitude)
+    await message.reply('Servo criado com sucesso.')
+  }
+
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = this.memoryDataSource.fetchServantByName(name)
     if (servant === null) throw new Error(`O servo ${name} não existe `)
