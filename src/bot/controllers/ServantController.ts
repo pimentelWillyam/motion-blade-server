@@ -98,8 +98,10 @@ class ServantController {
     return servant
   }
 
-  removeArmor = (servant: Servant, armorType: ArmorType): Servant => {
-    servant.armor = this.memoryDataSource.fetchArmor()
+  removeArmor = (servant: Servant): Servant => {
+    servant.armor = this.memoryDataSource.fetchArmor('roupa')
+    this.memoryDataSource.updateServantByName(servant.name, servant)
+    return servant
   }
 
   keepWeapon = (servantName: string, weaponType: WeaponType): Servant => {
