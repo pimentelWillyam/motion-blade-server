@@ -17,6 +17,15 @@ class ArmorFetcher {
     else if (fortitude >= this.cloth.minimumFortitude) return this.cloth
     else throw new Error('Fortitude inválida')
   }
+
+  fetchArmorByType = (armorType: ArmorType): Armor => {
+    if (armorType === 'roupa') return this.cloth
+    else if (armorType === 'couro') return this.leather
+    else if (armorType === 'cota de malha') return this.chainmail
+    else if (armorType === 'placa') return this.plate
+    else if (armorType === 'pouro') return this.pleather
+    else throw new Error('Tipo de armadura inválido')
+  }
 }
 
 export default ArmorFetcher
