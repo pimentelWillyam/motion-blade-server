@@ -1,3 +1,3 @@
-type Armor = 'roupa' | 'couro' | 'cota de malha' | 'placa' | 'pouro'
+type ArmorType = 'roupa' | 'couro' | 'cota de malha' | 'placa' | 'pouro'
 
-export default Armor
+export default ArmorType
