@@ -27,7 +27,7 @@ class ServantController {
 
   async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const listaServants = await this.servantService.getAll()
+      const listaServants = this.servantService.getAll()
       return res.status(200).json(listaServants)
     } catch (erro) {
       console.error(erro)
