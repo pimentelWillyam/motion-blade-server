@@ -37,7 +37,7 @@ class ServantController {
 
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const servant = await this.servantService.get(req.params.id)
+      const servant = this.servantService.get(req.params.id)
       if (servant != null) {
         return res.status(200).json(servant)
       } else {
