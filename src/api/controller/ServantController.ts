@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 
 import type ServantValidator from '../validator/ServantValidator'
-import type ServantService from '../service/ServantService'
+import type ServantService from '../../service/ServantService'
 
 enum ServantError {
   SERVANT_INVALID_REQUEST = 'A requisição inserida foi considerada inválida',
@@ -16,7 +16,11 @@ class ServantController {
   async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       if (this.servantValidator.isServantValid('need to test better')) {
-        const servant = this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession)
+        if (req.body.agility === undefined || req.body.technique === undefined || req.body.strength === undefined || req.body.fortitude === undefined) {
+          const servant = this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
+          return res.status(200).json(servant)
+        }
+        const servant = this.servantService.create(req.body.masterId, req.body.name, 'soldado', 'soldado', true, { agility: req.body.agility, technique: req.body.technique, strength: req.body.strength, fortitude: req.body.fortitude })
         return res.status(200).json(servant)
       }
     } catch (erro) {
@@ -37,7 +41,21 @@ class ServantController {
 
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const servant = this.servantService.get(req.params.id)
+      const servant = this.servantService.get(req.params.name)
+      if (servant != null) {
+        return res.status(200).json(servant)
+      } else {
+        return res.status(404).send(ServantError.SERVANT_NOT_FOUND)
+      }
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(ServantError.SERVANT_INVALID_REQUEST)
+  }
+
+  async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      const servant = this.servantService.delete(req.params.name)
       if (servant != null) {
         return res.status(200).json(servant)
       } else {
