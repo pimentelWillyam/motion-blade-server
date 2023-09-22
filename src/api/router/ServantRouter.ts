@@ -17,8 +17,11 @@ class ServantRouter {
     this.routes.get('/servant', (req: Request, res: Response) => {
       void servantController.getAll(res)
     })
-    this.routes.get('/servant/:id', (req: Request, res: Response) => {
+    this.routes.get('/servant/:name', (req: Request, res: Response) => {
       void servantController.get(req, res)
+    })
+    this.routes.delete('/servant/:name', (req: Request, res: Response) => {
+      void servantController.delete(req, res)
     })
   }
 }
