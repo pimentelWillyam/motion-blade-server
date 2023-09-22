@@ -1,7 +1,7 @@
 import type Servant from '../model/Servant'
 import type Profession from '../type/Profession'
 import type AttackTestResult from '../type/AttackTestResult'
-import type MemoryDataSource from '../../data/memory/MemoryDataSource'
+import type MemoryDataSource from '../../data/MemoryDataSource'
 import type AttackType from '../type/AttackType'
 import type Weapon from '../type/Weapon'
 import type ArmorType from '../type/ArmorType'
