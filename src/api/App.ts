@@ -1,14 +1,13 @@
 // importando interfaces
-import type IApi from './interface/IApi'
 import { type Server } from 'http'
 
 import config from '../config'
-import type IApp from './interface/IApp'
+import type Api from '../helper/Api'
 
-class App implements IApp {
+class App {
   listener: Server
   hasStarted: boolean = false
-  constructor (readonly api: IApi, listener: Server) {
+  constructor (readonly api: Api, listener: Server) {
     this.listener = listener
   }
 
