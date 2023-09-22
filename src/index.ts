@@ -37,12 +37,14 @@ import LogRouter from './api/router/LogRouter'
 
 // importing controllers
 import LogController from './api/controller/LogController'
+import ServantController from './api/controller/ServantController'
 
 // importing validators
 import LogValidator from './api/validator/LogValidator'
 
 // importing services
 import LogService from './api/service/LogService'
+import ServantService from './service/ServantService'
 
 // importing repositories
 import LogRepository from './api/repository/LogRepository'
@@ -55,61 +57,50 @@ import LogRepository from './api/repository/LogRepository'
 // importing app
 import App from './api/App'
 import DatabaseHelper from './helper/DatabaseHelper'
-import ServantController from './bot/controllers/ServantController'
-import MemoryDataSource from './data/memory/MemoryDataSource'
-import WeaponFetcher from './bot/fetchers/WeaponFetcher'
-import Axe from './bot/model/weapons/Axe'
-import BareHand from './bot/model/weapons/BareHand'
-import BastardSword from './bot/model/weapons/BastardSword'
-import BattleAxe from './bot/model/weapons/BattleAxe'
-import Bow from './bot/model/weapons/Bow'
-import Crossbow from './bot/model/weapons/Crossbow'
-import Dagger from './bot/model/weapons/Dagger'
-import Hammer from './bot/model/weapons/Hammer'
-import Mace from './bot/model/weapons/Mace'
-import Spear from './bot/model/weapons/Spear'
-import Staff from './bot/model/weapons/Staff'
-import Sword from './bot/model/weapons/Sword'
-import AttributesFetcher from './bot/fetchers/AttributesFetcher'
-import ArmorFetcher from './bot/fetchers/ArmorFetcher'
-import Cloth from './bot/model/armors/Cloth'
-import Leather from './bot/model/armors/Leather'
-import Chainmail from './bot/model/armors/Chainmail'
-import Plate from './bot/model/armors/Plate'
-import Pleather from './bot/model/armors/Pleather'
+import MemoryDataSource from './data/MemoryDataSource'
 import ServantRouter from './api/router/ServantRouter'
-import ServantApiController from './api/controller/ServantController'
-import ServantService from './api/service/ServantService'
 import ServantValidator from './api/validator/ServantValidator'
-import ServantRepository from './api/repository/ServantRepository'
-
-// instanciating discord bot related classes
+import ServantRepository from './repository/ServantRepository'
+import AttributesFetcher from './bot/fetchers/AttributesFetcher'
+import { WeaponFactory } from './factories/WeaponFactory'
+import { ArmorFactory } from './factories/ArmorFactory'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
 // instanciating the random number generator
 const randomNumberGenerator = new RandomNumberGenerator()
 
-// instanciating weapon fetcher
-const weaponFetcher = new WeaponFetcher(new Axe(), new BareHand(), new BastardSword(), new BattleAxe(), new Bow(), new Crossbow(), new Dagger(), new Hammer(), new Mace(), new Spear(), new Staff(), new Sword())
-
-// instanciating armor fetcher
-const armorFetcher = new ArmorFetcher(new Cloth(), new Leather(), new Chainmail(), new Plate(), new Pleather())
 // instanciating memory data source
-const memoryDataSource = new MemoryDataSource(uuidGenerator, weaponFetcher, new AttributesFetcher(), armorFetcher)
+const memoryDataSource = new MemoryDataSource(uuidGenerator)
+
+// instanciating attribute fetcher
+const attributesFetcher = new AttributesFetcher()
+
+// instanciating factories
+const armorFactory = new ArmorFactory()
+const weaponFactory = new WeaponFactory()
+
+// instanciating repository
+const servantRepository = new ServantRepository(memoryDataSource)
+
+// instanciating service
+
+const servantService = new ServantService(servantRepository, attributesFetcher, armorFactory, weaponFactory)
+
+// instanciating validators
+const logValidator = new LogValidator()
+const servantValidator = new ServantValidator()
 
 // instanciating the servant controller
-const servantController = new ServantController(memoryDataSource)
+const servantController = new ServantController(servantService, servantValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, memoryDataSource, new Sleeper(), servantController)
+const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService)
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
 // instanciating discord manipulation class
 const discordBot = new DiscordBot(messageHandler)
-
-// instanciating api related classes
 
 // instanciating helpers
 const dateManager = new DateManager()
@@ -124,23 +115,17 @@ const mariadbDataSource = new MariadbDataSource(databaseHelper)
 // instanciating repositories
 // using repositories with mariadb
 const logRepository = new LogRepository(mariadbDataSource, uuidGenerator, dateManager)
-const servantRepository = new ServantRepository(memoryDataSource)
+// const servantRepository = new ServantRepository(memoryDataSource)
 
 // instanciating services
 const logService = new LogService(logRepository, uuidGenerator, dateManager)
-const servantService = new ServantService(servantRepository, uuidGenerator, dateManager)
-
-// instanciating validators
-const logValidator = new LogValidator()
-const servantValidator = new ServantValidator()
 
 // instanciating controllers
 const logController = new LogController(logService, logValidator)
-const servantApiController = new ServantApiController(servantService, servantValidator)
 
 // instanciating routers
 const logRouter = new LogRouter(logController)
-const servantRouter = new ServantRouter(servantApiController)
+const servantRouter = new ServantRouter(servantController)
 
 // instanciating app related classes
 const api = new Api(express(), apiMiddleware, logRouter, servantRouter)
