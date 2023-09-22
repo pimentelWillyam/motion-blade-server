@@ -1,6 +1,5 @@
-import type IDateManager from '../api/interface/IDateManager'
 
-class DateManager implements IDateManager {
+class DateManager {
   getCurrentDateTime (): string {
     const rawDate = new Date()
     const minutes = rawDate.getMinutes().toString()
