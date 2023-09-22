@@ -3,7 +3,7 @@ import type Attributes from '../type/Attributes'
 
 class AttributesFetcher {
   fetchAttributesBasedOnBackground = (fatherProfession: Profession, youthProfession: Profession): Attributes => {
-    const attributesGenerated: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0, buff: 0, debuff: 0, guard: 0 }
+    const attributesGenerated: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }
     if (fatherProfession === 'soldado') {
       attributesGenerated.strength += 3
       attributesGenerated.fortitude += 1
