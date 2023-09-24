@@ -3,16 +3,6 @@ import config from '../config'
 import * as mariadb from 'mariadb'
 import type { Connection, Pool } from 'mariadb'
 
-import type IDatabaseHelper from '../api/interface/IDatabaseHelper'
-import type IMariadbDataSource from '../api/interface/IMariadbDataSource'
-import type IServant from '../api/interface/IServant'
-import type IBattle from '../api/interface/IBattle'
-import type ILogEntity from '../api/interface/ILogEntity'
-import type IMaster from '../api/interface/IMaster'
-import type Attributes from '../api/type/Attributes'
-import type IUserEntity from '../api/interface/IUserEntity'
-
-class MariadbDataSource implements IMariadbDataSource {
   private connection: Connection | undefined
   private pool: Pool | undefined
 
