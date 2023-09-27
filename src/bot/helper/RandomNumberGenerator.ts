@@ -1,6 +1,5 @@
-import type IRandomNumberGenerator from '../interface/IRandomNumberGenerator'
 
-class RandomNumberGenerator implements IRandomNumberGenerator {
+class RandomNumberGenerator {
   generate (minimum: number, maximum: number): number {
     minimum = Math.ceil(minimum)
     maximum = Math.floor(maximum)
