@@ -25,15 +25,15 @@ class LogController {
   //   return res.status(400).send(LogError.LOG_INVALID_REQUEST)
   // }
 
-  async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
-    try {
-      const listaLogs = await this.logService.getAll()
-      return res.status(200).json(listaLogs)
-    } catch (erro) {
-      console.error(erro)
-    }
-    return res.status(400).send(LogError.LOG_INVALID_REQUEST)
-  }
+  // async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
+  //   try {
+  //     const listaLogs = await this.logService.getAll()
+  //     return res.status(200).json(listaLogs)
+  //   } catch (erro) {
+  //     console.error(erro)
+  //   }
+  //   return res.status(400).send(LogError.LOG_INVALID_REQUEST)
+  // }
 
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
