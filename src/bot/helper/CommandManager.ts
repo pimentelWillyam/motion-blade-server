@@ -269,7 +269,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
-        await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
+        await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -373,7 +373,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
-        await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
+        await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -475,7 +475,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${attackerDiceResult} no teste de força `)
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
-        await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
+        await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
