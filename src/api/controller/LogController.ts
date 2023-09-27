@@ -13,17 +13,17 @@ import type LogValidator from '../validator/LogValidator'
 class LogController {
   constructor (readonly logService: LogService, readonly logValidator: LogValidator) {}
 
-  async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-    try {
-      if (this.logValidator.isLogValid(req.body.message)) {
-        const log = await this.logService.create(req.body.message)
-        return res.status(200).json(log)
-      }
-    } catch (erro) {
-      console.error(erro)
-    }
-    return res.status(400).send(LogError.LOG_INVALID_REQUEST)
-  }
+  // async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+  //   try {
+  //     if (this.logValidator.isLogValid(req.body.message)) {
+  //       const log = await this.logService.create(req.body.message)
+  //       return res.status(200).json(log)
+  //     }
+  //   } catch (erro) {
+  //     console.error(erro)
+  //   }
+  //   return res.status(400).send(LogError.LOG_INVALID_REQUEST)
+  // }
 
   async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
     try {
