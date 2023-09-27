@@ -1,31 +1,27 @@
 import type Servant from '../bot/model/Servant'
-import type Armor from '../bot/type/Armor'
-import type Attributes from '../bot/type/Attributes'
-import type Profession from '../bot/type/Profession'
-import type Weapon from '../bot/type/Weapon'
-import type MemoryDataSource from '../data/MemoryDataSource'
+import type MariadbDataSource from '../data/MariadbDataSource'
 
 class ServantRepository {
-  constructor (readonly dataSource: MemoryDataSource) {}
+  constructor (readonly dataSource: MariadbDataSource) {}
 
-  create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, armor: Armor, bareHand: Weapon, attributes: Attributes): Servant {
-    return this.dataSource.insertServantRegistry(masterId, name, fatherProfession, youthProfession, armor, bareHand, attributes)
+  async create (servant: Servant): Promise<Servant> {
+    return await this.dataSource.insertServantRegistry(servant)
   }
 
-  getAll (): Servant[] {
-    return this.dataSource.fetchEveryServantRegistry()
+  async getAll (): Promise<Servant[]> {
+    return await this.dataSource.fetchEveryServantRegistry()
   }
 
-  get (name: string): Servant | null {
-    return this.dataSource.fetchServantByName(name)
+  async getByName (name: string): Promise<Servant | null> {
+    return await this.dataSource.fetchServantBy('name', name)
   }
 
-  update (name: string, updatedServant: Servant): Servant | null {
-    return this.dataSource.updateServantByName(name, updatedServant)
+  async update (name: string, updatedServant: Servant): Promise<Servant | null> {
+    return await this.dataSource.updateServantBy('name', name, updatedServant)
   }
 
-  delete (name: string): Servant | null {
-    return this.dataSource.deleteServantByName(name)
+  async delete (name: string): Promise<Servant | null> {
+    return await this.dataSource.deleteServantBy('name', name)
   }
 }
 

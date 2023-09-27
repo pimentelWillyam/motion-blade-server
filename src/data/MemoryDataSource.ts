@@ -1,14 +1,13 @@
-import Servant from '../bot/model/Servant'
 import type Profession from '../bot/type/Profession'
-import type UuidGenerator from '../bot/helper/UuidGenerator'
 import type Weapon from '../bot/type/Weapon'
 import type Armor from '../bot/type/Armor'
 import type Attributes from '../bot/type/Attributes'
+import type { ServantFactory, Servant } from '../factories/ServantFactory'
 
 class MemoryDataSource {
   private servantList: Servant[] = []
 
-  constructor (private readonly uuidGenerator: UuidGenerator) {}
+  constructor (private readonly servantFactory: ServantFactory) {}
 
   readonly start = (): void => {
     this.createServantTable()
@@ -19,7 +18,7 @@ class MemoryDataSource {
   }
 
   insertServantRegistry = (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, armor: Armor, bareHand: Weapon, attributes: Attributes): Servant => {
-    const servant: Servant = new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, armor, bareHand, attributes)
+    const servant = this.servantFactory.create(masterId, name, fatherProfession, youthProfession, armor,  , attributes)
     this.servantList.push(servant)
     return servant
   }
