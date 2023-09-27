@@ -102,8 +102,10 @@ class MariadbDataSource {
     return await this.pool?.query('SELECT * FROM motion_blade.servant ;') as Servant[]
   }
 
-  async getEveryServantRegistry (): Promise<IServant[]> {
-    return await this.pool?.query('SELECT * FROM motion_blade.servant ;') as IServant[]
+  async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
+    const servantList = await this.pool?.query(`SELECT * FROM motion_blade.servant WHERE ${parameter} = '${parameterValue}' ;`)
+    if (servantList[0] === undefined) return null
+    else return servantList[0] as Servant
   }
 
   async getEveryUserRegistry (): Promise<IUserEntity[]> {
