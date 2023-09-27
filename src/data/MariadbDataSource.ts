@@ -91,34 +91,6 @@ class MariadbDataSource {
     return true
   }
 
-  async insertBattleRegistry (id: string, map: [number, number], participants: IServant[]): Promise<IBattle> {
-    await this.pool?.query(`INSERT INTO motion_blade.battle (id, map, participants) VALUES ('${id}', '${map}', '${participants}');`)
-    return { id, map: [0, 0], participants }
-  }
-
-  async insertLogRegistry (id: string, date: string, message: string): Promise<ILogEntity> {
-    await this.pool?.query(`INSERT INTO motion_blade.log (id, date, message) VALUES ('${id}', '${date}', '${message}');`)
-    return { id, date, message }
-  }
-
-  async insertMasterRegistry (id: string, name: string, servantList: IServant[]): Promise<IMaster> {
-    await this.pool?.query(`INSERT INTO motion_blade.master (id, name, servant_list) VALUES ('${id}', '${name}', '${servantList}');`)
-    return { id, name, servantList }
-  }
-
-  async insertServantRegistry (id: string, masterId: string, name: string, profession: string, seniority: number, attributes: Attributes, isInBattle: boolean, battlePosition: [number, number]): Promise<IServant> {
-    await this.pool?.query(`INSERT INTO motion_blade.servant (id, master_id, name, profession, seniority, attributes, is_in_battle, battle_position ) VALUES ('${id}', '${masterId}', '${name}', '${profession}', '${seniority}', '${attributes}', '${isInBattle}', '${battlePosition}' ;`)
-    return { id, masterId, name, profession, seniority, attributes, isInBattle, battlePosition }
-  }
-
-  async insertUserRegistry (id: string, login: string, password: string, email: string, type: string): Promise<IUserEntity> {
-    await this.pool?.query(`INSERT INTO motion_blade.servant (id, login, password, email, type) VALUES ('${id}', '${login}', '${password}', '${email}', '${type}' ;`)
-    return { id, login, password, email, type }
-  }
-
-  async getEveryBattleRegistry (): Promise<IBattle[]> {
-    return await this.pool?.query('SELECT * FROM motion_blade.battle ;') as IBattle[]
-  }
 
   async getEveryLogRegistry (): Promise<ILogEntity[]> {
     return await this.pool?.query('SELECT * FROM motion_blade.log ;') as ILogEntity[]
