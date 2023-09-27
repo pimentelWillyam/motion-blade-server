@@ -1,8 +1,7 @@
-import { type Request, type Response } from 'express'
+// import { type Request, type Response } from 'express'
 
-import type ILogController from '../interface/ILogController'
-import type ILogService from '../interface/ILogService'
-import type ILogValidator from '../interface/ILogValidator'
+import type LogService from '../service/LogService'
+import type LogValidator from '../validator/LogValidator'
 
 enum LogError {
   LOG_INVALID_REQUEST = 'A requisição inserida foi considerada inválida',
