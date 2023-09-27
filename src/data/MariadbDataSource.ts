@@ -98,8 +98,8 @@ class MariadbDataSource {
     return servant
   }
 
-  async getEveryMasterRegistry (): Promise<IMaster[]> {
-    return await this.pool?.query('SELECT * FROM motion_blade.master ;') as IMaster[]
+  async fetchEveryServantRegistry (): Promise<Servant[]> {
+    return await this.pool?.query('SELECT * FROM motion_blade.servant ;') as Servant[]
   }
 
   async getEveryServantRegistry (): Promise<IServant[]> {
