@@ -17,7 +17,6 @@ class ServantController {
     try {
       if (this.servantValidator.isServantValid('need to test better')) {
         if (req.body.agility === undefined || req.body.technique === undefined || req.body.strength === undefined || req.body.fortitude === undefined) {
-          const servant = this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
           const servant = await this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
           return res.status(200).json(servant)
         }
