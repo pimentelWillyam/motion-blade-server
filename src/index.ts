@@ -27,6 +27,7 @@ import * as express from 'express'
 
 // importing helpers
 import Api from './helper/Api'
+import DamageToDeal from './helper/DamageToDeal'
 
 // importing data classes
 import MariadbDataSource from './data/MariadbDataSource'
@@ -55,13 +56,14 @@ import { ServantFactory } from './factories/ServantFactory'
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
 // instanciating the random number generator
-const randomNumberGenerator = new RandomNumberGenerator()
 
 // instanciating mariadb data source
 const mariadbDataSource = new MariadbDataSource()
 
 // instanciating attribute fetcher
 const attributesFetcher = new AttributesFetcher()
+
+// instanciating damage to deal generator
 
 // instanciating factories
 const armorFactory = new ArmorFactory()
@@ -82,7 +84,7 @@ const servantValidator = new ServantValidator()
 const servantController = new ServantController(servantService, servantValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService)
+const commandManager = new CommandManager(new RandomNumberGenerator(), new Sleeper(), servantService, new DamageToDeal())
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
