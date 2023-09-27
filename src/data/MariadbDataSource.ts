@@ -118,6 +118,12 @@ class MariadbDataSource {
     return servantToUpdate
   }
 
+  async deleteServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
+    const servant = await this.fetchServantBy(parameter, parameterValue)
+    if (servant === null) return null
+    const query = `DELETE FROM motion_blade.servant WHERE ${parameter} = '${parameterValue}';`
+    await this.pool?.query(query, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.guard, servant.buff, servant.debuff, servant.inventory, servant.maestry])
+    return servant
   }
 }
 
