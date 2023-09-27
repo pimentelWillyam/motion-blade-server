@@ -105,19 +105,20 @@ class CommandManager {
   }
 
   async createServant (message: Message<boolean>, name: string, fatherProfession: Profession, youthProfession: Profession): Promise<void> {
-    if (this.servantService.servantExists(name)) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
-    this.servantService.create(message.author.username, name, fatherProfession, youthProfession, false)
+    if (await this.servantService.servantExists(name)) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
+    await this.servantService.create(message.author.username, name, fatherProfession, youthProfession, false)
     await message.reply('Servo criado com sucesso.')
   }
 
   async createCustomServant (message: Message<boolean>, name: string, agility = 0, technique = 0, strength = 0, fortitude = 0): Promise<void> {
-    if (this.servantService.servantExists(name)) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
-    this.servantService.create('', name, 'soldado', 'soldado', true, { agility, technique, strength, fortitude })
+    if (await this.servantService.servantExists(name)) throw new Error(`Já existe um servo chamado ${name}, tente um novo nome`)
+    void this.servantService.create('', name, 'soldado', 'soldado', true, { agility, technique, strength, fortitude })
     await message.reply('Servo criado com sucesso.')
   }
 
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
+    console.log('agilidade do testao é ', servant)
     const servantAttributesMessage = `
     Os atributos do servo ${name} são:
 
@@ -133,7 +134,7 @@ class CommandManager {
   }
 
   async getServantMaximumAttributes (message: Message<boolean>, name: string): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
     Os atributos máximos do servo ${name} são:
 
@@ -146,7 +147,7 @@ class CommandManager {
   }
 
   async getServantMaestry (message: Message<boolean>, name: string): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
     As maestrias do servo ${name} são:
 
@@ -161,7 +162,7 @@ class CommandManager {
   }
 
   async getServantInventory (message: Message<boolean>, name: string): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     let weaponsKept = ''
     if (servant.inventory.carriedWeapons[0] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[0].type + ', '
     if (servant.inventory.carriedWeapons[1] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[1].type
@@ -176,46 +177,46 @@ class CommandManager {
   }
 
   async servantWearArmor (message: Message<boolean>, name: string, armorType: ArmorType): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     if (servant.inventory.armor.type !== 'roupa') {
       await message.reply(`O servo ${name} removeu sua armadura de ${servant.inventory.armor.type} e a jogou fora`)
-      this.servantService.removeArmor(servant)
+      await this.servantService.removeArmor(servant)
     }
-    this.servantService.wearArmor(servant, armorType)
+    await this.servantService.wearArmor(servant, armorType)
     await message.reply(`O servo ${name} vestiu uma armadura de ${armorType}`)
   }
 
   async servantRemoveArmor (message: Message<boolean>, name: string): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     if (servant.inventory.armor.type === 'roupa') throw new Error(`O servo ${name} não possui armadura para remover`)
-    this.servantService.removeArmor(servant)
+    await this.servantService.removeArmor(servant)
     await message.reply(`O servo ${name} removeu sua armadura de ${servant.inventory.armor.type} e a jogou fora`)
   }
 
   async servantKeepWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
-    this.servantService.keepWeapon(name, weaponType)
+    await this.servantService.keepWeapon(name, weaponType)
     await message.reply(`O servo ${name} guardou um(a) ${weaponType} em seu inventário`)
   }
 
   async servantDrawWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
-    this.servantService.drawWeapon(name, weaponType)
+    await this.servantService.drawWeapon(name, weaponType)
     await message.reply(`O servo ${name} sacou um(a) ${weaponType}`)
   }
 
   async servantDropWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
-    this.servantService.dropWeapon(name, weaponType)
+    await this.servantService.dropWeapon(name, weaponType)
     await message.reply(`O servo ${name} jogou um(a) ${weaponType} fora`)
   }
 
   async applyServantGuard (message: Message<boolean>, name: string): Promise<void> {
     const guard = this.randomNumberGenerator.generate(1, 4)
     await this.sleeper.sleep(2000)
-    this.servantService.applyGuard(name, guard)
+    await this.servantService.applyGuard(name, guard)
     await message.reply(`${name} entrou em uma guarde de ${guard} pontos`)
   }
 
   async servantTestsAttribute (message: Message<boolean>, name: string, attributeToBeTested: 'agilidade' | 'tecnica' | 'força' | 'fortitude'): Promise<void> {
-    const servant = this.servantService.get(name)
+    const servant = await this.servantService.get(name)
     let testResult: number
     if (attributeToBeTested === 'agilidade') testResult = servant.currentAttributes.agility + this.randomNumberGenerator.generate(1, 20)
     else if (attributeToBeTested === 'tecnica') testResult = servant.currentAttributes.technique + this.randomNumberGenerator.generate(1, 20)
@@ -227,29 +228,29 @@ class CommandManager {
   }
 
   async buffServant (message: Message<boolean>, name: string, buffValue: number): Promise<void> {
-    this.servantService.buff(name, buffValue)
+    await this.servantService.buff(name, buffValue)
     await message.reply(`O servo ${name} recebeu um buff de ${buffValue} pontos`)
   }
 
   async removeServantBuff (message: Message<boolean>, name: string): Promise<void> {
-    this.servantService.removeBuff(name)
+    await this.servantService.removeBuff(name)
     await message.reply(`O servo ${name} não possui mais nenhum buff`)
   }
 
   async debuffServant (message: Message<boolean>, name: string, debuffValue: number): Promise<void> {
-    this.servantService.debuff(name, debuffValue)
+    await this.servantService.debuff(name, debuffValue)
     await message.reply(`O servo ${name} recebeu um debuff de ${debuffValue} pontos`)
   }
 
   async removeServantDebuff (message: Message<boolean>, name: string): Promise<void> {
-    this.servantService.removeDebuff(name)
+    await this.servantService.removeDebuff(name)
     await message.reply(`O servo ${name} não possui mais nenhum debuff`)
   }
 
   async strike (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> {
-    const attacker = this.servantService.get(attackerName)
+    const attacker = await this.servantService.get(attackerName)
     if (!attacker.inventory.currentWeapon.strikable) throw new Error(`A arma que ${attacker.name} possui em mãos não pode ser usada para acertar alguém`)
-    const defender = this.servantService.get(defenderName)
+    const defender = await this.servantService.get(defenderName)
     let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
     let damageToDeal
     await this.sleeper.sleep(2000)
@@ -258,7 +259,7 @@ class CommandManager {
     await this.sleeper.sleep(2000)
     if (defender.currentAttributes.technique + defender.guard >= defender.currentAttributes.agility) await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de técnica`)
     else await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de agilidade`)
-    const attackResultMessage = this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'strike')
+    const attackResultMessage = await this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'strike')
     await this.sleeper.sleep(2000)
     if (attackResultMessage === 'Acerto') {
       await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu!`)
@@ -271,7 +272,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -295,7 +296,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -331,7 +332,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -344,16 +345,16 @@ class CommandManager {
     else if (attackResultMessage === 'Desarme') {
       await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou sendo desarmado`)
       const weaponToDiscard = attacker.inventory.currentWeapon.type
-      this.servantService.keepWeapon(attackerName, weaponToDiscard)
-      this.servantService.dropWeapon(attackerName, weaponToDiscard)
+      await this.servantService.keepWeapon(attackerName, weaponToDiscard)
+      await this.servantService.dropWeapon(attackerName, weaponToDiscard)
     } else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
   }
 
   async throw (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> { // falta fazer
-    const attacker = this.servantService.get(attackerName)
+    const attacker = await this.servantService.get(attackerName)
     if (!attacker.inventory.currentWeapon.throwable) throw new Error(`A arma que ${attacker.name} possui em mãos não pode ser lançada alguém`)
-    const defender = this.servantService.get(defenderName)
+    const defender = await this.servantService.get(defenderName)
     let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
     let damageToDeal
     await this.sleeper.sleep(2000)
@@ -362,7 +363,7 @@ class CommandManager {
     await this.sleeper.sleep(2000)
     if (defender.currentAttributes.technique + defender.guard >= defender.currentAttributes.agility) await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de técnica`)
     else await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de agilidade`)
-    const attackResultMessage = this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'throw')
+    const attackResultMessage = await this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'throw')
     await this.sleeper.sleep(2000)
     if (attackResultMessage === 'Acerto') {
       await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu!`)
@@ -375,7 +376,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -399,7 +400,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -435,7 +436,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -445,17 +446,17 @@ class CommandManager {
         }
       }
       const weaponThrown = attacker.inventory.currentWeapon.type
-      this.servantService.keepWeapon(attacker.name, weaponThrown)
-      this.servantService.dropWeapon(attacker.name, weaponThrown)
+      await this.servantService.keepWeapon(attacker.name, weaponThrown)
+      await this.servantService.dropWeapon(attacker.name, weaponThrown)
     } else if (attackResultMessage === 'Desequilíbrio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas acabou se desequilibrando e caindo no chão`)
     else if (attackResultMessage === 'Desvio') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} conseguiu se esquivar`)
     else if (attackResultMessage === 'Defesa') await message.reply(`${attackerName} tentou acertar ${defenderName} mas ${defenderName} bloqueou o golpe`)
   }
 
   async shoot (message: Message<boolean>, attackerName: string, defenderName: string): Promise<void> { // falta fazer
-    const attacker = this.servantService.get(attackerName)
+    const attacker = await this.servantService.get(attackerName)
     if (!attacker.inventory.currentWeapon.shootable) throw new Error(`A arma que ${attacker.name} possui em mãos não pode ser usada para atirar em alguém`)
-    const defender = this.servantService.get(defenderName)
+    const defender = await this.servantService.get(defenderName)
     let attackerDiceResult = this.randomNumberGenerator.generate(1, 20)
     let damageToDeal
     await this.sleeper.sleep(2000)
@@ -464,7 +465,7 @@ class CommandManager {
     await this.sleeper.sleep(2000)
     if (defender.currentAttributes.technique + defender.guard >= defender.currentAttributes.agility) await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de técnica`)
     else await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de agilidade`)
-    const attackResultMessage = this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'shoot')
+    const attackResultMessage = await this.servantService.attack(attacker, attackerDiceResult, defender, defenderDiceResult, 'shoot')
     await this.sleeper.sleep(2000)
     if (attackResultMessage === 'Acerto') {
       await message.reply(`${attackerName} tentou acertar ${defenderName} e conseguiu!`)
@@ -477,7 +478,7 @@ class CommandManager {
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
         const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -501,7 +502,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -537,7 +538,7 @@ class CommandManager {
           damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
-          const servantLifeStatus = this.servantService.dealDamage(defender, damageToDeal)
+          const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} sofreu um dano de ${damageToDeal}`)
           await this.sleeper.sleep(2000)
@@ -552,8 +553,8 @@ class CommandManager {
   }
 
   async servantTakesDamage (message: Message<boolean>, name: string, damageToDeal: number): Promise<void> {
-    const servant = this.servantService.get(name)
-    if (this.servantService.dealDamage(servant, damageToDeal) === 'Dead') {
+    const servant = await this.servantService.get(name)
+    if (await this.servantService.dealDamage(servant, damageToDeal) === 'Dead') {
       await message.reply(`O servo ${name} sofreu ${damageToDeal} de dano!`)
       await message.reply(`O servo ${name} foi morto`)
     } else {
@@ -562,39 +563,39 @@ class CommandManager {
   }
 
   async healServant (message: Message<boolean>, name: string): Promise<void> {
-    this.servantService.heal(name)
+    await this.servantService.heal(name)
     await message.reply(`O servo ${name} foi curado de todos seus ferimentos`)
   }
 
   async upgradeServant (message: Message<boolean>, name: string, propertyToUpgrade: string, quantityToUpgrade: number): Promise<void> {
     if (propertyToUpgrade === 'mao nua') {
-      this.servantService.upgrade(name, 'mão nua', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'mão nua', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria em combate desarmado em ${quantityToUpgrade}`)
       return
     } else if (propertyToUpgrade === 'uma mao') {
-      this.servantService.upgrade(name, 'uma mão', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'uma mão', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria com armas de uma mão em ${quantityToUpgrade}`)
       return
     } else if (propertyToUpgrade === 'duas maos') {
-      this.servantService.upgrade(name, 'duas mãos', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'duas mãos', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria com armas de duas mãos em ${quantityToUpgrade}`)
       return
     } else if (propertyToUpgrade === 'haste') {
-      this.servantService.upgrade(name, 'haste', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'haste', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria com armas de haste em ${quantityToUpgrade}`)
       return
     } else if (propertyToUpgrade === 'arco') {
-      this.servantService.upgrade(name, 'arco', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'arco', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria arcos ${quantityToUpgrade}`)
       return
     } else if (propertyToUpgrade === 'besta') {
-      this.servantService.upgrade(name, 'besta', quantityToUpgrade)
+      await this.servantService.upgrade(name, 'besta', quantityToUpgrade)
       await message.reply(`O servo ${name} aprimorou sua maestria com bestas ${quantityToUpgrade}`)
       return
-    } else if (propertyToUpgrade === 'agilidade') this.servantService.upgrade(name, 'agilidade', quantityToUpgrade)
-    else if (propertyToUpgrade === 'tecnica') this.servantService.upgrade(name, 'tecnica', quantityToUpgrade)
-    else if (propertyToUpgrade === 'força') this.servantService.upgrade(name, 'força', quantityToUpgrade)
-    else if (propertyToUpgrade === 'fortitude') this.servantService.upgrade(name, 'fortitude', quantityToUpgrade)
+    } else if (propertyToUpgrade === 'agilidade') await this.servantService.upgrade(name, 'agilidade', quantityToUpgrade)
+    else if (propertyToUpgrade === 'tecnica') await this.servantService.upgrade(name, 'tecnica', quantityToUpgrade)
+    else if (propertyToUpgrade === 'força') await this.servantService.upgrade(name, 'força', quantityToUpgrade)
+    else if (propertyToUpgrade === 'fortitude') await this.servantService.upgrade(name, 'fortitude', quantityToUpgrade)
     await message.reply(`O servo ${name} aprimorou sua ${propertyToUpgrade} em ${quantityToUpgrade}`)
   }
 }
