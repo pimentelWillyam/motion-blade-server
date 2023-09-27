@@ -5,9 +5,10 @@ import type Sleeper from './Sleeper'
 import type WeaponType from '../type/WeaponType'
 import type ArmorType from '../type/ArmorType'
 import type ServantService from '../../service/ServantService'
+import type DamageToDeal from '../../helper/DamageToDeal'
 
 class CommandManager {
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService) {}
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly damageToDeal: DamageToDeal) {}
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `
@@ -269,7 +270,7 @@ class CommandManager {
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
-        const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+        const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
@@ -289,10 +290,10 @@ class CommandManager {
         const armorEvasionTestResult = this.servantService.armorEvasionTest(attacker, attackerDiceResult, defender, defenderDiceResult)
         if (armorEvasionTestResult === 'Hit armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} mas acabou acertando a armadura`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou partes menos protegidas da armadura dede ${defenderName} e teve sucesso em faze-lo`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -319,7 +320,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} e conseguiu`)
           attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
@@ -328,7 +329,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -373,7 +374,7 @@ class CommandManager {
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
-        const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+        const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
@@ -393,10 +394,10 @@ class CommandManager {
         const armorEvasionTestResult = this.servantService.armorEvasionTest(attacker, attackerDiceResult, defender, defenderDiceResult)
         if (armorEvasionTestResult === 'Hit armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} mas acabou acertando a armadura`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou partes menos protegidas da armadura dede ${defenderName} e teve sucesso em faze-lo`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -423,7 +424,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} e conseguiu`)
           attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
@@ -432,7 +433,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -475,7 +476,7 @@ class CommandManager {
         defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
         await this.sleeper.sleep(2000)
         await message.reply(`${attackerName} tirou ${defenderDiceResult} no teste de fortitude `)
-        const damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+        const damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
           await this.sleeper.sleep(2000)
@@ -495,10 +496,10 @@ class CommandManager {
         const armorEvasionTestResult = this.servantService.armorEvasionTest(attacker, attackerDiceResult, defender, defenderDiceResult)
         if (armorEvasionTestResult === 'Hit armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} mas acabou acertando a armadura`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, defender.inventory.armor.type, defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou partes menos protegidas da armadura dede ${defenderName} e teve sucesso em faze-lo`)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'roupa', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
@@ -525,7 +526,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'placa', defenderDiceResult)
         } else if (armorEvasionTestResult === 'Evaded armor') {
           await message.reply(`${attackerName} tentou acertar as partes menos protegidas da armadura de ${defenderName} e conseguiu`)
           attackerDiceResult = this.randomNumberGenerator.generate(1, 10)
@@ -534,7 +535,7 @@ class CommandManager {
           defenderDiceResult = this.randomNumberGenerator.generate(1, 10)
           await this.sleeper.sleep(2000)
           await message.reply(`${defenderName} tirou ${defenderDiceResult} no teste de fortitude `)
-          damageToDeal = this.servantService.getDamageToDeal(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
+          damageToDeal = this.damageToDeal.get(attacker, attackerDiceResult, attacker.inventory.currentWeapon, defender, 'couro', defenderDiceResult)
         } else throw new Error('Erro ao testar evasão da armadura')
         if (damageToDeal > 0) {
           const servantLifeStatus = await this.servantService.dealDamage(defender, damageToDeal)
