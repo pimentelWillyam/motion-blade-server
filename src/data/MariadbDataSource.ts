@@ -2,11 +2,11 @@ import config from '../config'
 
 import * as mariadb from 'mariadb'
 import type { Connection, Pool } from 'mariadb'
+import { type Servant } from '../factories/ServantFactory'
 
+class MariadbDataSource {
   private connection: Connection | undefined
   private pool: Pool | undefined
-
-  constructor (readonly databaseHelper: IDatabaseHelper) {}
 
   async bootstrap (): Promise<boolean> {
     await this.openConnectionPool()
