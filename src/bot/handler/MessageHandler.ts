@@ -1,4 +1,3 @@
-import type IMessageHandler from '../interface/IMessageHandler'
 
 import { type Message } from 'discord.js'
 import type Profession from '../type/Profession'
@@ -7,7 +6,7 @@ import type WeaponType from '../type/WeaponType'
 import type Attribute from '../type/Attribute'
 import type ArmorType from '../type/ArmorType'
 
-class MessageHandler implements IMessageHandler {
+class MessageHandler {
   constructor (private readonly commandManager: CommandManager) {}
 
   async handle (message: Message): Promise<void> {
