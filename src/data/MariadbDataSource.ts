@@ -71,7 +71,6 @@ class MariadbDataSource {
     console.log('creating servant table')
 
     const query = "CREATE TABLE `servant` (`id` UUID NOT NULL, `masterId` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `fatherProfession` VARCHAR(50) NOT NULL DEFAULT '', `youthProfession` VARCHAR(50) NOT NULL DEFAULT '', `currentAttributes` JSON NOT NULL, `maximumAttributes` JSON NOT NULL, `guard` SMALLINT NOT NULL DEFAULT 0, `buff` SMALLINT NOT NULL DEFAULT 0, `debuff` SMALLINT NOT NULL DEFAULT 0, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
-    // await this.pool?.query("CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `guard` SMALLINT NOT NULL DEFAULT 0, `buff` SMALLINT NOT NULL DEFAULT 0, `debuff` SMALLINT NOT NULL DEFAULT 0, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';")
 
     await this.pool?.query(query)
 
