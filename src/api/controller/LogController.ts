@@ -35,19 +35,19 @@ class LogController {
   //   return res.status(400).send(LogError.LOG_INVALID_REQUEST)
   // }
 
-  async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-    try {
-      const log = await this.logService.get(req.params.id)
-      if (log != null) {
-        return res.status(200).json(log)
-      } else {
-        return res.status(404).send(LogError.LOG_NOT_FOUND)
-      }
-    } catch (erro) {
-      console.error(erro)
-    }
-    return res.status(400).send(LogError.LOG_INVALID_REQUEST)
-  }
+  // async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+  //   try {
+  //     const log = await this.logService.get(req.params.id)
+  //     if (log != null) {
+  //       return res.status(200).json(log)
+  //     } else {
+  //       return res.status(404).send(LogError.LOG_NOT_FOUND)
+  //     }
+  //   } catch (erro) {
+  //     console.error(erro)
+  //   }
+  //   return res.status(400).send(LogError.LOG_INVALID_REQUEST)
+  // }
 }
 
 export default LogController
