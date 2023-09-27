@@ -1,6 +1,5 @@
-import type ISleeper from '../interface/ISleeper'
 
-class Sleeper implements ISleeper {
+class Sleeper {
   async sleep (miliseconds: number): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, miliseconds))
   }
