@@ -67,29 +67,8 @@ class MariadbDataSource {
     return true
   }
 
-  async createBattleTable (): Promise<boolean> {
-    console.log('creating battle table')
-    await this.pool?.query("CREATE TABLE battle (id UUID NULL, map SET('Value A','Value B') NULL DEFAULT NULL, participants SET('Value A','Value B') NULL DEFAULT NULL) COLLATE='latin1_swedish_ci' ;")
-    return true
-  }
-
-  async createLogTable (): Promise<boolean> {
-    console.log('creating log table')
-    await this.pool?.query("CREATE TABLE `log` (`id` UUID NULL, `date` VARCHAR(20) NULL DEFAULT NULL,`message` VARCHAR(50) NULL DEFAULT NULL)COLLATE='latin1_swedish_ci';")
-    return true
-  }
-
-  async createMasterTable (): Promise<boolean> {
-    console.log('creating master table')
-    await this.pool?.query("CREATE TABLE `master` (`id` UUID NULL, `name` VARCHAR(50) NULL DEFAULT NULL, `servant_list` SET('Value A','Value B') NULL DEFAULT NULL) COLLATE='latin1_swedish_ci' ;")
-    return true
-  }
-
   async createServantTable (): Promise<boolean> {
     console.log('creating servant table')
-    await this.pool?.query("CREATE TABLE `servant` (`id` UUID NULL, `atributes` JSON NULL, `is_in_battle` VARCHAR(5) NULL DEFAULT NULL, `battle_position` SET('Value A','Value B') NULL DEFAULT NULL) COLLATE='latin1_swedish_ci' ;")
-    return true
-  }
 
   async createUserTable (): Promise<boolean> {
     console.log('creating user table')
