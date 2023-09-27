@@ -91,6 +91,9 @@ class MariadbDataSource {
     return true
   }
 
+  async insertServantRegistry (servant: Servant): Promise<Servant> {
+    const query = 'INSERT INTO motion_blade.servant (id, masterId, name, fatherProfession, youthProfession, currentAttributes, maximumAttributes, guard, buff, debuff, inventory, maestry) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);'
+    await this.pool?.query(query, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.guard, servant.buff, servant.debuff, servant.inventory, servant.maestry])
 
   async getEveryLogRegistry (): Promise<ILogEntity[]> {
     return await this.pool?.query('SELECT * FROM motion_blade.log ;') as ILogEntity[]
