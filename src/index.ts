@@ -56,14 +56,14 @@ import LogRepository from './api/repository/LogRepository'
 
 // importing app
 import App from './api/App'
-import DatabaseHelper from './helper/DatabaseHelper'
-import MemoryDataSource from './data/MemoryDataSource'
+// import MemoryDataSource from './data/MemoryDataSource'
 import ServantRouter from './api/router/ServantRouter'
 import ServantValidator from './api/validator/ServantValidator'
 import ServantRepository from './repository/ServantRepository'
 import AttributesFetcher from './bot/fetchers/AttributesFetcher'
 import { WeaponFactory } from './factories/WeaponFactory'
 import { ArmorFactory } from './factories/ArmorFactory'
+import { ServantFactory } from './factories/ServantFactory'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -71,7 +71,10 @@ const uuidGenerator = new UuidGenerator()
 const randomNumberGenerator = new RandomNumberGenerator()
 
 // instanciating memory data source
-const memoryDataSource = new MemoryDataSource(uuidGenerator)
+// const memoryDataSource = new MemoryDataSource(uuidGenerator)
+
+// instanciating mariadb data source
+const mariadbDataSource = new MariadbDataSource()
 
 // instanciating attribute fetcher
 const attributesFetcher = new AttributesFetcher()
@@ -79,13 +82,14 @@ const attributesFetcher = new AttributesFetcher()
 // instanciating factories
 const armorFactory = new ArmorFactory()
 const weaponFactory = new WeaponFactory()
+const servantFactory = new ServantFactory(uuidGenerator, armorFactory, weaponFactory)
 
 // instanciating repository
-const servantRepository = new ServantRepository(memoryDataSource)
+const servantRepository = new ServantRepository(mariadbDataSource)
 
 // instanciating service
 
-const servantService = new ServantService(servantRepository, attributesFetcher, armorFactory, weaponFactory)
+const servantService = new ServantService(servantRepository, attributesFetcher, servantFactory, armorFactory, weaponFactory)
 
 // instanciating validators
 const logValidator = new LogValidator()
@@ -108,8 +112,6 @@ const server = new Server()
 const apiMiddleware = new ApiMiddleware()
 
 // instanciating data classes
-const databaseHelper = new DatabaseHelper()
-const mariadbDataSource = new MariadbDataSource(databaseHelper)
 // const oracledbDataSource = new OracledbDataSource()
 
 // instanciating repositories
@@ -135,7 +137,9 @@ const app = new App(api, server)
 dotenv.config()
 
 // starting database and app
-void mariadbDataSource.openConnectionPool()
+void mariadbDataSource.startConnection()
+void mariadbDataSource.bootstrap()
+
 app.start()
 
 discordBot.client.start()
