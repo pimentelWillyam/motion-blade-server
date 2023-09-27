@@ -3,15 +3,15 @@
 import type LogService from '../service/LogService'
 import type LogValidator from '../validator/LogValidator'
 
-enum LogError {
-  LOG_INVALID_REQUEST = 'A requisição inserida foi considerada inválida',
-  LOG_LIST_ERROR = 'Houve um erro quando tentamos buscar a lista',
-  LOG_NOT_FOUND = 'Não foi possível encontrar este usuário',
-  LOG_NOT_UPDATED = 'Não foi possível atualizar este usuário',
-  LOG_NOT_DELETED = 'Não foi possível deletar este usuário',
-}
-class LogController implements ILogController {
-  constructor (readonly logService: ILogService, readonly logValidator: ILogValidator) {}
+// enum LogError {
+//   LOG_INVALID_REQUEST = 'A requisição inserida foi considerada inválida',
+//   LOG_LIST_ERROR = 'Houve um erro quando tentamos buscar a lista',
+//   LOG_NOT_FOUND = 'Não foi possível encontrar este usuário',
+//   LOG_NOT_UPDATED = 'Não foi possível atualizar este usuário',
+//   LOG_NOT_DELETED = 'Não foi possível deletar este usuário',
+// }
+class LogController {
+  constructor (readonly logService: LogService, readonly logValidator: LogValidator) {}
 
   async create (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
