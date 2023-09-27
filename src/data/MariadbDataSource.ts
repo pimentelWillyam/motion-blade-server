@@ -87,11 +87,7 @@ class MariadbDataSource {
   }
 
   async createNecessaryTables (): Promise<boolean> {
-    if (!await this.tableExists('battle')) await this.createBattleTable()
-    if (!await this.tableExists('log')) await this.createLogTable()
-    if (!await this.tableExists('master')) await this.createMasterTable()
     if (!await this.tableExists('servant')) await this.createServantTable()
-    if (!await this.tableExists('user')) await this.createUserTable()
     return true
   }
 
