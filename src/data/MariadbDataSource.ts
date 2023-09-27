@@ -108,41 +108,6 @@ class MariadbDataSource {
     else return servantList[0] as Servant
   }
 
-  async getEveryUserRegistry (): Promise<IUserEntity[]> {
-    return await this.pool?.query('SELECT * FROM motion_blade.user ;') as IUserEntity[]
-  }
-
-  async getBattleBy (parameter: string, value: string): Promise<IBattle> {
-    return await this.pool?.query(`SELECT * FROM motion_blade.battle WHERE ${parameter} = ${value} ;`) as IBattle
-  }
-
-  async getLogBy (parameter: string, value: string): Promise<ILogEntity> {
-    return await this.pool?.query(`SELECT * FROM motion_blade.log WHERE ${parameter} = ${value} ;`) as ILogEntity
-  }
-
-  async getMasterBy (parameter: string, value: string): Promise<IMaster> {
-    return await this.pool?.query(`SELECT * FROM motion_blade.master WHERE ${parameter} = ${value} ;`) as IMaster
-  }
-
-  async getServantBy (parameter: string, value: string): Promise<IServant> {
-    return await this.pool?.query(`SELECT * FROM motion_blade.servant WHERE ${parameter} = ${value} ;`) as IServant
-  }
-
-  async getUserBy (parameter: string, value: string): Promise<IUserEntity> {
-    return await this.pool?.query(`SELECT * FROM motion_blade.user WHERE ${parameter} = ${value} ;`) as IUserEntity
-  }
-
-  async updateUserById (id: string, login: string, password: string, email: string, type: string): Promise<IUserEntity> {
-    await this.pool?.query(`UPDATE  motion_blade.user SET id = '${id}', login = '${login}', password = '${password}', email = '${email}', type= '${type}' WHERE id = '${id}';`)
-    return { id, login, password, email, type }
-  }
-
-  async updateBattleById (id: string, map: [number, number], participants: IServant[]): Promise<IBattle> {
-    // await this.pool?.query(`UPDATE  motion_blade.user SET id = '${id}', login = '${login}', password = '${password}', email = '${email}', type= '${type}' WHERE id = '${id}';`)
-    return { id, map, participants }
-  }
-
-  async updateMasterById (id: string, name: string, servantList: IServant[]): Promise<IMaster> {
     // await this.pool?.query(`UPDATE  motion_blade.user SET id = '${id}', login = '${login}', password = '${password}', email = '${email}', type= '${type}' WHERE id = '${id}';`)
     return { id, name, servantList }
   }
