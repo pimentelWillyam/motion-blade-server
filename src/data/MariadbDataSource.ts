@@ -113,6 +113,7 @@ class MariadbDataSource {
     // 
     // await this.pool?.query(`UPDATE  motion_blade.user SET id = '${id}', login = '${login}', password = '${password}', email = '${email}', type= '${type}' WHERE id = '${id}';`)
 
+    await this.pool?.query(query, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.guard, servantToUpdate.buff, servantToUpdate.debuff, servantToUpdate.inventory, servantToUpdate.maestry])
 
   async deleteMasterById (id: string): Promise<boolean> {
     // await this.pool?.query(`UPDATE  motion_blade.user SET id = '${id}', login = '${login}', password = '${password}', email = '${email}', type= '${type}' WHERE id = '${id}';`)
