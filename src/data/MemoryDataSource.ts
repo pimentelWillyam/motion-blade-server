@@ -18,7 +18,7 @@ class MemoryDataSource {
   }
 
   insertServantRegistry = (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, armor: Armor, bareHand: Weapon, attributes: Attributes): Servant => {
-    const servant = this.servantFactory.create(masterId, name, fatherProfession, youthProfession, armor,  , attributes)
+    const servant = this.servantFactory.create(masterId, name, fatherProfession, youthProfession, attributes)
     this.servantList.push(servant)
     return servant
   }
