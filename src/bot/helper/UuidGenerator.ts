@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import type IUuidGenerator from '../interface/IUuidGenerator'
-
-class UuidGenerator implements IUuidGenerator {
+class UuidGenerator {
   generate (): string {
     return uuidv4()
   }
