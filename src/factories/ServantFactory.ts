@@ -3,8 +3,8 @@ import type Attributes from '../bot/type/Attributes'
 import type Inventory from '../bot/type/Inventory'
 import type Maestry from '../bot/type/Maestry'
 import type Profession from '../bot/type/Profession'
-import { type Armor } from './ArmorFactory'
-import { type Weapon } from './WeaponFactory'
+import { type ArmorFactory, type Armor } from './ArmorFactory'
+import { type WeaponFactory, type Weapon } from './WeaponFactory'
 
 class Servant {
   readonly id: string
@@ -37,10 +37,10 @@ class Servant {
 }
 
 class ServantFactory {
-  constructor (private readonly uuidGenerator: UuidGenerator) {}
+  constructor (private readonly uuidGenerator: UuidGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory) {}
 
-  create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, armor: Armor, currentWeapon: Weapon, attributes: Attributes): Servant {
-    return new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, armor, currentWeapon, attributes)
+  create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, attributes: Attributes): Servant {
+    return new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, this.armorFactory.createArmorByFortitude(attributes.fortitude), this.weaponFactory.createWeapon('mão nua'), attributes)
   }
 }
 
