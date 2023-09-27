@@ -154,7 +154,6 @@ class ServantService {
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
     for (let i = 0; i < 2; i++) {
       if (fetchedServant.inventory.carriedWeapons[i] !== undefined && fetchedServant.inventory.carriedWeapons[i].type === weaponType) {
-        console.log(fetchedServant.inventory.carriedWeapons[i].type)
         fetchedServant.inventory.carriedWeapons.splice(i, 1)
         await this.servantRepository.update(servantName, fetchedServant)
         return fetchedServant
@@ -304,18 +303,10 @@ class ServantService {
   }
 
   getDamageToDeal (attacker: Servant, attackerDiceResult: number, attackerWeapon: Weapon, defender: Servant, defenderArmorType: ArmorType, defenderDiceResult: number): number {
-    console.log('dado do atacante:', attackerDiceResult)
-    console.log('dado do defensor:', defenderDiceResult)
-    console.log('fortitude do defensor:', defender.currentAttributes.fortitude)
-    console.log('tipo de arma do atacante:', attackerWeapon.type)
-    console.log('tipo de armadura do defensor:', defenderArmorType)
-    console.log('mastria na arma usada = ', this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon))
     let attackerTestResult = attacker.currentAttributes.strength + attackerDiceResult
     const defenderTestResult = defender.currentAttributes.fortitude + defenderDiceResult
     attackerTestResult += this.getAttackerMaestryFromWeaponUsed(attacker, attackerWeapon)
     attackerTestResult += this.getWeaponArmourDamageRelation(attacker.inventory.currentWeapon, defenderArmorType)
-    console.log(attackerTestResult)
-    console.log(defenderTestResult)
     return attackerTestResult - defenderTestResult
   }
 

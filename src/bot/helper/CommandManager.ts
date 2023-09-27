@@ -118,7 +118,6 @@ class CommandManager {
 
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
-    console.log('agilidade do testao é ', servant)
     const servantAttributesMessage = `
     Os atributos do servo ${name} são:
 
