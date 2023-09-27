@@ -18,9 +18,10 @@ class ServantController {
       if (this.servantValidator.isServantValid('need to test better')) {
         if (req.body.agility === undefined || req.body.technique === undefined || req.body.strength === undefined || req.body.fortitude === undefined) {
           const servant = this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
+          const servant = await this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
           return res.status(200).json(servant)
         }
-        const servant = this.servantService.create(req.body.masterId, req.body.name, 'soldado', 'soldado', true, { agility: req.body.agility, technique: req.body.technique, strength: req.body.strength, fortitude: req.body.fortitude })
+        const servant = await this.servantService.create(req.body.masterId, req.body.name, 'soldado', 'soldado', true, { agility: req.body.agility, technique: req.body.technique, strength: req.body.strength, fortitude: req.body.fortitude })
         return res.status(200).json(servant)
       }
     } catch (erro) {
@@ -31,8 +32,10 @@ class ServantController {
 
   async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const listaServants = this.servantService.getAll()
-      return res.status(200).json(listaServants)
+      const servantList = await this.servantService.getAll()
+      console.log('lista:', servantList)
+
+      return res.status(200).json(servantList)
     } catch (erro) {
       console.error(erro)
     }
@@ -41,7 +44,7 @@ class ServantController {
 
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const servant = this.servantService.get(req.params.name)
+      const servant = await this.servantService.get(req.params.name)
       if (servant != null) {
         return res.status(200).json(servant)
       } else {
@@ -55,7 +58,7 @@ class ServantController {
 
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const servant = this.servantService.delete(req.params.name)
+      const servant = await this.servantService.delete(req.params.name)
       if (servant != null) {
         return res.status(200).json(servant)
       } else {
