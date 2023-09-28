@@ -56,6 +56,9 @@ import ServantUpgrader from './bot/helper/ServantUpgrader'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
+
+// instanciating random number generator
+const randomNumberGenerator = new RandomNumberGenerator()
 // instanciating the random number generator
 
 // instanciating mariadb data source
