@@ -52,6 +52,7 @@ import AttributesFetcher from './bot/fetchers/AttributesFetcher'
 import { WeaponFactory } from './factories/WeaponFactory'
 import { ArmorFactory } from './factories/ArmorFactory'
 import { ServantFactory } from './factories/ServantFactory'
+import ServantUpgrader from './bot/helper/ServantUpgrader'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
