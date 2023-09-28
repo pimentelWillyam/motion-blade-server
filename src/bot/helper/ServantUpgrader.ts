@@ -47,6 +47,7 @@ class ServantUpgrader {
     } else if (maestryToUpgrade === 'besta') {
       servantToBeUpgradeed.maestry.crossbow += 1
     }
+    return servantToBeUpgradeed
   }
 
   willMaestryBeUpgraded (): boolean {
