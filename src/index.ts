@@ -88,7 +88,7 @@ const servantValidator = new ServantValidator()
 const servantController = new ServantController(servantService, servantValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(new RandomNumberGenerator(), new Sleeper(), servantService, new DamageToDeal())
+const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, new DamageToDeal(), new ServantUpgrader(randomNumberGenerator))
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
