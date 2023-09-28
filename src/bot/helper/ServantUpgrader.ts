@@ -6,25 +6,19 @@ import type Attribute from '../type/Attribute'
 class ServantUpgrader {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator) {}
 
-  upgradeAttributes (servantToBeUpgradeed: Servant, pointsToUpgrade: number): Servant {
-    let randomAttribute: number
-    while (pointsToUpgrade >= 0) {
-      if (pointsToUpgrade < 1 && !this.willServantUpgrade(pointsToUpgrade * 100)) return servantToBeUpgradeed
-      randomAttribute = this.randomNumberGenerator.generate(1, 4)
-      if (randomAttribute === 1) {
-        servantToBeUpgradeed.currentAttributes.agility += 1
-        servantToBeUpgradeed.maximumAttributes.agility += 1
-      } else if (randomAttribute === 2) {
-        servantToBeUpgradeed.currentAttributes.technique += 1
-        servantToBeUpgradeed.maximumAttributes.technique += 1
-      } else if (randomAttribute === 3) {
-        servantToBeUpgradeed.currentAttributes.strength += 1
-        servantToBeUpgradeed.maximumAttributes.strength += 1
-      } else if (randomAttribute === 4) {
-        servantToBeUpgradeed.currentAttributes.fortitude += 1
-        servantToBeUpgradeed.maximumAttributes.fortitude += 1
-      }
-      pointsToUpgrade -= 1
+  upgradeAttributes (servantToBeUpgradeed: Servant, attribute: Attribute): Servant {
+    if (attribute === 'agilidade') {
+      servantToBeUpgradeed.currentAttributes.agility += 1
+      servantToBeUpgradeed.maximumAttributes.agility += 1
+    } else if (attribute === 'tecnica') {
+      servantToBeUpgradeed.currentAttributes.technique += 1
+      servantToBeUpgradeed.maximumAttributes.technique += 1
+    } else if (attribute === 'força') {
+      servantToBeUpgradeed.currentAttributes.strength += 1
+      servantToBeUpgradeed.maximumAttributes.strength += 1
+    } else if (attribute === 'fortitude') {
+      servantToBeUpgradeed.currentAttributes.fortitude += 1
+      servantToBeUpgradeed.maximumAttributes.fortitude += 1
     }
     return servantToBeUpgradeed
   }
