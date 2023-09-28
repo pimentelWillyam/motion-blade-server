@@ -9,7 +9,7 @@ import type DamageToDeal from '../../helper/DamageToDeal'
 import type ServantUpgrader from './ServantUpgrader'
 
 class CommandManager {
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly damageToDeal: DamageToDeal) {}
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly damageToDeal: DamageToDeal, private readonly servantUpgrader: ServantUpgrader) {}
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `
