@@ -35,7 +35,7 @@ class ServantUpgrader {
     return false
   }
 
-  upgradeMaestry (servantToBeUpgradeed: Servant, maestryToUpgrade: MaestryType): void {
+  upgradeMaestry (servantToBeUpgradeed: Servant, maestryToUpgrade: MaestryType): Servant {
     if (maestryToUpgrade === 'mão nua') { servantToBeUpgradeed.maestry.bareHanded += 1 } else if (maestryToUpgrade === 'uma mão') {
       servantToBeUpgradeed.maestry.oneHanded += 1
     } else if (maestryToUpgrade === 'duas mãos') {
