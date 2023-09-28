@@ -31,7 +31,7 @@ class ServantUpgrader {
   }
 
   willServantUpgrade (sucessChance: number): boolean {
-    if (sucessChance <= this.randomNumberGenerator.generate(1, 100)) return true
+    if (100 - sucessChance <= this.randomNumberGenerator.generate(1, 100)) return true
     return false
   }
 
