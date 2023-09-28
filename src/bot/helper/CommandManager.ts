@@ -6,6 +6,7 @@ import type WeaponType from '../type/WeaponType'
 import type ArmorType from '../type/ArmorType'
 import type ServantService from '../../service/ServantService'
 import type DamageToDeal from '../../helper/DamageToDeal'
+import type ServantUpgrader from './ServantUpgrader'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly damageToDeal: DamageToDeal) {}
