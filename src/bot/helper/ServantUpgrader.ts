@@ -26,7 +26,8 @@ class ServantUpgrader {
   getAttributePointsToUpgrade (victor: Servant, defeated: Servant): number {
     const victorMaximumAttributesSum = victor.maximumAttributes.agility + victor.maximumAttributes.technique + victor.maximumAttributes.strength + victor.maximumAttributes.fortitude + 1
     const defeatedMaximumAttributesSum = defeated.maximumAttributes.agility + defeated.maximumAttributes.technique + defeated.maximumAttributes.strength + defeated.maximumAttributes.fortitude + 1
-    return defeatedMaximumAttributesSum / victorMaximumAttributesSum
+    const attributePointsToUpgrade = (defeatedMaximumAttributesSum / victorMaximumAttributesSum).toString().split('.')
+    return parseFloat(attributePointsToUpgrade[0] + '.' + attributePointsToUpgrade[1][0])
   }
 
   willServantUpgrade (sucessChance: number): boolean {
