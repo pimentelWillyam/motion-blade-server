@@ -1,6 +1,7 @@
 import { type Servant } from '../../factories/ServantFactory'
 import type MaestryType from '../type/MaestryType'
 import type RandomNumberGenerator from './RandomNumberGenerator'
+import type Attribute from '../type/Attribute'
 
 class ServantUpgrader {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator) {}
