@@ -1,1 +1,1 @@
-An RPG to be played with friends
+A RPG to be played with friends
