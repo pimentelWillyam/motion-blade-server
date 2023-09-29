@@ -1,2 +1,1 @@
-# log-api
-An API boilerplate using Express, TypeORM and Jest
+An RPG to be played with friends
