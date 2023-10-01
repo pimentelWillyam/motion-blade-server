@@ -34,12 +34,16 @@ class MessageHandler {
         await this.commandManager.servantRemoveArmor(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'inventario' && treatedMessage.length === 2) {
         await this.commandManager.getServantInventory(message, treatedMessage[0])
-      } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 3) {
-        await this.commandManager.servantKeepWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'guarda' &&  (treatedMessage.length === 3 || treatedMessage.length === 4 || treatedMessage.length === 5)) {
+        if (treatedMessage.length === 3) await this.commandManager.servantKeepWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+        else if (treatedMessage.length === 4) await this.commandManager.servantKeepWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3]) as WeaponType)
+        else if (treatedMessage.length === 5) await this.commandManager.servantKeepWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4]) as WeaponType)
       } else if (treatedMessage[1] === 'descarta' && treatedMessage.length === 3) {
         await this.commandManager.servantDropWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
-      } else if (treatedMessage[1] === 'saca' && treatedMessage.length === 3) {
-        await this.commandManager.servantDrawWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'saca' && (treatedMessage.length === 3 || treatedMessage.length === 4 || treatedMessage.length === 5)) {
+        if (treatedMessage.length === 3) await this.commandManager.servantDrawWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+        else if (treatedMessage.length === 4) await this.commandManager.servantDrawWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3]) as WeaponType)
+        else if (treatedMessage.length === 5) await this.commandManager.servantDrawWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4]) as WeaponType)
       } else if (treatedMessage[1] === 'testa' && treatedMessage.length === 3) {
         await this.commandManager.servantTestsAttribute(message, treatedMessage[0], treatedMessage[2] as Attribute)
       } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 2) {
