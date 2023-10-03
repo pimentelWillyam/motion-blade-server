@@ -232,8 +232,7 @@ class ServantService {
     if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.guard) {
       attackerTestResult = attacker.currentAttributes.agility + attacker.buff - attacker.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.agility + defender.buff - defender.debuff + defenderDiceResult
-      if (attacker.inventory.currentWeapon.type === 'mão nua') defenderTestResult += 5
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
+
       if (defenderTestResult >= attackerTestResult * 2) {
         return 'Contra-ataque'
       } else if (defenderTestResult >= attackerTestResult) return 'Desvio'
@@ -241,8 +240,7 @@ class ServantService {
     } else {
       attackerTestResult = attacker.currentAttributes.agility + attacker.buff - attacker.debuff + attackerDiceResult
       defenderTestResult = defender.currentAttributes.technique + defender.guard + defender.buff - defender.debuff + defenderDiceResult
-      if (attacker.inventory.currentWeapon.type === 'mão nua') defenderTestResult += 5
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
+
       if (defenderTestResult >= attackerTestResult * 2) return ('Desarme')
       else if (defenderTestResult >= attackerTestResult) return ('Defesa')
       else return 'Acerto'
