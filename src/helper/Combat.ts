@@ -37,6 +37,10 @@ class Combat {
     console.log('hit')
   }
 
+  private defenderWillBlock (defender: Servant): boolean {
+    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff)) {
+      return false
+    }
 }
 
 export default Combat
