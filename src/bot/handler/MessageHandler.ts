@@ -36,10 +36,22 @@ class MessageHandler {
         await this.commandManager.getServantInventory(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 3) {
         await this.commandManager.servantKeepWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 4) {
+        await this.commandManager.servantKeepWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] as WeaponType))
+      } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 5) {
+        await this.commandManager.servantKeepWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4] as WeaponType))
       } else if (treatedMessage[1] === 'descarta' && treatedMessage.length === 3) {
         await this.commandManager.servantDropWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'descarta' && treatedMessage.length === 4) {
+        await this.commandManager.servantDropWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] as WeaponType))
+      } else if (treatedMessage[1] === 'descarta' && treatedMessage.length === 5) {
+        await this.commandManager.servantDropWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4] as WeaponType))
       } else if (treatedMessage[1] === 'saca' && treatedMessage.length === 3) {
         await this.commandManager.servantDrawWeapon(message, treatedMessage[0], treatedMessage[2] as WeaponType)
+      } else if (treatedMessage[1] === 'saca' && treatedMessage.length === 4) {
+        await this.commandManager.servantDrawWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] as WeaponType))
+      } else if (treatedMessage[1] === 'saca' && treatedMessage.length === 5) {
+        await this.commandManager.servantDrawWeapon(message, treatedMessage[0], (treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4] as WeaponType))
       } else if (treatedMessage[1] === 'testa' && treatedMessage.length === 3) {
         await this.commandManager.servantTestsAttribute(message, treatedMessage[0], treatedMessage[2] as Attribute)
       } else if (treatedMessage[1] === 'guarda' && treatedMessage.length === 2) {

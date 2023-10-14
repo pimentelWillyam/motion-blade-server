@@ -164,7 +164,6 @@ class CommandManager {
 
   async getServantInventory (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
-    console.log(servant.inventory)
     let weaponsKept = ''
     if (servant.inventory.carriedWeapons[0] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[0].type + ', '
     if (servant.inventory.carriedWeapons[1] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[1].type
