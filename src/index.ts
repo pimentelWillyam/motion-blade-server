@@ -27,7 +27,6 @@ import * as express from 'express'
 
 // importing helpers
 import Api from './helper/Api'
-import DamageToDeal from './helper/DamageToDeal'
 
 // importing data classes
 import MariadbDataSource from './data/MariadbDataSource'
@@ -53,6 +52,7 @@ import { WeaponFactory } from './factories/WeaponFactory'
 import { ArmorFactory } from './factories/ArmorFactory'
 import { ServantFactory } from './factories/ServantFactory'
 import ServantUpgrader from './bot/helper/ServantUpgrader'
+import CombatManager from './helper/CombatManager'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -88,7 +88,7 @@ const servantValidator = new ServantValidator()
 const servantController = new ServantController(servantService, servantValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, new DamageToDeal(), new ServantUpgrader(randomNumberGenerator))
+const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, new ServantUpgrader(randomNumberGenerator), new CombatManager(randomNumberGenerator))
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
