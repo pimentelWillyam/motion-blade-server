@@ -1,0 +1,9 @@
+node_modules
+.env
+.yarn
+.pnp.cjs
+.pnp.loader.mjs
+.yarnc.yml
+.yarnrc.yml
+yarn.lock
+temp
