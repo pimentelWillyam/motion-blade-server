@@ -150,13 +150,11 @@ class ServantService {
   drawWeapon = async (servantName: string, weaponType: WeaponType): Promise<Servant> => {
     const fetchedServant = await this.servantRepository.getByName(servantName)
     const weaponToBeDrawed = this.weaponFactory.createWeapon(weaponType)
-    console.log(fetchedServant?.inventory.secondaryWeapon === null)
     if (fetchedServant === null) throw new Error('Não é possível encontrar um servo que não existe')
     if (weaponToBeDrawed.type !== 'mão nua' && weaponToBeDrawed.needsTwoHandsToWield && (fetchedServant.inventory.primaryWeapon.type !== 'mão nua' || fetchedServant.inventory.secondaryWeapon != null)) throw new Error(`O servo ${fetchedServant.name} está atualmente com as mãos ocupadas e não pode sacar um(a) ${weaponType}`)
     if (weaponToBeDrawed.type !== 'mão nua' && !weaponToBeDrawed.needsTwoHandsToWield && (fetchedServant.inventory.secondaryWeapon != null)) throw new Error(`O servo ${fetchedServant.name} não pode sacar um(a) ${weaponType} pois já está com as duas mãos ocupadas`)
     for (let i = 0; i < 2; i++) {
       if (fetchedServant.inventory.carriedWeapons[i].type === weaponToBeDrawed.type) {
-        console.log('chegou aq')
         if ((weaponToBeDrawed.type === 'escudo redondo' || weaponToBeDrawed.type === 'escudo' || weaponToBeDrawed.type === 'scutum') && (fetchedServant.inventory.secondaryWeapon === null)) fetchedServant.inventory.secondaryWeapon = weaponToBeDrawed
         else if (fetchedServant.inventory.primaryWeapon.type === 'mão nua') fetchedServant.inventory.primaryWeapon = weaponToBeDrawed
         else fetchedServant.inventory.secondaryWeapon = weaponToBeDrawed
@@ -182,7 +180,6 @@ class ServantService {
   }
 
   disarm = async (servantToBeDisarmed: Servant): Promise<Servant> => {
-    console.log(servantToBeDisarmed.inventory.secondaryWeapon)
     if (servantToBeDisarmed.inventory.primaryWeapon.needsTwoHandsToWield) {
       servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
     } else if (servantToBeDisarmed.inventory.secondaryWeapon === null) {
