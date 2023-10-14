@@ -1,7 +1,5 @@
 import type ArmorEvasionTestResult from '../bot/type/ArmorEvasionTestResult'
 import type ArmorType from '../bot/type/ArmorType'
-import type AttackTestResult from '../bot/type/AttackTestResult'
-import type AttackType from '../bot/type/AttackType'
 import type Attribute from '../bot/type/Attribute'
 import type Attributes from '../bot/type/Attributes'
 import type Inventory from '../bot/type/Inventory'
@@ -111,15 +109,29 @@ class ServantService {
   }
 
   wearArmor = async (servant: Servant, armorType: ArmorType): Promise<Servant> => {
-    const armorToBeUsed = this.armorFactory.createArmorByType(armorType)
-    if (servant.maximumAttributes.fortitude < armorToBeUsed.minimumFortitude) throw new Error(`O servo ${servant.name} não possui fortitude o suficiente para usar uma armadura de ${armorType}`)
-    servant.inventory.armor = armorToBeUsed
+    switch (armorType) {
+      case 'palha':
+        servant.inventory.primaryArmor = this.armorFactory.createArmorByType('placa')
+        servant.inventory.secondaryArmor = this.armorFactory.createArmorByType('cota de malha')
+        break
+
+      case 'pouro':
+        servant.inventory.primaryArmor = this.armorFactory.createArmorByType('placa')
+        servant.inventory.secondaryArmor = this.armorFactory.createArmorByType('couro')
+        break
+
+      default:
+        servant.inventory.primaryArmor = this.armorFactory.createArmorByType(armorType)
+        break
+    }
     await this.servantRepository.update(servant.name, servant)
     return servant
   }
 
   removeArmor = async (servant: Servant): Promise<Servant> => {
-    servant.inventory.armor = this.armorFactory.createArmorByType('roupa')
+    const clothArmor = this.armorFactory.createArmorByType('roupa')
+    servant.inventory.primaryArmor = clothArmor
+    servant.inventory.secondaryArmor = clothArmor
     await this.servantRepository.update(servant.name, servant)
     return servant
   }
@@ -128,18 +140,26 @@ class ServantService {
     const fetchedServant = await this.servantRepository.getByName(servantName)
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
     else if (fetchedServant.inventory.carriedWeapons.length >= 2) throw new Error(`O servo ${fetchedServant.name} já está carregando muitas armas, jogue alguma fora para aumentar o espaço disponível`)
+    fetchedServant.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    fetchedServant.inventory.secondaryWeapon = null
     fetchedServant.inventory.carriedWeapons.push(this.weaponFactory.createWeapon(weaponType))
-    fetchedServant.inventory.currentWeapon = this.weaponFactory.createWeapon('mão nua')
     await this.servantRepository.update(servantName, fetchedServant)
     return fetchedServant
   }
 
   drawWeapon = async (servantName: string, weaponType: WeaponType): Promise<Servant> => {
     const fetchedServant = await this.servantRepository.getByName(servantName)
+    const weaponToBeDrawed = this.weaponFactory.createWeapon(weaponType)
+    console.log(fetchedServant?.inventory.secondaryWeapon === null)
     if (fetchedServant === null) throw new Error('Não é possível encontrar um servo que não existe')
+    if (weaponToBeDrawed.type !== 'mão nua' && weaponToBeDrawed.needsTwoHandsToWield && (fetchedServant.inventory.primaryWeapon.type !== 'mão nua' || fetchedServant.inventory.secondaryWeapon != null)) throw new Error(`O servo ${fetchedServant.name} está atualmente com as mãos ocupadas e não pode sacar um(a) ${weaponType}`)
+    if (weaponToBeDrawed.type !== 'mão nua' && !weaponToBeDrawed.needsTwoHandsToWield && (fetchedServant.inventory.secondaryWeapon != null)) throw new Error(`O servo ${fetchedServant.name} não pode sacar um(a) ${weaponType} pois já está com as duas mãos ocupadas`)
     for (let i = 0; i < 2; i++) {
-      if (fetchedServant.inventory.carriedWeapons[i] !== undefined && fetchedServant.inventory.carriedWeapons[i].type === weaponType) {
-        fetchedServant.inventory.currentWeapon = fetchedServant.inventory.carriedWeapons[i]
+      if (fetchedServant.inventory.carriedWeapons[i].type === weaponToBeDrawed.type) {
+        console.log('chegou aq')
+        if ((weaponToBeDrawed.type === 'escudo redondo' || weaponToBeDrawed.type === 'escudo' || weaponToBeDrawed.type === 'scutum') && (fetchedServant.inventory.secondaryWeapon === null)) fetchedServant.inventory.secondaryWeapon = weaponToBeDrawed
+        else if (fetchedServant.inventory.primaryWeapon.type === 'mão nua') fetchedServant.inventory.primaryWeapon = weaponToBeDrawed
+        else fetchedServant.inventory.secondaryWeapon = weaponToBeDrawed
         fetchedServant.inventory.carriedWeapons.splice(i, 1)
         await this.servantRepository.update(servantName, fetchedServant)
         return fetchedServant
@@ -159,6 +179,24 @@ class ServantService {
       }
     }
     throw new Error(`O servo ${servantName} não possui nenhua arma do tipo ${weaponType} para que ele possa descartar`)
+  }
+
+  disarm = async (servantToBeDisarmed: Servant): Promise<Servant> => {
+    console.log(servantToBeDisarmed.inventory.secondaryWeapon)
+    if (servantToBeDisarmed.inventory.primaryWeapon.needsTwoHandsToWield) {
+      servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (servantToBeDisarmed.inventory.secondaryWeapon === null) {
+      servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (servantToBeDisarmed.inventory.secondaryWeapon !== null && (servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo redondo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'scutum')) {
+      servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (servantToBeDisarmed.inventory.secondaryWeapon !== null && (servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo redondo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'scutum')) {
+      servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (servantToBeDisarmed.inventory.secondaryWeapon !== null && !(servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo redondo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'escudo' || servantToBeDisarmed.inventory.secondaryWeapon.type === 'scutum')) {
+      servantToBeDisarmed.inventory.primaryWeapon = servantToBeDisarmed.inventory.secondaryWeapon
+      servantToBeDisarmed.inventory.secondaryWeapon = null
+    }
+    await this.servantRepository.update(servantToBeDisarmed.name, servantToBeDisarmed)
+    return servantToBeDisarmed
   }
 
   delete = async (name: string): Promise<Servant> => {
@@ -200,7 +238,7 @@ class ServantService {
   debuff = async (name: string, debuffValue: number): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.debuff += debuffValue
+      servant.debuff -= debuffValue
       await this.servantRepository.update(name, servant)
       return servant
     }
@@ -215,85 +253,6 @@ class ServantService {
       return servant
     }
     throw new Error('Não é possível bufar um servo que não existe')
-  }
-
-  attack = async (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number, attackType: AttackType): Promise<AttackTestResult> => {
-    if (attackType === 'strike') return await this.strike(attacker, attackerDiceResult, defender, defenderDiceResult)
-    else if (attackType === 'throw') return await this.throw(attacker, attackerDiceResult, defender, defenderDiceResult)
-    else if (attackType === 'shoot') return await this.shoot(attacker, attackerDiceResult, defender, defenderDiceResult)
-    else throw new Error('Tipo de ataque inválido')
-  }
-
-  strike = async (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): Promise<AttackTestResult> => {
-    let attackerTestResult
-    let defenderTestResult
-    attacker.guard = 0
-    await this.servantRepository.update(attacker.name, attacker)
-    if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.guard) {
-      attackerTestResult = attacker.currentAttributes.agility + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.agility + defender.buff - defender.debuff + defenderDiceResult
-      if (attacker.inventory.currentWeapon.type === 'mão nua') defenderTestResult += 5
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) {
-        return 'Contra-ataque'
-      } else if (defenderTestResult >= attackerTestResult) return 'Desvio'
-      else return 'Acerto'
-    } else {
-      attackerTestResult = attacker.currentAttributes.agility + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.technique + defender.guard + defender.buff - defender.debuff + defenderDiceResult
-      if (attacker.inventory.currentWeapon.type === 'mão nua') defenderTestResult += 5
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) return ('Desarme')
-      else if (defenderTestResult >= attackerTestResult) return ('Defesa')
-      else return 'Acerto'
-    }
-  }
-
-  throw = async (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): Promise<AttackTestResult> => {
-    let attackerTestResult
-    let defenderTestResult
-    attacker.guard = 0
-    await this.servantRepository.update(attacker.name, attacker)
-    if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.guard) {
-      attackerTestResult = attacker.currentAttributes.technique + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.agility + defender.buff - defender.debuff + defenderDiceResult
-      if (!attacker.inventory.currentWeapon.throwable) throw new Error(`Não é possível lançar a arma que o servo ${attacker.name} possui em mãos`)
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) {
-        return 'Desequilíbrio'
-      } else if (defenderTestResult >= attackerTestResult) return 'Erro'
-      else return 'Acerto'
-    } else {
-      attackerTestResult = attacker.currentAttributes.technique + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.technique + defender.guard + defender.buff - defender.debuff + defenderDiceResult
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) return 'Desequilíbrio'
-      else if (defenderTestResult >= attackerTestResult) return 'Defesa'
-      else return 'Acerto'
-    }
-  }
-
-  shoot = async (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): Promise<AttackTestResult> => {
-    let attackerTestResult
-    let defenderTestResult
-    attacker.guard = 0
-    await this.servantRepository.update(attacker.name, attacker)
-    if (defender.currentAttributes.agility > defender.currentAttributes.technique + defender.guard) {
-      attackerTestResult = attacker.currentAttributes.technique + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.agility + defender.buff - defender.debuff + defenderDiceResult
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) {
-        return 'Recarga demorada'
-      } else if (defenderTestResult >= attackerTestResult) return 'Desvio'
-      else return 'Acerto'
-    } else {
-      attackerTestResult = attacker.currentAttributes.technique + attacker.buff - attacker.debuff + attackerDiceResult
-      defenderTestResult = defender.currentAttributes.technique + defender.guard + defender.buff - defender.debuff + defenderDiceResult
-      if (defender.inventory.currentWeapon.type === 'mão nua') attackerTestResult += 5
-      if (defenderTestResult >= attackerTestResult * 2) return ('Recarga demorada')
-      else if (defenderTestResult >= attackerTestResult) return ('Desvio')
-      else return 'Acerto'
-    }
   }
 
   armorEvasionTest = (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): ArmorEvasionTestResult => {
@@ -341,6 +300,22 @@ class ServantService {
     const servantToBeUpdated = await this.servantRepository.getByName(servantName)
     if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
     servantToBeUpdated.currentAttributes = servantToBeUpdated.maximumAttributes
+    await this.servantRepository.update(servantName, servantToBeUpdated)
+    return servantToBeUpdated
+  }
+
+  addDenars = async (servantName: string, addedMoney: number): Promise<Servant> => {
+    const servantToBeUpdated = await this.servantRepository.getByName(servantName)
+    if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
+    servantToBeUpdated.inventory.denars += addedMoney
+    await this.servantRepository.update(servantName, servantToBeUpdated)
+    return servantToBeUpdated
+  }
+
+  removeDenars = async (servantName: string, deductedMoney: number): Promise<Servant> => {
+    const servantToBeUpdated = await this.servantRepository.getByName(servantName)
+    if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
+    servantToBeUpdated.inventory.denars -= deductedMoney
     await this.servantRepository.update(servantName, servantToBeUpdated)
     return servantToBeUpdated
   }
