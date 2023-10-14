@@ -2,9 +2,11 @@ import type { Armor } from '../../factories/ArmorFactory'
 import type { Weapon } from '../../factories/WeaponFactory'
 
 interface Inventory {
-  armor: Armor
+  primaryArmor: Armor
+  secondaryArmor: Armor
   carriedWeapons: Weapon[]
-  currentWeapon: Weapon
+  primaryWeapon: Weapon
+  secondaryWeapon: Weapon | null
   denars: number
 }
 
