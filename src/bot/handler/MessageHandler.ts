@@ -52,12 +52,8 @@ class MessageHandler {
         await this.commandManager.debuffServant(message, treatedMessage[1], parseInt(treatedMessage[2]))
       } else if (treatedMessage[0] === 'remover' && treatedMessage[1] === 'debuff' && treatedMessage.length === 3) {
         await this.commandManager.removeServantDebuff(message, treatedMessage[2])
-      } else if (treatedMessage[1] === 'acerta' && treatedMessage.length === 3) {
-        await this.commandManager.strike(message, treatedMessage[0], treatedMessage[2])
-      } else if (treatedMessage[1] === 'lança' && treatedMessage.length === 3) {
-        await this.commandManager.throw(message, treatedMessage[0], treatedMessage[2])
-      } else if (treatedMessage[1] === 'atira' && treatedMessage.length === 3) {
-        await this.commandManager.shoot(message, treatedMessage[0], treatedMessage[2])
+      } else if ((treatedMessage[1] === 'acerta' || treatedMessage[1] === 'lança' || treatedMessage[1] === 'atira') && treatedMessage.length === 3) {
+        await this.commandManager.servantAttackServant(message, treatedMessage[0], treatedMessage[1], treatedMessage[2])
       } else if (treatedMessage[1] === 'sofre' && treatedMessage.length === 3) {
         await this.commandManager.servantTakesDamage(message, treatedMessage[0], parseInt(treatedMessage[2]))
       } else if (treatedMessage[0] === 'curar' && treatedMessage.length === 2) {
@@ -68,7 +64,11 @@ class MessageHandler {
         await this.commandManager.createCustomServant(message, treatedMessage[2])
       } else if (treatedMessage[0] === 'criar' && treatedMessage[1] === 'servo' && treatedMessage.length === 7) {
         await this.commandManager.createCustomServant(message, treatedMessage[2], parseInt(treatedMessage[3]), parseInt(treatedMessage[4]), parseInt(treatedMessage[5]), parseInt(treatedMessage[6]))
-      } else if (treatedMessage[1] === 'melhora' && treatedMessage.length === 5) {
+      } else if (treatedMessage[1] === 'recebe' && treatedMessage.length === 3) {
+        await this.commandManager.servantReceivesDenars(message, treatedMessage[0], parseInt(treatedMessage[2]))
+      } else if (treatedMessage[1] === 'paga' && treatedMessage.length === 3) {
+        await this.commandManager.servantPaysDenars(message, treatedMessage[0], parseInt(treatedMessage[2]))
+      } else if (treatedMessage[1] === 'paga' && treatedMessage.length === 5) {
         const maestryToUpgrade = treatedMessage[2] + ' ' + treatedMessage[3]
         await this.commandManager.upgradeServant(message, treatedMessage[0], maestryToUpgrade, parseInt(treatedMessage[4]))
       } else {
