@@ -68,9 +68,6 @@ class MessageHandler {
         await this.commandManager.servantReceivesDenars(message, treatedMessage[0], parseInt(treatedMessage[2]))
       } else if (treatedMessage[1] === 'paga' && treatedMessage.length === 3) {
         await this.commandManager.servantPaysDenars(message, treatedMessage[0], parseInt(treatedMessage[2]))
-      } else if (treatedMessage[1] === 'paga' && treatedMessage.length === 5) {
-        const maestryToUpgrade = treatedMessage[2] + ' ' + treatedMessage[3]
-        await this.commandManager.upgradeServant(message, treatedMessage[0], maestryToUpgrade, parseInt(treatedMessage[4]))
       } else {
         await message.reply('Comando inexistente')
       }
