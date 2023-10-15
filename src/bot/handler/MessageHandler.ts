@@ -30,6 +30,8 @@ class MessageHandler {
         await this.commandManager.getServantMaestry(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'veste' && treatedMessage.length === 3) {
         await this.commandManager.servantWearArmor(message, treatedMessage[0], treatedMessage[2] as ArmorType)
+      } else if (treatedMessage[1] === 'veste' && treatedMessage.length === 5) {
+        await this.commandManager.servantWearArmor(message, treatedMessage[0], treatedMessage[2] + ' ' + treatedMessage[3] + ' ' + treatedMessage[4] as ArmorType)
       } else if (treatedMessage[1] === 'remove' && treatedMessage[2] === 'armadura' && treatedMessage.length === 3) {
         await this.commandManager.servantRemoveArmor(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'inventario' && treatedMessage.length === 2) {
