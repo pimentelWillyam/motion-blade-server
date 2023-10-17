@@ -9,7 +9,7 @@ import type Profession from '../bot/type/Profession'
 import type ServantLifeStatus from '../bot/type/ServantLifeStatus'
 import type WeaponType from '../bot/type/WeaponType'
 import type { ArmorFactory } from '../factories/ArmorFactory'
-import type { Servant, ServantFactory } from '../factories/ServantFactory'
+import { type Servant, type ServantFactory } from '../factories/ServantFactory'
 import type { WeaponFactory } from '../factories/WeaponFactory'
 import type AttributesFetcher from '../helper/AttributesFetcher'
 import type ServantRepository from '../repository/ServantRepository'
@@ -255,6 +255,23 @@ class ServantService {
   armorEvasionTest = (attacker: Servant, attackerDiceResult: number, defender: Servant, defenderDiceResult: number): ArmorEvasionTestResult => {
     if (attacker.currentAttributes.technique + attackerDiceResult > defender.currentAttributes.technique + defenderDiceResult) return 'Evaded armor'
     else return 'Hit armor'
+  }
+
+  armorTakesDamage = async (defender: Servant, armorToRecieveDamage: 'primary' | 'secondary', damageToDeal: number): Promise<{ type: 'roupa' | 'couro' | 'cota de malha' | 'placa' | 'pouro' | 'palha', haveBeenBroken: boolean }> => {
+    const armorStatus: { type: 'roupa' | 'couro' | 'cota de malha' | 'placa' | 'pouro' | 'palha', haveBeenBroken: boolean } = { haveBeenBroken: false, type: 'roupa' }
+    if (armorToRecieveDamage === 'primary' && defender.inventory.primaryArmor.condition - damageToDeal <= 0) {
+      armorStatus.type = defender.inventory.primaryArmor.type
+      armorStatus.haveBeenBroken = true
+      defender.inventory.primaryArmor = defender.inventory.secondaryArmor
+      defender.inventory.secondaryArmor = this.armorFactory.createArmorByType('roupa')
+    } else if (armorToRecieveDamage === 'secondary' && defender.inventory.secondaryArmor.condition - damageToDeal <= 0) {
+      armorStatus.type = defender.inventory.secondaryArmor.type
+      armorStatus.haveBeenBroken = true
+      defender.inventory.secondaryArmor = this.armorFactory.createArmorByType('roupa')
+    } else if (armorToRecieveDamage === 'primary' && defender.inventory.primaryArmor.condition - damageToDeal > 0) defender.inventory.primaryArmor.condition -= damageToDeal
+    else if (armorToRecieveDamage === 'secondary' && defender.inventory.secondaryArmor.condition - damageToDeal > 0)defender.inventory.secondaryArmor.condition -= damageToDeal
+    await this.update(defender.name, defender)
+    return armorStatus
   }
 
   dealDamage = async (servant: Servant, damageToDeal: number): Promise<ServantLifeStatus> => {
