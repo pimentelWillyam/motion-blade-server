@@ -1,9 +1,9 @@
 import type Armor from '../type/Armor'
-import type Weapon from '../type/Weapon'
 import type Profession from '../type/Profession'
 import type Attributes from '../type/Attributes'
 import type Maestry from '../type/Maestry'
 import type Inventory from '../type/Inventory'
+import { type Weapon } from '../../factories/WeaponFactory'
 
 class Servant {
   readonly id: string
