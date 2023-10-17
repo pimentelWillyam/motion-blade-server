@@ -70,6 +70,8 @@ class MessageHandler {
         await this.commandManager.servantAttackServant(message, treatedMessage[0], treatedMessage[1], treatedMessage[2])
       } else if (treatedMessage[1] === 'sofre' && treatedMessage.length === 3) {
         await this.commandManager.servantTakesDamage(message, treatedMessage[0], parseInt(treatedMessage[2]))
+      } else if (treatedMessage[1] === 'danificar' && treatedMessage[2] === 'armadura' && treatedMessage.length === 5) {
+        await this.commandManager.damageServantArmor(message, treatedMessage[0], treatedMessage[3], parseInt(treatedMessage[4]))
       } else if (treatedMessage[0] === 'curar' && treatedMessage.length === 2) {
         await this.commandManager.healServant(message, treatedMessage[1])
       } else if (treatedMessage[1] === 'melhora' && (treatedMessage[2] === 'agilidade' || treatedMessage[2] === 'tecnica' || treatedMessage[2] === 'força' || treatedMessage[2] === 'fortitude' || treatedMessage[2] === 'haste' || treatedMessage[2] === 'arco' || treatedMessage[2] === 'besta') && treatedMessage.length === 4) {
