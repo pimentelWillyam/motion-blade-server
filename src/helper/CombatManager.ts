@@ -61,8 +61,8 @@ class CombatManager {
 
     if (defender.inventory.primaryArmor.type !== 'roupa') {
       attackReport.defenderHadArmor = true
-      attackReport.secondaryArmorHittingFactor = this.randomNumberGenerator.generate(1, 20)
-      attackReport.secondaryArmorEvasionFactor = this.randomNumberGenerator.generate(1, 20)
+      attackReport.secondaryArmorHittingFactor = this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique
+      attackReport.secondaryArmorEvasionFactor = this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique
 
       attackReport.defenderSecondaryArmorHasBeenHit = this.defenderSecondaryArmorWillBeHit(attacker, attackReport.secondaryArmorHittingFactor, defender, attackReport.secondaryArmorEvasionFactor)
     } else {
@@ -131,7 +131,7 @@ class CombatManager {
   }
 
   private getPowerFactor (attacker: Servant): number {
-    let powerFactor = this.randomNumberGenerator.generate(1, 10)
+    let powerFactor = this.randomNumberGenerator.generate(1, 10) + attacker.currentAttributes.strength
     if (attacker.inventory.primaryWeapon.maestryType === 'mão nua') powerFactor += attacker.maestry.bareHanded
     else if (attacker.inventory.primaryWeapon.maestryType === 'uma mão') powerFactor += attacker.maestry.oneHanded
     else if (attacker.inventory.primaryWeapon.maestryType === 'duas mãos') powerFactor += attacker.maestry.twoHanded
@@ -155,7 +155,7 @@ class CombatManager {
   }
 
   private defenderSecondaryArmorWillBeHit (attacker: Servant, secondaryArmorHittingFactor: number, defender: Servant, secondaryArmorEvasionFactor: number): boolean {
-    if (attacker.currentAttributes.technique + secondaryArmorHittingFactor > defender.currentAttributes.technique + secondaryArmorEvasionFactor) return true
+    if (secondaryArmorHittingFactor > secondaryArmorEvasionFactor) return true
     return false
   }
 }
