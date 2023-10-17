@@ -167,33 +167,24 @@ class CommandManager {
     let weaponsKept = ''
     if (servant.inventory.carriedWeapons[0] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[0].type + ', '
     if (servant.inventory.carriedWeapons[1] !== undefined) weaponsKept = weaponsKept + servant.inventory.carriedWeapons[1].type
-    let servantAttributesMessage
-    if (servant.inventory.secondaryWeapon != null) {
-      servantAttributesMessage = `
-      Os pertences do servo ${name} são:
-  
-        Armadura primária: ${servant.inventory.primaryArmor.type}
-        Armadura secundária: ${servant.inventory.secondaryArmor.type}
-  
-        Arma primária: ${servant.inventory.primaryWeapon.type}
-        Arma secundária: ${servant.inventory.secondaryWeapon.type}
-        Armas guardadas: ${weaponsKept}
-  
-        Denários: ${servant.inventory.denars}
-      `
-    } else {
-      servantAttributesMessage = `
-      Os pertences do servo ${name} são:
-  
-        Armadura primária: ${servant.inventory.primaryArmor.type}
-        Armadura secundária: ${servant.inventory.secondaryArmor.type}
-  
-        Arma primária: ${servant.inventory.primaryWeapon.type}
-        Armas guardadas: ${weaponsKept}
-  
-        Denários: ${servant.inventory.denars}
-      `
+    let servantAttributesMessage = ''
+    servantAttributesMessage += `Os pertences do servo ${name} são:\n\n`
+    if (servant.inventory.primaryArmor.type !== 'roupa') {
+      servantAttributesMessage += `Armadura primária: ${servant.inventory.primaryArmor.type}\n`
+      servantAttributesMessage += `Condição da armadura primária: ${servant.inventory.primaryArmor.condition}/${servant.inventory.primaryArmor.maximumCondition}\n\n`
     }
+    if (servant.inventory.secondaryArmor.type !== 'roupa') {
+      servantAttributesMessage += `Armadura secundária: ${servant.inventory.secondaryArmor.type}\n`
+      servantAttributesMessage += `Condição da armadura secundária: ${servant.inventory.secondaryArmor.condition}/${servant.inventory.secondaryArmor.maximumCondition}\n\n`
+    }
+    servantAttributesMessage += `Arma primária: ${servant.inventory.primaryWeapon.type}\n`
+
+    if (servant.inventory.secondaryWeapon != null) {
+      servantAttributesMessage += `Arma secundária: ${servant.inventory.secondaryWeapon.type}\n`
+    }
+    servantAttributesMessage += `Armas guardadas: ${weaponsKept}\n\n`
+    servantAttributesMessage += `Denários: ${servant.inventory.denars}\n`
+
     await message.reply(servantAttributesMessage)
   }
 
@@ -330,6 +321,13 @@ class CommandManager {
     await this.sleeper.sleep(2000)
     await message.reply(`No teste de resistência ${defender.name} tirou ${attackReport.resilienceFactor as number}`)
     await this.sleeper.sleep(2000)
+    if (attackReport.defenderSecondaryArmorHasBeenHit === false && defender.inventory.primaryArmor.type !== 'roupa') {
+      const armorStatus = await this.servantService.armorTakesDamage(defender, 'primary', attackReport.powerFactor as number)
+      if (armorStatus.haveBeenBroken) await message.reply(`o(a) ${armorStatus.type} de ${defender.name} foi quebrado(a)`)
+    } else if (attackReport.defenderSecondaryArmorHasBeenHit === true && defender.inventory.secondaryArmor.type !== 'roupa') {
+      const armorStatus = await this.servantService.armorTakesDamage(defender, 'secondary', attackReport.powerFactor as number)
+      if (armorStatus.haveBeenBroken) await message.reply(`o(a) ${armorStatus.type} de ${defender.name} foi quebrado(a)`)
+    }
     if (attackReport.damageDealtToDefender as number <= 0) await message.reply(`${defender.name} não sofreu dano nenhum`)
     else {
       await message.reply(`${defender.name} sofreu um dano de ${attackReport.damageDealtToDefender as number}`)
@@ -367,6 +365,26 @@ class CommandManager {
         await this.servantService.update(attacker.name, attacker)
         await this.servantService.delete(defender.name)
       }
+    }
+  }
+
+  async damageServantArmor (message: Message<boolean>, name: string, armorToDamage: string, damageToDeal: number): Promise<void> {
+    const servant = await this.servantService.get(name)
+    let armorStatus: { type: ArmorType, haveBeenBroken: boolean }
+    switch (armorToDamage) {
+      case 'primaria':
+        await message.reply(`A armadura ${armorToDamage} de ${name} sofreu ${damageToDeal} de dano`)
+        armorStatus = await this.servantService.armorTakesDamage(servant, 'primary', damageToDeal)
+        if (armorStatus.haveBeenBroken) await message.reply(`o(a) ${armorStatus.type} de ${servant.name} foi quebrado(a)`)
+
+        break
+      case 'secundaria':
+        await message.reply(`A armadura ${armorToDamage} de ${name} sofreu ${damageToDeal} de dano`)
+        armorStatus = await this.servantService.armorTakesDamage(servant, 'secondary', damageToDeal)
+        if (armorStatus.haveBeenBroken) await message.reply(`o(a) ${armorStatus.type} de ${servant.name} foi quebrado(a)`)
+        break
+      default:
+        throw new Error(`${armorToDamage} não é um tipo de armadura válido, escreva 'primaria' ou 'secundaria' para se referir a armadura que pretende danificar`)
     }
   }
 
