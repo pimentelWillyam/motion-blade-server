@@ -17,7 +17,7 @@ import type ServantRepository from '../repository/ServantRepository'
 class ServantService {
   constructor (private readonly servantRepository: ServantRepository, private readonly attributesFetcher: AttributesFetcher, private readonly servantFactory: ServantFactory, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory) {}
 
-  create = async (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, customCreation: boolean, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }): Promise<Servant> => {
+  create = async (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, customCreation: boolean, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }, primaryArmor: ArmorType = 'roupa', secondaryArmor: ArmorType = 'roupa', primaryWeapon: WeaponType = 'mão nua', secondaryWeapon: WeaponType | null = null): Promise<Servant> => {
     if (!await this.servantExists(name)) {
       if (!customCreation) {
         attributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
@@ -25,6 +25,10 @@ class ServantService {
         return await this.servantRepository.create(servant)
       }
       const servant = this.servantFactory.create(masterId, name, fatherProfession, youthProfession, attributes)
+      if (primaryArmor != null) servant.inventory.primaryArmor = this.armorFactory.createArmorByType(primaryArmor)
+      if (secondaryArmor != null) servant.inventory.secondaryArmor = this.armorFactory.createArmorByType(secondaryArmor)
+      if (primaryWeapon != null) servant.inventory.primaryWeapon = this.weaponFactory.createWeapon(primaryWeapon)
+      if (secondaryWeapon != null) servant.inventory.secondaryWeapon = this.weaponFactory.createWeapon(secondaryWeapon)
       return await this.servantRepository.create(servant)
     }
     throw new Error('Já existe um servo com esse nome')

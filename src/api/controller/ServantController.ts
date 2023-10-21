@@ -20,7 +20,7 @@ class ServantController {
           const servant = await this.servantService.create(req.body.masterId, req.body.name, req.body.fatherProfession, req.body.youthProfession, false)
           return res.status(200).json(servant)
         }
-        const servant = await this.servantService.create(req.body.masterId, req.body.name, 'soldado', 'soldado', true, { agility: req.body.agility, technique: req.body.technique, strength: req.body.strength, fortitude: req.body.fortitude })
+        const servant = await this.servantService.create(req.body.masterId, req.body.name, 'soldado', 'soldado', true, { agility: req.body.agility, technique: req.body.technique, strength: req.body.strength, fortitude: req.body.fortitude }, req.body.primaryArmor, req.body.secondaryArmor, req.body.primaryWeapon, req.body.secondaryWeapon)
         return res.status(200).json(servant)
       }
     } catch (erro) {
