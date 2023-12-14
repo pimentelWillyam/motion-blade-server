@@ -239,7 +239,7 @@ class ServantService {
   debuff = async (name: string, debuffValue: number): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.debuff -= debuffValue
+      servant.combatCapabilities.debuff -= debuffValue
       await this.servantRepository.update(name, servant)
       return servant
     }
