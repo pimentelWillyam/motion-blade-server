@@ -76,6 +76,10 @@ class ServantService {
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
+  rollTurnForServants (servantList: Servant[]): void {
+    console.log('oi')
+  }
+
   upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<Servant> => {
     const contentToUpgrade = await this.servantRepository.getByName(name)
     if (contentToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
