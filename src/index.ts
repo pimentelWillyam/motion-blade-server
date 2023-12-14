@@ -57,6 +57,8 @@ import CombatManager from './helper/CombatManager'
 import BattleService from './service/BattleService'
 import BattleRepository from './repository/BattleRepository'
 import { BattleFactory } from './factories/BattleFactory'
+import PostgresDataSource from './data/PostgresDataSource'
+import { Client } from 'pg'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -67,7 +69,8 @@ const randomNumberGenerator = new RandomNumberGenerator()
 
 // instanciating mariadb data source
 // const mariadbDataSource = new MariadbDataSource()
-const mariadbDataSource2 = new MariadbDataSource2()
+// const mariadbDataSource2 = new MariadbDataSource2()
+const postgresDataSource = new PostgresDataSource(Client)
 
 // instanciating attribute fetcher
 const attributesFetcher = new AttributesFetcher()
@@ -81,8 +84,8 @@ const servantFactory = new ServantFactory(uuidGenerator, armorFactory, weaponFac
 const battleFactory = new BattleFactory(randomNumberGenerator, uuidGenerator)
 
 // instanciating repository
-const servantRepository = new ServantRepository(mariadbDataSource2)
-const battleRepository = new BattleRepository(mariadbDataSource2)
+const servantRepository = new ServantRepository(postgresDataSource)
+const battleRepository = new BattleRepository(postgresDataSource)
 
 // instanciating services
 
@@ -118,8 +121,8 @@ const app = new App(api, server)
 dotenv.config()
 
 // starting database and app
-void mariadbDataSource2.startConnection()
-void mariadbDataSource2.bootstrap()
+// void postgresDataSource.startConnection()
+void postgresDataSource.bootstrap()
 
 app.start()
 
