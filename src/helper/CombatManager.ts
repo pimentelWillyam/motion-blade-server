@@ -79,18 +79,18 @@ class CombatManager {
   }
 
   private defenderWillTryToBlock (defender: Servant): boolean {
-    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff)) {
+    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff)) {
       return false
     }
-    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff)) {
+    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff)) {
       return true
     }
 
-    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility > (defender.currentAttributes.agility + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
+    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility > (defender.currentAttributes.agility + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
       return false
     }
 
-    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
+    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
       return true
     }
     throw new Error('Erro no momento em que se verifica se o defensor irá defender')
@@ -98,34 +98,34 @@ class CombatManager {
 
   private getAttackFactor (attacker: Servant, attackType: 'acerta' | 'lança' | 'atira'): { attribute: 'agilidade' | 'tecnica', value: number } {
     if ((attackType === 'atira' || attackType === 'lança') && attacker.inventory.secondaryWeapon === null) {
-      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique + attacker.inventory.primaryWeapon.hittingBuff + attacker.buff + attacker.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
+      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique + attacker.inventory.primaryWeapon.hittingBuff + attacker.combatCapabilities.buff + attacker.combatCapabilities.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
     }
     if ((attackType === 'atira' || attackType === 'lança') && attacker.inventory.secondaryWeapon != null) {
-      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique + attacker.inventory.primaryWeapon.hittingBuff + attacker.inventory.secondaryWeapon.hittingBuff + attacker.buff + attacker.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
+      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique + attacker.inventory.primaryWeapon.hittingBuff + attacker.inventory.secondaryWeapon.hittingBuff + attacker.combatCapabilities.buff + attacker.combatCapabilities.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
     }
     if (attackType === 'acerta' && attacker.inventory.secondaryWeapon === null) {
-      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.agility + attacker.inventory.primaryWeapon.hittingBuff + attacker.buff + attacker.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
+      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.agility + attacker.inventory.primaryWeapon.hittingBuff + attacker.combatCapabilities.buff + attacker.combatCapabilities.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
     }
     if (attackType === 'acerta' && attacker.inventory.secondaryWeapon != null) {
-      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.agility + attacker.inventory.primaryWeapon.hittingBuff + attacker.inventory.secondaryWeapon.hittingBuff + attacker.buff + attacker.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
+      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.agility + attacker.inventory.primaryWeapon.hittingBuff + attacker.inventory.secondaryWeapon.hittingBuff + attacker.combatCapabilities.buff + attacker.combatCapabilities.debuff + attacker.inventory.primaryArmor.debuff + attacker.inventory.secondaryArmor.debuff }
     }
     throw new Error('Erro no calculo de fator de ataque')
   }
 
   private getDefenseFactor (defender: Servant): { attribute: 'agilidade' | 'tecnica', value: number } {
-    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff)) {
-      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.agility + defender.buff + defender.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
+    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff)) {
+      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.agility + defender.combatCapabilities.buff + defender.combatCapabilities.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
     }
-    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff)) {
-      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.buff + defender.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
-    }
-
-    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
-      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.agility + defender.buff + defender.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
+    if (defender.inventory.secondaryWeapon === null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff)) {
+      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.combatCapabilities.buff + defender.combatCapabilities.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
     }
 
-    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
-      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique + defender.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff + defender.buff + defender.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
+    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility > (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
+      return { attribute: 'agilidade', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.agility + defender.combatCapabilities.buff + defender.combatCapabilities.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
+    }
+
+    if (defender.inventory.secondaryWeapon != null && defender.currentAttributes.agility <= (defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff)) {
+      return { attribute: 'tecnica', value: this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique + defender.combatCapabilities.guard + defender.inventory.primaryWeapon.defendingBuff + defender.inventory.secondaryWeapon.defendingBuff + defender.combatCapabilities.buff + defender.combatCapabilities.debuff + defender.inventory.primaryArmor.debuff + defender.inventory.secondaryArmor.debuff }
     }
     throw new Error('Erro no calculo de fator de defesa')
   }
