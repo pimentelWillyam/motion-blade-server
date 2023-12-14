@@ -133,6 +133,17 @@ class CommandManager {
     await this.battleService.update(battleName, battle)
     await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
   }
+
+  async removeServantFromBattle (message: Message<boolean>, servantName: string, battleName: string): Promise<void> {
+    if (!await this.servantService.servantExists(servantName)) throw new Error(`Não existe um servo chamado ${servantName}, tente inserir um servo que de fato exista`)
+    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
+    const servant = await this.servantService.get(servantName)
+    const battle = await this.battleService.get(battleName)
+    battle.removeServant(servant)
+    await this.servantService.update(servantName, servant)
+    await this.battleService.update(battleName, battle)
+    await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
+  }
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
