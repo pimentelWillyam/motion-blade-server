@@ -1,8 +1,8 @@
-import type MariadbDataSource2 from '../data/MariadbDataSource2'
+import type PostgresDataSource from '../data/PostgresDataSource'
 import type { Battle } from '../factories/BattleFactory'
 
 class BattleRepository {
-  constructor (readonly dataSource: MariadbDataSource2) {}
+  constructor (readonly dataSource: PostgresDataSource) {}
 
   async create (battle: Battle): Promise<Battle> {
     return await this.dataSource.insertBattleRegistry(battle)
