@@ -29,7 +29,8 @@ import * as express from 'express'
 import Api from './helper/Api'
 
 // importing data classes
-import MariadbDataSource from './data/MariadbDataSource'
+// import MariadbDataSource from './data/MariadbDataSource'
+import MariadbDataSource2 from './data/MariadbDataSource2'
 // importing routers
 
 // importing controllers
@@ -53,6 +54,9 @@ import { ArmorFactory } from './factories/ArmorFactory'
 import { ServantFactory } from './factories/ServantFactory'
 import ServantUpgrader from './bot/helper/ServantUpgrader'
 import CombatManager from './helper/CombatManager'
+import BattleService from './service/BattleService'
+import BattleRepository from './repository/BattleRepository'
+import { BattleFactory } from './factories/BattleFactory'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -62,7 +66,8 @@ const randomNumberGenerator = new RandomNumberGenerator()
 // instanciating the random number generator
 
 // instanciating mariadb data source
-const mariadbDataSource = new MariadbDataSource()
+// const mariadbDataSource = new MariadbDataSource()
+const mariadbDataSource2 = new MariadbDataSource2()
 
 // instanciating attribute fetcher
 const attributesFetcher = new AttributesFetcher()
@@ -73,13 +78,16 @@ const attributesFetcher = new AttributesFetcher()
 const armorFactory = new ArmorFactory()
 const weaponFactory = new WeaponFactory()
 const servantFactory = new ServantFactory(uuidGenerator, armorFactory, weaponFactory)
+const battleFactory = new BattleFactory(randomNumberGenerator, uuidGenerator)
 
 // instanciating repository
-const servantRepository = new ServantRepository(mariadbDataSource)
+const servantRepository = new ServantRepository(mariadbDataSource2)
+const battleRepository = new BattleRepository(mariadbDataSource2)
 
-// instanciating service
+// instanciating services
 
 const servantService = new ServantService(servantRepository, attributesFetcher, servantFactory, armorFactory, weaponFactory)
+const battleService = new BattleService(battleRepository, battleFactory)
 
 // instanciating validators
 const servantValidator = new ServantValidator()
@@ -88,7 +96,7 @@ const servantValidator = new ServantValidator()
 const servantController = new ServantController(servantService, servantValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, new ServantUpgrader(randomNumberGenerator), new CombatManager(randomNumberGenerator))
+const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(randomNumberGenerator))
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 
@@ -110,8 +118,8 @@ const app = new App(api, server)
 dotenv.config()
 
 // starting database and app
-void mariadbDataSource.startConnection()
-void mariadbDataSource.bootstrap()
+void mariadbDataSource2.startConnection()
+void mariadbDataSource2.bootstrap()
 
 app.start()
 
