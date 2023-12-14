@@ -209,7 +209,7 @@ class ServantService {
   applyGuard = async (name: string, guardToBeApplied: number): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.guard = guardToBeApplied
+      servant.combatCapabilities.guard = guardToBeApplied
       await this.servantRepository.update(name, servant)
       return servant
     }
