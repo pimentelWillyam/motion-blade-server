@@ -219,7 +219,7 @@ class ServantService {
   buff = async (name: string, buffValue: number): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.buff += buffValue
+      servant.combatCapabilities.buff += buffValue
       await this.servantRepository.update(name, servant)
       return servant
     }
