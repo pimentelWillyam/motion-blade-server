@@ -22,6 +22,8 @@ class MessageHandler {
         await this.commandManager.rollDice(message, parseInt(treatedMessage[1]))
       } else if (treatedMessage[0] === 'criar' && treatedMessage[1] === 'servo' && treatedMessage.length === 5) {
         await this.commandManager.createServant(message, treatedMessage[2], treatedMessage[3] as Profession, treatedMessage[4] as Profession)
+      } else if (treatedMessage[0] === 'inserir' && treatedMessage.length === 3) {
+        await this.commandManager.insertServantInBattle(message, treatedMessage[1], treatedMessage[2])
       } else if (treatedMessage[0] === 'remover' && treatedMessage.length === 3) {
         await this.commandManager.removeServantFromBattle(message, treatedMessage[1], treatedMessage[2])
       } else if (treatedMessage[0] === 'info' && treatedMessage.length === 2) {
