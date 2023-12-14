@@ -229,7 +229,7 @@ class ServantService {
   removeBuff = async (name: string): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.buff = 0
+      servant.combatCapabilities.buff = 0
       await this.servantRepository.update(name, servant)
       return servant
     }
