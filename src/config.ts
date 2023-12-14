@@ -27,11 +27,11 @@ const config = {
     connectString: process.env.CONNECTION_STRING_DATABASE_ORACLE ?? 'localhost/xe'
   },
   postgres: {
-    user: 'dbuser',
-    host: 'database.server.com',
-    database: 'mydb',
-    password: 'secretpassword',
-    port: 3211 // 5432
+    user: 'postgres',
+    host: 'localhost',
+    database: 'motion_blade',
+    password: 'postgres',
+    port: 5432 // 5432 3211
   },
   json: {
     secret: process.env.SECRET_JSON ?? 'secret'
