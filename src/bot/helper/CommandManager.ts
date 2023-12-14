@@ -144,6 +144,30 @@ class CommandManager {
     await this.battleService.update(battleName, battle)
     await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
   }
+
+  async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
+    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
+    const battle = await this.battleService.get(battleName)
+    await message.reply(`
+    Informações relevantes sobre esta batalha:
+    Nome: ${battle.name}
+    Participantes da batalha: ${'vou inserir esse ngc ainda'}
+
+    Servo da vez: ${'vou implementar ainda'}
+    Servos aguardando sua vez: ${'vou inserir esse ngc ainda'}
+
+    ${battle.map[0].toString()}
+    ${battle.map[1].toString()}
+    ${battle.map[2].toString()}
+    ${battle.map[3].toString()}
+    ${battle.map[4].toString()}
+    ${battle.map[5].toString()}
+    ${battle.map[6].toString()}
+    ${battle.map[7].toString()}
+
+    `)
+  }
+
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
