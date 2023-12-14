@@ -7,9 +7,10 @@ import type ArmorType from '../type/ArmorType'
 import type ServantService from '../../service/ServantService'
 import type ServantUpgrader from './ServantUpgrader'
 import type CombatManager from '../../helper/CombatManager'
+import type BattleService from '../../service/BattleService'
 
 class CommandManager {
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `
