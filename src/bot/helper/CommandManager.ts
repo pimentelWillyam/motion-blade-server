@@ -168,6 +168,19 @@ class CommandManager {
     `)
   }
 
+  async rollBattleTurn (message: Message<boolean>, battleName: string): Promise<void> {
+    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
+    const battle = await this.battleService.get(battleName)
+    this.servantService.rollTurnForServants(battle.participantsList)
+    await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
+  }
+
+  async deleteBattle (message: Message<boolean>, battleName: string): Promise<void> {
+    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
+    await this.battleService.delete(battleName)
+    await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
+  }
+
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
