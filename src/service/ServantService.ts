@@ -249,7 +249,7 @@ class ServantService {
   removeDebuff = async (name: string): Promise<Servant> => {
     const servant = await this.servantRepository.getByName(name)
     if (servant != null) {
-      servant.debuff = 0
+      servant.combatCapabilities.debuff = 0
       await this.servantRepository.update(name, servant)
       return servant
     }
