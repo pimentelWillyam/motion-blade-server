@@ -118,6 +118,11 @@ class CommandManager {
     await message.reply('Servo criado com sucesso.')
   }
 
+  async createBattle (message: Message<boolean>, battleName: string): Promise<void> {
+    if (await this.battleService.battleExists(battleName)) throw new Error(`Já existe uma batalha chamada ${battleName}, tente criar uma com outro nome`)
+    await this.battleService.create(battleName)
+    await message.reply('Batalha criada com sucesso.')
+  }
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
     const servantAttributesMessage = `
