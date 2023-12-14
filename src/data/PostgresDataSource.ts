@@ -18,6 +18,7 @@ class PostgresDataSource {
   }
 
   async bootstrap (): Promise<boolean> {
+    await this.client.connect()
     this.createNecessaryDatabases().finally(() => {
       this.createNecessaryTables().finally(() => {
 
