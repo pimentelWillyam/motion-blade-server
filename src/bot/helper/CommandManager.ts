@@ -190,9 +190,13 @@ class CommandManager {
       tecnica: ${servant.currentAttributes.technique}
       força: ${servant.currentAttributes.strength}
       fortitude: ${servant.currentAttributes.fortitude}
-      guarda: ${servant.guard}
-      buff: ${servant.buff}
-      debuff: ${servant.debuff}
+      guarda: ${servant.combatCapabilities.guard}
+      buff: ${servant.combatCapabilities.buff}
+      debuff: ${servant.combatCapabilities.debuff}
+    `
+    await message.reply(servantAttributesMessage)
+  }
+
     `
     await message.reply(servantAttributesMessage)
   }
