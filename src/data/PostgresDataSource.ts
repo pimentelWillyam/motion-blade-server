@@ -18,7 +18,7 @@ class PostgresDataSource {
   }
 
   async bootstrap (): Promise<boolean> {
-    await this.client.connect()
+    await this.startConnection()
     this.createNecessaryDatabases().finally(() => {
       this.createNecessaryTables().finally(() => {
 
@@ -27,7 +27,7 @@ class PostgresDataSource {
     return true
   }
 
-  async startConnection (): Promise<boolean> {
+  private async startConnection (): Promise<boolean> {
     await this.client.connect()
     return true
   }
@@ -37,24 +37,24 @@ class PostgresDataSource {
     return true
   }
 
-  async createNecessaryDatabases (): Promise<boolean> {
+  private async createNecessaryDatabases (): Promise<boolean> {
     if (!await this.motionBladeDatabaseExists()) {
       await this.createMotionBladeDatabase().finally()
     }
     return true
   }
 
-  async createMotionBladeDatabase (): Promise<boolean> {
+  private async createMotionBladeDatabase (): Promise<boolean> {
     await this.client.query('CREATE DATABASE motion_blade_2 ;')
     return true
   }
 
-  async useMotionBladeDatabase (): Promise<boolean> {
+  private async useMotionBladeDatabase (): Promise<boolean> {
     await this.client.query('USE motion_blade_2 ;')
     return true
   }
 
-  async motionBladeDatabaseExists (): Promise<boolean> {
+  private async motionBladeDatabaseExists (): Promise<boolean> {
     const databaseList = await this.client.query("SHOW DATABASES LIKE 'motion_blade_2' ;")
     if (databaseList.rowCount === 0) {
       return false
@@ -62,7 +62,7 @@ class PostgresDataSource {
     return true
   }
 
-  async createServantTable (): Promise<boolean> {
+  private async createServantTable (): Promise<boolean> {
     await this.client.query('USE motion_blade_2 ;').finally(() => {
       const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
 
@@ -74,7 +74,7 @@ class PostgresDataSource {
     return true
   }
 
-  async createBattleTable (): Promise<boolean> {
+  private async createBattleTable (): Promise<boolean> {
     await this.client.query('USE motion_blade_2 ;').finally(() => {
       const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
       this.client.query(query).finally(() => { console.log('tabela de batalhas criada') })
@@ -83,7 +83,7 @@ class PostgresDataSource {
     return true
   }
 
-  async tableExists (tableName: string): Promise<boolean> {
+  private async tableExists (tableName: string): Promise<boolean> {
     const res = await this.client.query("SHOW TABLES FROM motion_blade_2 LIKE '" + tableName + "' ;")
     if (res.rows[0] == null) {
       return false
@@ -91,7 +91,7 @@ class PostgresDataSource {
     return true
   }
 
-  async createNecessaryTables (): Promise<boolean> {
+  private async createNecessaryTables (): Promise<boolean> {
     if (!await this.tableExists('servant')) await this.createServantTable()
     if (!await this.tableExists('battle')) await this.createBattleTable()
     return true
