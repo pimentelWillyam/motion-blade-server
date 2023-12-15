@@ -55,7 +55,8 @@ class PostgresDataSource {
   }
 
   private async motionBladeDatabaseExists (): Promise<boolean> {
-    const databaseList = await this.client.query("SHOW DATABASES LIKE 'motion_blade_2' ;")
+    const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
+    const databaseList = await this.client.query(query)
     if (databaseList.rowCount === 0) {
       return false
     }
@@ -64,9 +65,24 @@ class PostgresDataSource {
 
   private async createServantTable (): Promise<boolean> {
     await this.client.query('USE motion_blade_2 ;').finally(() => {
-      const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+      const query3 = `CREATE TABLE servant (
+        id UUID NOT NULL,
+        master_id VARCHAR NOT NULL,
+        name VARCHAR NOT NULL,
+        father_profession VARCHAR NOT NULL,
+        youth_profession VARCHAR NOT NULL,
+        current_attributes JSON NOT NULL,
+        maximum_attributes JSON NOT NULL,
+        combat_capabilities JSON NOT NULL,
+        battle_info JSON NOT NULL,
+        inventory JSON NOT NULL,
+        maestry JSON NOT NULL,
+        PRIMARY KEY (id)
+    );`
 
-      this.client.query(query2).finally(() => { console.log('tabela de servos criada') })
+      // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+
+      this.client.query(query3).finally(() => { console.log('tabela de servos criada') })
     })
     // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
     // await this.pool?.query(query2)
@@ -76,15 +92,23 @@ class PostgresDataSource {
 
   private async createBattleTable (): Promise<boolean> {
     await this.client.query('USE motion_blade_2 ;').finally(() => {
-      const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
-      this.client.query(query).finally(() => { console.log('tabela de batalhas criada') })
+      // const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+      const query2 = `CREATE TABLE battle (
+        id UUID NOT NULL,
+        name VARCHAR(50) NOT NULL DEFAULT '',
+        participants_list JSON NOT NULL,
+        turn_info JSON,
+        map JSON NOT NULL
+    );`
+      this.client.query(query2).finally(() => { console.log('tabela de batalhas criada') })
     })
 
     return true
   }
 
   private async tableExists (tableName: string): Promise<boolean> {
-    const res = await this.client.query("SHOW TABLES FROM motion_blade_2 LIKE '" + tableName + "' ;")
+    const query = `SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '${tableName}');`
+    const res = await this.client.query(query)
     if (res.rows[0] == null) {
       return false
     }
@@ -98,20 +122,63 @@ class PostgresDataSource {
   }
 
   async insertServantRegistry (servant: Servant): Promise<Servant> {
-    const query = 'INSERT INTO motion_blade_2.servant (id, master_id, name, father_profession, youth_profession, current_attributes, maximum_attributes, combat_capabilities, battle_info, inventory, maestry) VALUES (?,?,?,?,?,?,?,?,?,?,?);'
-    await this.client.query(query, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battleInfo, servant.inventory, servant.maestry])
+    // const query = 'INSERT INTO motion_blade_2.servant (id, master_id, name, father_profession, youth_profession, current_attributes, maximum_attributes, combat_capabilities, battle_info, inventory, maestry) VALUES (?,?,?,?,?,?,?,?,?,?,?);'
+    const query2 = `INSERT INTO servant (
+      id,
+      master_id,
+      name,
+      father_profession,
+      youth_profession,
+      current_attributes,
+      maximum_attributes,
+      combat_capabilities,
+      battle_info,
+      inventory,
+      maestry
+  ) VALUES (
+      '$1',
+      '$2',
+      '$3',
+      '$4',
+      '$5',
+      '$6',
+      '$7',
+      '$8',
+      '$9',
+      '$10',
+      '$11'
+  );`
+    await this.client.query(query2, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battleInfo, servant.inventory, servant.maestry])
     return servant
   }
 
   async insertBattleRegistry (battle: Battle): Promise<Battle> {
     console.log('batalha:', battle)
-    const query = 'INSERT INTO motion_blade_2.battle (id, name, map) VALUES (?,?,?);'
-    await this.client.query(query, [battle.id, battle.name, battle.map])
+    // const query = 'INSERT INTO motion_blade_2.battle (id, name, map) VALUES (?,?,?);'
+    const query2 = `INSERT INTO battle (
+      id,
+      name,
+      participants_list,
+      turn_info,
+      map
+  ) VALUES (
+      '$1', -- Substitua pelo seu UUID
+      '$2',
+      '$3',
+      '$4',
+      '$5'
+  );
+  `
+    await this.client.query(query2, [battle.id, battle.name, battle.map])
     return battle
   }
 
   async fetchEveryServantRegistry (): Promise<Servant[]> {
-    const databaseData = (await this.client.query('SELECT * FROM motion_blade_2.servant ;')).rows as DatabaseServant[]
+    const query = `SELECT *
+    FROM motion_blade_2.servant;
+    `
+
+    const databaseData = (await this.client.query(query)).rows as DatabaseServant[]
     const servantList: Servant[] = []
     databaseData.forEach((servant) => {
       servantList.push({
@@ -133,7 +200,28 @@ class PostgresDataSource {
   }
 
   async fetchEveryBattleRegistry (): Promise<Battle[]> {
-    return (await this.client.query('SELECT * FROM motion_blade_2.battle ;')).rows as Battle[]
+    const query = `SELECT *
+    FROM motion_blade_2.battle;`
+
+    const databaseData = (await this.client.query(query)).rows
+    const battleList: Battle[] = []
+    databaseData.forEach((battle: Battle) => {
+      battleList.push({
+        id: battle.id,
+        map: battle.map,
+        name: battle.name,
+        participantsList: battle.participantsList,
+        youthProfession: servant.youth_profession,
+        currentAttributes: servant.current_attributes,
+        maximumAttributes: servant.maximum_attributes,
+        combatCapabilities: servant.combat_capabilities,
+        battleInfo: servant.battle_info,
+        inventory: servant.inventory,
+        maestry: servant.maestry
+
+      })
+    })
+    return servantList
   }
 
   async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
