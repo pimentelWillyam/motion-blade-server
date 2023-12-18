@@ -3,11 +3,24 @@ import type RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
 import type TurnInfo from '../bot/type/TurnInfo'
 import type UuidGenerator from '../bot/helper/UuidGenerator'
 
+interface BattleDTO {
+  id: string
+  name: string
+  participantsList: Servant[]
+  map: string[][]
+  turnInfo: TurnInfo
+}
 class Battle {
+  id: string
+  name: string
+  participantsList: Servant[]
   map: string[][]
   turnInfo: TurnInfo
 
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, readonly id: string, readonly name: string, readonly participantsList: Servant[], map: string[][]) {
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, id: string, name: string, participantsList: Servant[], map: string[][]) {
+    this.id = id
+    this.name = name
+    this.participantsList = participantsList
     this.map = map
     this.turnInfo = { servantAboutToPlay: undefined, servantsYetToPlay: [] }
   }
@@ -108,4 +121,4 @@ class BattleFactory {
   }
 }
 
-export { Battle, BattleFactory }
+export { type BattleDTO, Battle, BattleFactory }
