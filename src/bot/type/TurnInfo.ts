@@ -1,7 +1,7 @@
 import { type Servant } from '../../factories/ServantFactory'
 
 interface TurnInfo {
-  servantsYetToPlay: Servant[]
+  servantsYetToPlay: Servant[] | undefined
   servantAboutToPlay: Servant | undefined
 
 }
