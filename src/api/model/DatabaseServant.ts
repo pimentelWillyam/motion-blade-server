@@ -2,7 +2,7 @@ import type BattleInfo from '../../bot/type/BattleInfo'
 import type CombatCapabilities from '../../bot/type/CombatCapabilities'
 import type Inventory from '../../bot/type/Inventory'
 import type Maestry from '../../bot/type/Maestry'
-import Profession from '../../bot/type/Profession'
+import type Profession from '../../bot/type/Profession'
 import type Attributes from '../type/Attributes'
 
 interface DatabaseServant {
