@@ -1,71 +1,41 @@
 import config from '../config'
 
 import { type Servant } from '../factories/ServantFactory'
-import { type Battle } from '../factories/BattleFactory'
+import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
+import type DatabaseBattle from '../api/model/DatabaseBattle'
 
-class PostgresDataSource {
+class PostgresBootstraper {
   private readonly client: Client
   constructor (ClientClass: typeof Client) {
     this.client = new ClientClass({
       user: config.postgres.user,
       host: config.postgres.host,
-      database: config.postgres.database,
       password: config.postgres.password,
-      port: config.postgres.port // 5432
+      port: config.postgres.port
     })
   }
 
-  async bootstrap (): Promise<boolean> {
-    await this.startConnection()
-    this.createNecessaryDatabases().finally(() => {
-      this.createNecessaryTables().finally(() => {
 
-      })
-    })
-    return true
-  }
-
-  private async startConnection (): Promise<boolean> {
-    await this.client.connect()
-    return true
-  }
-
-  async stopConnection (): Promise<boolean> {
-    await this.client.end()
-    return true
-  }
-
-  private async createNecessaryDatabases (): Promise<boolean> {
-    if (!await this.motionBladeDatabaseExists()) {
-      await this.createMotionBladeDatabase().finally()
-    }
-    return true
-  }
-
-  private async createMotionBladeDatabase (): Promise<boolean> {
+  private async createMotionBladeDatabase (): Promise<void> {
     await this.client.query('CREATE DATABASE motion_blade_2 ;')
-    return true
+    console.log('database have been created')
   }
 
-  private async useMotionBladeDatabase (): Promise<boolean> {
-    await this.client.query('USE motion_blade_2 ;')
-    return true
-  }
-
-  private async motionBladeDatabaseExists (): Promise<boolean> {
-    const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
-    const databaseList = await this.client.query(query)
-    if (databaseList.rowCount === 0) {
-      return false
+  private async tableExists (tableName: string): Promise<boolean> {
+    const query = `SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '${tableName}');`
+    const res = await this.client.query(query)
+    console.log(res.rows[0].exists as boolean)
+    if (res.rows[0].exists as boolean) {
+      return true
     }
-    return true
+    return false
   }
 
   private async createServantTable (): Promise<boolean> {
-    await this.client.query('USE motion_blade_2 ;').finally(() => {
-      const query3 = `CREATE TABLE servant (
+    // await this.client.query('USE motion_blade_2 ;').finally(() => {
+    const query3 = `CREATE TABLE motion_blade_2.public.servant (
         id UUID NOT NULL,
         master_id VARCHAR NOT NULL,
         name VARCHAR NOT NULL,
@@ -80,45 +50,145 @@ class PostgresDataSource {
         PRIMARY KEY (id)
     );`
 
-      // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+    // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
 
-      this.client.query(query3).finally(() => { console.log('tabela de servos criada') })
-    })
+    // })
     // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
     // await this.pool?.query(query2)
-
+    const res = await this.client.query(query3)
+    console.log(res)
     return true
   }
 
   private async createBattleTable (): Promise<boolean> {
-    await this.client.query('USE motion_blade_2 ;').finally(() => {
-      // const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
-      const query2 = `CREATE TABLE battle (
+    // await this.client.query('USE motion_blade_2 ;').finally(() => {
+    // const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+    const query2 = `CREATE TABLE motion_blade_2.public.servant (
         id UUID NOT NULL,
         name VARCHAR(50) NOT NULL DEFAULT '',
         participants_list JSON NOT NULL,
         turn_info JSON,
         map JSON NOT NULL
     );`
-      this.client.query(query2).finally(() => { console.log('tabela de batalhas criada') })
-    })
+    // })
+    const res = await this.client.query(query2)
+    console.log(res)
+    return true
+  }
 
+  private async createNecessaryTables (): Promise<void> {
+    if (!await this.tableExists('servant')) await this.createServantTable()
+    else console.log('the table exists')
+    if (!await this.tableExists('battle')) await this.createBattleTable()
+    else console.log('the table exists')
+  }
+
+  async bootstrap (): Promise<void> {
+    await this.client.connect()
+    if (!await this.motionBladeDatabaseExists()) await this.createMotionBladeDatabase()
+    await this.createNecessaryTables()
+    await this.client.end()
+  }
+}
+
+class PostgresDataSource {
+  private readonly client: Client
+  constructor (ClientClass: typeof Client) {
+    this.client = new ClientClass({
+      user: config.postgres.user,
+      host: config.postgres.host,
+      database: config.postgres.database,
+      password: config.postgres.password,
+      port: config.postgres.port
+    })
+  }
+
+  async start (): Promise<void> {
+    await this.client.connect()
+  }
+
+  async stopConnection (): Promise<void> {
+    await this.client.end()
+  }
+
+  private async createMotionBladeDatabase (): Promise<void> {
+    await this.client.query('CREATE DATABASE motion_blade_2 ;')
+    console.log('database have been created')
+  }
+
+  private async useMotionBladeDatabase (): Promise<void> {
+    const query = '\c motion_blade_2'
+    const queryResult = await this.client.query(query)
+    console.log(queryResult)
+  }
+
+  private async motionBladeDatabaseExists (): Promise<boolean> {
+    const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
+    const databaseList = await this.client.query(query)
+    if (databaseList.rowCount === 0) {
+      return false
+    }
+    return true
+  }
+
+  private async createServantTable (): Promise<boolean> {
+    // await this.client.query('USE motion_blade_2 ;').finally(() => {
+    const query3 = `CREATE TABLE motion_blade_2.public.servant (
+        id UUID NOT NULL,
+        master_id VARCHAR NOT NULL,
+        name VARCHAR NOT NULL,
+        father_profession VARCHAR NOT NULL,
+        youth_profession VARCHAR NOT NULL,
+        current_attributes JSON NOT NULL,
+        maximum_attributes JSON NOT NULL,
+        combat_capabilities JSON NOT NULL,
+        battle_info JSON NOT NULL,
+        inventory JSON NOT NULL,
+        maestry JSON NOT NULL,
+        PRIMARY KEY (id)
+    );`
+
+    // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+
+    // })
+    // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+    // await this.pool?.query(query2)
+    const res = await this.client.query(query3)
+    console.log(res)
+    return true
+  }
+
+  private async createBattleTable (): Promise<boolean> {
+    // await this.client.query('USE motion_blade_2 ;').finally(() => {
+    // const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
+    const query2 = `CREATE TABLE motion_blade_2.public.servant (
+        id UUID NOT NULL,
+        name VARCHAR(50) NOT NULL DEFAULT '',
+        participants_list JSON NOT NULL,
+        turn_info JSON,
+        map JSON NOT NULL
+    );`
+    // })
+    const res = await this.client.query(query2)
+    console.log(res)
     return true
   }
 
   private async tableExists (tableName: string): Promise<boolean> {
     const query = `SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '${tableName}');`
     const res = await this.client.query(query)
-    if (res.rows[0] == null) {
-      return false
+    console.log(res.rows[0].exists as boolean)
+    if (res.rows[0].exists as boolean) {
+      return true
     }
-    return true
+    return false
   }
 
-  private async createNecessaryTables (): Promise<boolean> {
+  private async createNecessaryTables (): Promise<void> {
     if (!await this.tableExists('servant')) await this.createServantTable()
+    else console.log('the table exists')
     if (!await this.tableExists('battle')) await this.createBattleTable()
-    return true
+    else console.log('the table exists')
   }
 
   async insertServantRegistry (servant: Servant): Promise<Servant> {
@@ -136,24 +206,23 @@ class PostgresDataSource {
       inventory,
       maestry
   ) VALUES (
-      '$1',
-      '$2',
-      '$3',
-      '$4',
-      '$5',
-      '$6',
-      '$7',
-      '$8',
-      '$9',
-      '$10',
-      '$11'
+      $1,
+      $2,
+      $3,
+      $4,
+      $5,
+      $6,
+      $7,
+      $8,
+      $9,
+      $10,
+      $11
   );`
     await this.client.query(query2, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battleInfo, servant.inventory, servant.maestry])
     return servant
   }
 
-  async insertBattleRegistry (battle: Battle): Promise<Battle> {
-    console.log('batalha:', battle)
+  async insertBattleRegistry (battle: BattleDTO): Promise<BattleDTO> {
     // const query = 'INSERT INTO motion_blade_2.battle (id, name, map) VALUES (?,?,?);'
     const query2 = `INSERT INTO battle (
       id,
@@ -175,7 +244,7 @@ class PostgresDataSource {
 
   async fetchEveryServantRegistry (): Promise<Servant[]> {
     const query = `SELECT *
-    FROM motion_blade_2.servant;
+    FROM motion_blade_2.public.servant;
     `
 
     const databaseData = (await this.client.query(query)).rows as DatabaseServant[]
@@ -199,33 +268,26 @@ class PostgresDataSource {
     return servantList
   }
 
-  async fetchEveryBattleRegistry (): Promise<Battle[]> {
+  async fetchEveryBattleRegistry (): Promise<BattleDTO[]> {
     const query = `SELECT *
-    FROM motion_blade_2.battle;`
+    FROM motion_blade_2.public.servant;`
 
-    const databaseData = (await this.client.query(query)).rows
-    const battleList: Battle[] = []
-    databaseData.forEach((battle: Battle) => {
+    const databaseData = (await this.client.query(query)).rows as DatabaseBattle[]
+    const battleList: BattleDTO[] = []
+    databaseData.forEach((battle) => {
       battleList.push({
         id: battle.id,
         map: battle.map,
         name: battle.name,
-        participantsList: battle.participantsList,
-        youthProfession: servant.youth_profession,
-        currentAttributes: servant.current_attributes,
-        maximumAttributes: servant.maximum_attributes,
-        combatCapabilities: servant.combat_capabilities,
-        battleInfo: servant.battle_info,
-        inventory: servant.inventory,
-        maestry: servant.maestry
-
+        participantsList: battle.participants_list,
+        turnInfo: { servantAboutToPlay: undefined, servantsYetToPlay: undefined }
       })
     })
-    return servantList
+    return battleList
   }
 
   async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
-    const databaseData = (await this.client.query(`SELECT * FROM motion_blade_2.servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as DatabaseServant[]
+    const databaseData = (await this.client.query(`SELECT * FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as DatabaseServant[]
     if (databaseData[0] === undefined) return null
     else {
       return {
@@ -245,22 +307,22 @@ class PostgresDataSource {
     }
   }
 
-  async fetchBattleBy (parameter: string, parameterValue: string): Promise<Battle | null> {
+  async fetchBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
     const battleList = await this.client.query(`SELECT * FROM motion_blade_2.battle WHERE ${parameter} = '${parameterValue}' ;`)
     if (battleList.rows[0] === undefined) return null
-    else return battleList.rows[0] as Battle
+    else return battleList.rows[0] as BattleDTO
   }
 
   async updateServantBy (parameter: string, parameterValue: string, servantToUpdate: Servant): Promise<Servant> {
-    const query = `UPDATE motion_blade_2.servant SET id=?,masterId=?,name=?,fatherProfession=?,youthProfession=?,currentAttributes=?,maximumAttributes=?,guard=?,buff=?,debuff=?,inventory=?,maestry=? WHERE ${parameter} = '${parameterValue}'`
+    const query = `UPDATE motion_blade_2.public.servant SET id=?,masterId=?,name=?,fatherProfession=?,youthProfession=?,currentAttributes=?,maximumAttributes=?,guard=?,buff=?,debuff=?,inventory=?,maestry=? WHERE ${parameter} = '${parameterValue}'`
 
     await this.client.query(query, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.combatCapabilities, servantToUpdate.battleInfo, servantToUpdate.inventory, servantToUpdate.maestry])
 
     return servantToUpdate
   }
 
-  async updateBattleBy (parameter: string, parameterValue: string, battleToUpdate: Battle): Promise<Battle> {
-    const query = `UPDATE motion_blade_2.battle SET id=?,name=?,participants_list=?,turn_info=?,map=? WHERE ${parameter} = '${parameterValue}'`
+  async updateBattleBy (parameter: string, parameterValue: string, battleToUpdate: BattleDTO): Promise<BattleDTO> {
+    const query = `UPDATE motion_blade_2.public.battle SET id=?,name=?,participants_list=?,turn_info=?,map=? WHERE ${parameter} = '${parameterValue}'`
 
     await this.client.query(query, [battleToUpdate.id, battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map])
 
@@ -270,18 +332,18 @@ class PostgresDataSource {
   async deleteServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
     const servant = await this.fetchServantBy(parameter, parameterValue)
     if (servant === null) return null
-    const query = `DELETE FROM motion_blade_2.servant WHERE ${parameter} = '${parameterValue}';`
+    const query = `DELETE FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}';`
     await this.client.query(query, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battleInfo, servant.inventory, servant.maestry])
     return servant
   }
 
-  async deleteBattleBy (parameter: string, parameterValue: string): Promise<Battle | null> {
-    const servant = await this.fetchBattleBy(parameter, parameterValue)
-    if (servant === null) return null
-    const query = `DELETE FROM motion_blade_2.servant WHERE ${parameter} = '${parameterValue}';`
+  async deleteBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
+    const battle = await this.fetchBattleBy(parameter, parameterValue)
+    if (battle === null) return null
+    const query = `DELETE FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}';`
     await this.client.query(query)
-    return servant
+    return battle
   }
 }
 
-export default PostgresDataSource
+export { PostgresBootstraper, PostgresDataSource }
