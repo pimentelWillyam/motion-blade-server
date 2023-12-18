@@ -17,6 +17,14 @@ class PostgresBootstraper {
     })
   }
 
+  private async motionBladeDatabaseExists (): Promise<boolean> {
+    const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
+    const databaseList = await this.client.query(query)
+    if (databaseList.rowCount === 0) {
+      return false
+    }
+    return true
+  }
 
   private async createMotionBladeDatabase (): Promise<void> {
     await this.client.query('CREATE DATABASE motion_blade_2 ;')
