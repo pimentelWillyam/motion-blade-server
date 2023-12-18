@@ -29,7 +29,7 @@ const config = {
   postgres: {
     user: 'postgres',
     host: 'localhost',
-    database: 'motion_blade',
+    database: 'motion_blade_2',
     password: 'postgres',
     port: 5432 // 5432 3211
   },
