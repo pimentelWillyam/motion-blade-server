@@ -85,7 +85,7 @@ class PostgresDataSource {
   private async createBattleTable (): Promise<boolean> {
     // await this.client.query('USE motion_blade_2 ;').finally(() => {
     // const query = "CREATE TABLE `battle` (`id` UUID NOT NULL, `name` VARCHAR(50) NOT NULL DEFAULT '', `participants_list` JSON NOT NULL, `turn_info` JSON NULL, `map` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
-    const query2 = `CREATE TABLE motion_blade_2.public.servant (
+    const query2 = `CREATE TABLE motion_blade_2.public.battle (
         id UUID NOT NULL,
         name VARCHAR(50) NOT NULL DEFAULT '',
         participants_list JSON NOT NULL,
