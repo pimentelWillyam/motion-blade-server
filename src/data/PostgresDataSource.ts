@@ -106,6 +106,7 @@ class PostgresDataSource {
     await this.databaseCreator.connect()
     if (!await this.motionBladeDatabaseExists()) await this.createMotionBladeDatabase()
     await this.client.connect()
+    await this.createNecessaryTables()
   }
 
   async insertServantRegistry (servant: Servant): Promise<Servant> {
