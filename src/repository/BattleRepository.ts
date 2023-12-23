@@ -1,4 +1,4 @@
-import type PostgresDataSource from '../data/PostgresDataSource'
+import type { PostgresDataSource } from '../data/PostgresDataSource'
 import type { BattleDTO } from '../factories/BattleFactory'
 
 class BattleRepository {
