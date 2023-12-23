@@ -105,7 +105,7 @@ class PostgresDataSource {
   }
 
   async bootstrap (): Promise<void> {
-    await this.client.connect()
+    await this.databaseCreator.connect()
     if (!await this.motionBladeDatabaseExists()) await this.createMotionBladeDatabase()
     await this.createNecessaryTables()
     await this.client.end()
