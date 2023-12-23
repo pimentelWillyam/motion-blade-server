@@ -142,21 +142,25 @@ class PostgresDataSource {
 
   async insertBattleRegistry (battle: BattleDTO): Promise<BattleDTO> {
     // const query = 'INSERT INTO motion_blade_2.battle (id, name, map) VALUES (?,?,?);'
-    const query2 = `INSERT INTO battle (
-      id,
-      name,
-      participants_list,
-      turn_info,
-      map
-  ) VALUES (
-      '$1', -- Substitua pelo seu UUID
-      '$2',
-      '$3',
-      '$4',
-      '$5'
-  );
-  `
-    await this.client.query(query2, [battle.id, battle.name, battle.map])
+    // "working" below
+  //   const query2 = `INSERT INTO battle (
+  //     id,
+  //     name,
+  //     participants_list,
+  //     turn_info,
+  //     map
+  // ) VALUES (
+  //     '$1',
+  //     '$2',
+  //     '$3',
+  //     '$4',
+  //     '$5'
+  // );`
+  //   await this.client.query(query2, [battle.id, battle.name, battle.participantsList, battle.turnInfo, battle.map])
+  //   return battle
+
+    const query2 = 'INSERT INTO battle (id, name, participants_list, turn_info, map) VALUES ($1,$2,$3,$4,$5);'
+    await this.client.query(query2, [battle.id, battle.name, battle.participantsList, battle.turnInfo, battle.map])
     return battle
   }
 
