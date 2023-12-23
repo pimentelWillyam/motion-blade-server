@@ -93,8 +93,7 @@ class PostgresDataSource {
         map JSON NOT NULL
     );`
     // })
-    const res = await this.client.query(query2)
-    console.log(res)
+    await this.client.query(query2)
     return true
   }
 
