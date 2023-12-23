@@ -6,12 +6,21 @@ import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
 
-class PostgresBootstraper {
+class PostgresDataSource {
+  private readonly databaseCreator: Client
   private readonly client: Client
+
   constructor (ClientClass: typeof Client) {
+    this.databaseCreator = new ClientClass({
+      user: config.postgres.user,
+      host: config.postgres.host,
+      password: config.postgres.password,
+      port: config.postgres.port
+    })
     this.client = new ClientClass({
       user: config.postgres.user,
       host: config.postgres.host,
+      database: config.postgres.database,
       password: config.postgres.password,
       port: config.postgres.port
     })
