@@ -50,7 +50,6 @@ class PostgresDataSource {
   private async tableExists (tableName: string): Promise<boolean> {
     const query = `SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '${tableName}');`
     const res = await this.client.query(query)
-    console.log(res.rows[0].exists as boolean)
     if (res.rows[0].exists as boolean) {
       return true
     }
@@ -79,8 +78,6 @@ class PostgresDataSource {
     // })
     // const query2 = "CREATE TABLE `servant` (`id` UUID NOT NULL, `master_id` VARCHAR(50) NOT NULL DEFAULT '', `name` VARCHAR(50) NOT NULL DEFAULT '', `father_profession` VARCHAR(50) NOT NULL DEFAULT '', `youth_profession` VARCHAR(50) NOT NULL DEFAULT '', `current_attributes` JSON NOT NULL, `maximum_attributes` JSON NOT NULL, `combat_capabilities` JSON NOT NULL, `battle_info` JSON NOT NULL, `inventory` JSON NOT NULL, `maestry` JSON NOT NULL)COLLATE='latin1_swedish_ci';"
     // await this.pool?.query(query2)
-    const res = await this.client.query(query3)
-    console.log(res)
     return true
   }
 
