@@ -165,8 +165,7 @@ class PostgresDataSource {
   }
 
   async fetchEveryServantRegistry (): Promise<Servant[]> {
-    const query = `SELECT *
-    FROM motion_blade_2.public.servant;
+    const query = `SELECT * FROM servant;
     `
 
     const databaseData = (await this.client.query(query)).rows as DatabaseServant[]
@@ -191,8 +190,7 @@ class PostgresDataSource {
   }
 
   async fetchEveryBattleRegistry (): Promise<BattleDTO[]> {
-    const query = `SELECT *
-    FROM motion_blade_2.public.servant;`
+    const query = 'SELECT * FROM servant;'
 
     const databaseData = (await this.client.query(query)).rows as DatabaseBattle[]
     const battleList: BattleDTO[] = []
