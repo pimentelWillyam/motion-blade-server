@@ -44,8 +44,7 @@ class PostgresDataSource {
   }
 
   private async createMotionBladeDatabase (): Promise<void> {
-    await this.client.query('CREATE DATABASE motion_blade_2 ;')
-    console.log('database have been created')
+    await this.databaseCreator.query('CREATE DATABASE motion_blade_2 ;')
   }
 
   private async tableExists (tableName: string): Promise<boolean> {
