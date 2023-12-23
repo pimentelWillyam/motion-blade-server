@@ -207,7 +207,7 @@ class PostgresDataSource {
   }
 
   async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
-    const databaseData = (await this.client.query(`SELECT * FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as DatabaseServant[]
+    const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as DatabaseServant[]
     if (databaseData[0] === undefined) return null
     else {
       return {
@@ -228,7 +228,7 @@ class PostgresDataSource {
   }
 
   async fetchBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
-    const battleList = await this.client.query(`SELECT * FROM motion_blade_2.battle WHERE ${parameter} = '${parameterValue}' ;`)
+    const battleList = await this.client.query(`SELECT * FROM battle WHERE ${parameter} = '${parameterValue}' ;`)
     if (battleList.rows[0] === undefined) return null
     else return battleList.rows[0] as BattleDTO
   }
