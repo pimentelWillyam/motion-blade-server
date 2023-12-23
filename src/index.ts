@@ -57,7 +57,7 @@ import CombatManager from './helper/CombatManager'
 import BattleService from './service/BattleService'
 import BattleRepository from './repository/BattleRepository'
 import { BattleFactory } from './factories/BattleFactory'
-import PostgresDataSource from './data/PostgresDataSource'
+import { PostgresDataSource } from './data/PostgresDataSource'
 import { Client } from 'pg'
 
 // instanciating uuid generator
@@ -121,7 +121,6 @@ const app = new App(api, server)
 dotenv.config()
 
 // starting database and app
-// void postgresDataSource.startConnection()
 void postgresDataSource.bootstrap()
 
 app.start()
