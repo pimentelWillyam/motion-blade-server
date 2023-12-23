@@ -264,4 +264,4 @@ class PostgresDataSource {
   }
 }
 
-export { PostgresBootstraper, PostgresDataSource }
+export { PostgresDataSource }
