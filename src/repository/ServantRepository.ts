@@ -1,5 +1,5 @@
 import type { Servant } from '../factories/ServantFactory'
-import type PostgresDataSource from '../data/PostgresDataSource'
+import type { PostgresDataSource } from '../data/PostgresDataSource'
 
 class ServantRepository {
   constructor (readonly dataSource: PostgresDataSource) {}
