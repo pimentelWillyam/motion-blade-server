@@ -88,7 +88,7 @@ class PostgresDataSource {
     const query2 = `CREATE TABLE battle (
         id UUID NOT NULL,
         name VARCHAR(50) NOT NULL DEFAULT '',
-        participants_list JSON NOT NULL,
+        participants_list JSON[] NOT NULL,
         turn_info JSON,
         map JSON NOT NULL
     );`
