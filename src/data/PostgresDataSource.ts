@@ -90,7 +90,7 @@ class PostgresDataSource {
         name VARCHAR(50) NOT NULL DEFAULT '',
         participants_list JSON[] NOT NULL,
         turn_info JSON,
-        map JSON NOT NULL
+        map TEXT[][] NOT NULL
     );`
     // })
     await this.client.query(query2)
