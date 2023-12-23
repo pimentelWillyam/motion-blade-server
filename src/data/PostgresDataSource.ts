@@ -26,6 +26,10 @@ class PostgresDataSource {
     })
   }
 
+  async start (): Promise<void> {
+    await this.client.connect()
+  }
+
   private async motionBladeDatabaseExists (): Promise<boolean> {
     const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
     const databaseList = await this.client.query(query)
