@@ -58,7 +58,7 @@ class PostgresDataSource {
 
   private async createServantTable (): Promise<boolean> {
     // await this.client.query('USE motion_blade_2 ;').finally(() => {
-    const query3 = `CREATE TABLE motion_blade_2.public.servant (
+    const query3 = `CREATE TABLE servant (
         id UUID NOT NULL,
         master_id VARCHAR NOT NULL,
         name VARCHAR NOT NULL,
