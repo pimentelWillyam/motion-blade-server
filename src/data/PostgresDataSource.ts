@@ -99,9 +99,7 @@ class PostgresDataSource {
 
   private async createNecessaryTables (): Promise<void> {
     if (!await this.tableExists('servant')) await this.createServantTable()
-    else console.log('the table exists')
     if (!await this.tableExists('battle')) await this.createBattleTable()
-    else console.log('the table exists')
   }
 
   async bootstrap (): Promise<void> {
