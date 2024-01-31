@@ -234,9 +234,23 @@ class PostgresDataSource {
   }
 
   async updateServantBy (parameter: string, parameterValue: string, servantToUpdate: Servant): Promise<Servant> {
-    const query = `UPDATE motion_blade_2.public.servant SET id=?,masterId=?,name=?,fatherProfession=?,youthProfession=?,currentAttributes=?,maximumAttributes=?,guard=?,buff=?,debuff=?,inventory=?,maestry=? WHERE ${parameter} = '${parameterValue}'`
-
-    await this.client.query(query, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.combatCapabilities, servantToUpdate.battleInfo, servantToUpdate.inventory, servantToUpdate.maestry])
+    // const query = `UPDATE motion_blade_2.public.servant SET id=? , masterId=? , name=? , fatherProfession=? , youthProfession=? , currentAttributes=? , maximumAttributes=? , guard=? , buff=? , debuff=? , inventory=? , maestry=? WHERE ${parameter} = '${parameterValue}'`
+    const query2 = `UPDATE servant
+    SET
+      master_id = $2,
+      name = $3,
+      father_profession = $4,
+      youth_profession = $5,
+      current_attributes = $6,
+      maximum_attributes = $7,
+      combat_capabilities = $8,
+      battle_info = $9,
+      inventory = $10,
+      maestry = $11
+    WHERE
+      id = $1;
+    `
+    await this.client.query(query2, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.combatCapabilities, servantToUpdate.battleInfo, servantToUpdate.inventory, servantToUpdate.maestry])
 
     return servantToUpdate
   }
