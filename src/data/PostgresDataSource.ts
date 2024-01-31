@@ -207,7 +207,7 @@ class PostgresDataSource {
   }
 
   async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
-    const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as DatabaseServant[]
+    const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as unknown as DatabaseServant[]
     if (databaseData[0] === undefined) return null
     else {
       return {
