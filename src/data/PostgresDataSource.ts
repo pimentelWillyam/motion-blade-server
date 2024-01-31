@@ -284,7 +284,7 @@ class PostgresDataSource {
   async deleteBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
     const battle = await this.fetchBattleBy(parameter, parameterValue)
     if (battle === null) return null
-    const query = `DELETE FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}';`
+    const query = `DELETE FROM motion_blade_2.public.battle WHERE ${parameter} = '${parameterValue}';`
     await this.client.query(query)
     return battle
   }
