@@ -59,6 +59,9 @@ import BattleRepository from './repository/BattleRepository'
 import { BattleFactory } from './factories/BattleFactory'
 import { PostgresDataSource } from './data/PostgresDataSource'
 import { Client } from 'pg'
+import BattleRouter from './api/router/BattleRouter'
+import BattleController from './api/controller/BattleController'
+import BattleValidator from './api/validator/BattleValidator'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -94,9 +97,11 @@ const battleService = new BattleService(battleRepository, battleFactory)
 
 // instanciating validators
 const servantValidator = new ServantValidator()
+const battleValidator = new BattleValidator()
 
 // instanciating the servant controller
 const servantController = new ServantController(servantService, servantValidator)
+const battleController = new BattleController(battleService, battleValidator)
 
 // instanciating the command manager
 const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(randomNumberGenerator))
@@ -112,9 +117,10 @@ const server = new Server()
 // instanciating router
 
 const servantRouter = new ServantRouter(servantController)
+const battleRouter = new BattleRouter(battleController)
 
 // instanciating app related classes
-const api = new Api(express(), servantRouter)
+const api = new Api(express(), servantRouter, battleRouter)
 const app = new App(api, server)
 
 // getting .env configuration
