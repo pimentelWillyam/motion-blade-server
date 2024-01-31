@@ -267,7 +267,6 @@ class PostgresDataSource {
       ${parameter} = ${parameterValue};
     `
 
-    await this.client.query(query, [battleToUpdate.id, battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map])
     const result = await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map])
     console.log(result)
 
@@ -278,7 +277,6 @@ class PostgresDataSource {
     const servant = await this.fetchServantBy(parameter, parameterValue)
     if (servant === null) return null
     const query = `DELETE FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}';`
-    const result = await this.client.query(query)
     return servant
   }
 
