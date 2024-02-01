@@ -13,62 +13,75 @@ class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
 
   async help (message: Message<boolean>): Promise<void> {
-    const guideMessage = `
-    Os comandos que existem são:
+    const guideMessage = `Os comandos que existem são:
 
     1- !ajuda
-
+    
     2- !profissoes
-
+    
     3- !rolar
-
+    
     4- !criar servo (nomeServo)
     
     5- !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
-
+    
     6- !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
-
-    7- !(nomeServo) atributos
-
-    8- !(nomeServo) atributos maximos
-
-    9- !(nomeServo) maestria
-
-    10- !(nomeServo) inventário
-
-    11- !(nomeServo) veste (nomeArmadura)
-
-    12- !(nomeServo) remove (nomeArmadura)
-
-    13- !(nomeServo) guarda (nomeArma)
-
-    14- !(nomeServo) descarta (nomeArma)
-
-    15- !(nomeServo) saca (nomeArma)
-
-    16- !(nomeServo) testa (atributo)
-
-    17- !(nomeServo) guarda
-
-    18- !bufar (nomeServo) (valorBuff)
-
-    19- !remover buff(nomeServo)
-
-    20- !debufar (nomeServo) (valorDebuff)
-
-    21- !remover debuff(nomeServo)
-
-    22- !(nomeAtacante) acerta (nomeDefensor)
-
-    23- !(nomeAtacante) lança (nomeDefensor)
-
-    24- !(nomeAtacante) atira (nomeDefensor)
-
-    25- !(nomeServo) sofre (danoASofrer)
-
-    26- !curar (nomeServo)
-
-    27- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
+    
+    7- !criar batalha (nomeBatalha)
+    
+    8- !inserir (nomeServo) (nomeBatalha)
+    
+    9- !remover (nomeServo) (nomeBatalha)
+    
+    10- !(nomeBatalha) info
+    
+    11- !(nomeBatalha) rodar turno
+    
+    12- !(nomeServo) atributos
+    
+    13- !(nomeServo) atributos maximos
+    
+    14- !(nomeServo) maestria
+    
+    15- !(nomeServo) inventário
+    
+    16- !(nomeServo) veste (nomeArmadura)
+    
+    17- !(nomeServo) remove (nomeArmadura)
+    
+    18- !(nomeServo) guarda (nomeArma)
+    
+    19- !(nomeServo) descarta (nomeArma)
+    
+    20- !(nomeServo) saca (nomeArma)
+    
+    21- !(nomeServo) testa (atributo)
+    
+    22- !(nomeServo) guarda
+    
+    23- !bufar (nomeServo) (valorBuff)
+    
+    24- !remover buff(nomeServo)
+    
+    25- !debufar (nomeServo) (valorDebuff)
+    
+    26- !remover debuff(nomeServo)
+    
+    27- !(nomeAtacante) acerta (nomeDefensor)
+    
+    28- !(nomeAtacante) lança (nomeDefensor)
+    
+    29- !(nomeAtacante) atira (nomeDefensor)
+    
+    30- !(nomeServo) sofre (danoASofrer)
+    
+    31- !curar (nomeServo)
+    
+    32- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
+    
+    33- !(nomeServo) recebe (quantidadeAReceber)
+    
+    34- !(nomeServo) paga (quantidadeAPagar)
     `
 
     await message.reply(guideMessage)
