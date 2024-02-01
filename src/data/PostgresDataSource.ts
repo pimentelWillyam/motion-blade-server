@@ -230,7 +230,14 @@ class PostgresDataSource {
   async fetchBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
     const battleList = await this.client.query(`SELECT * FROM battle WHERE ${parameter} = '${parameterValue}' ;`)
     if (battleList.rows[0] === undefined) return null
-    else return battleList.rows[0] as BattleDTO
+    const battle = battleList.rows[0]
+    return {
+      id: battle.id,
+      map: battle.map,
+      name: battle.name,
+      participantsList: battle.participants_list,
+      turnInfo: battle.turn_info
+    }
   }
 
   async updateServantBy (parameter: string, parameterValue: string, servantToUpdate: Servant): Promise<Servant> {
@@ -261,14 +268,13 @@ class PostgresDataSource {
     SET
       name = $1,
       participants_list = $2,
-      turnInfo = $3,
+      turn_info = $3,
       map = $4
     WHERE
-      ${parameter} = ${parameterValue};
+      name = $5;
     `
 
-    const result = await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map])
-    console.log(result)
+    const result = await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
 
     return battleToUpdate
   }
