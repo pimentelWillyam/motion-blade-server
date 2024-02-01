@@ -155,9 +155,9 @@ class CommandManager {
     const servant = await this.servantService.get(servantName)
     const battle = await this.battleService.get(battleName)
     battle.removeServant(servant)
-    await this.servantService.update(servantName, servant)
     await this.battleService.update(battleName, battle)
-    await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
+    await this.servantService.update(servantName, servant)
+    await message.reply(`O servo ${servantName} foi removido da batalha ${battleName}`)
   }
 
   async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
