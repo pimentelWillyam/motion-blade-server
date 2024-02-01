@@ -36,7 +36,7 @@ class BattleService {
   update = async (battleName: string, contentToUpdate: BattleDTO): Promise<BattleDTO> => {
     const battleToBeUpdated = await this.battleRepository.update(battleName, contentToUpdate)
     if (battleToBeUpdated != null) return battleToBeUpdated
-    throw new Error('Não é possível atualizar um servo que não existe')
+    throw new Error('Não é possível atualizar uma batalha que não existe')
   }
 
   delete = async (battleName: string): Promise<BattleDTO> => {
