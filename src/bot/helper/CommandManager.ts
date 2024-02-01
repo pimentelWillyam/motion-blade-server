@@ -163,13 +163,29 @@ class CommandManager {
   async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
     if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
     const battle = await this.battleService.get(battleName)
+    const infoToShow = {
+      battleName,
+      participantsList: '',
+      servantAboutToPlay: '',
+      servantsYetToPlay: ''
+    }
+    for (let i = 0; i < battle.participantsList.length; i++) {
+      infoToShow.participantsList += battle.participantsList[i].name
+      if (i !== battle.participantsList.length - 1) infoToShow.participantsList += ', '
+    }
+    if (battle.turnInfo.servantsYetToPlay !== undefined) {
+      for (let i = 0; i < battle.turnInfo.servantsYetToPlay.length; i++) {
+        infoToShow.servantsYetToPlay += battle.turnInfo.servantsYetToPlay[i].name
+        if (i !== battle.turnInfo.servantsYetToPlay.length - 1) infoToShow.servantsYetToPlay += ', '
+      }
+    }
     await message.reply(`
     Informações relevantes sobre esta batalha:
     Nome: ${battle.name}
-    Participantes da batalha: ${'vou inserir esse ngc ainda'}
+    Participantes da batalha: ${infoToShow.participantsList}
 
-    Servo da vez: ${'vou implementar ainda'}
-    Servos aguardando sua vez: ${'vou inserir esse ngc ainda'}
+    Servo da vez: ${infoToShow.servantAboutToPlay}
+    Servos aguardando sua vez: ${infoToShow.servantsYetToPlay}
 
     ${battle.map[0].toString()}
     ${battle.map[1].toString()}
