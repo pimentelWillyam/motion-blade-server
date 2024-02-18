@@ -107,6 +107,24 @@ class MessageHandler {
     else return false
   }
 
+  isDirection (direction: string): boolean {
+    switch (direction) {
+      case 'a': return true
+      case 'aw': return true
+      case 'wa': return true
+      case 'as': return true
+      case 'sa': return true
+      case 'w': return true
+      case 'wd': return true
+      case 'dw': return true
+      case 'd': return true
+      case 'ds': return true
+      case 'sd': return true
+      case 's': return true
+      default: return false
+    }
+  }
+
   treatMessage (rawMessage: string): string[] {
     const messageWithoutExclamation = rawMessage.slice(1, rawMessage.length)
     return messageWithoutExclamation.split(' ')
