@@ -28,6 +28,8 @@ class MessageHandler {
         await this.commandManager.insertServantInBattle(message, treatedMessage[1], treatedMessage[2])
       } else if (treatedMessage[0] === 'remover' && treatedMessage.length === 3) {
         await this.commandManager.removeServantFromBattle(message, treatedMessage[1], treatedMessage[2])
+      } else if (this.isDirection(treatedMessage[1]) && treatedMessage.length === 2) {
+        await this.commandManager.moveServant(message, treatedMessage[0], treatedMessage[1])
       } else if (treatedMessage[1] === 'info' && treatedMessage.length === 2) {
         await this.commandManager.getInfoFromBattle(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'rodar' && treatedMessage[2] === 'turno' && treatedMessage.length === 3) {
