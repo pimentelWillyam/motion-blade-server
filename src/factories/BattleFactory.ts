@@ -2,6 +2,7 @@ import { type Servant } from './ServantFactory'
 import type RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
 import type TurnInfo from '../bot/type/TurnInfo'
 import type UuidGenerator from '../bot/helper/UuidGenerator'
+import { type MovementDirection } from '../bot/type/MovementDirection'
 
 interface BattleDTO {
   id: string
@@ -61,11 +62,11 @@ class Battle {
     throw new Error(`O servo ${servant.name} não está inserido nessa batalha`)
   }
 
-  async moveServant (servant: Servant, directionToMove: string): Promise<[Servant, Battle]> {
+  async moveServant (servant: Servant, movementDirection: MovementDirection): Promise<[Servant, Battle]> {
     if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em nenhuma batalha`)
     if (servant.battleInfo.battleName !== this.name) throw new Error(`O servo ${servant.name} não está nessa batalha`)
-    switch (directionToMove) {
-      case 'e':
+    switch (movementDirection) {
+      case 'a':
         if (servant.battleInfo.horizontalPosition - 1 < 0 || this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition] = servant.battleInfo.battleId.toString()
         break
@@ -73,27 +74,43 @@ class Battle {
         if (servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition] = servant.battleInfo.battleId.toString()
         break
-      case 'c':
+      case 'w':
         if (servant.battleInfo.verticalPosition - 1 < 0 || this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
         break
-      case 'b':
+      case 's':
         if (servant.battleInfo.verticalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition + 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition + 1] = servant.battleInfo.battleId.toString()
         break
-      case 'ce':
+      case 'wa':
         if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition - 1 < 0 || this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
         break
-      case 'cd':
+      case 'aw':
+        if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition - 1 < 0 || this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
+        this.map[servant.battleInfo.horizontalPosition - 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
+        break
+      case 'wd':
         if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
         break
-      case 'be':
+      case 'dw':
         if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
         break
-      case 'bd':
+      case 'sa':
+        if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
+        this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
+        break
+      case 'as':
+        if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
+        this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] = servant.battleInfo.battleId.toString()
+        break
+      case 'sd':
+        if (servant.battleInfo.verticalPosition + 1 > 7 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition + 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
+        this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition + 1] = servant.battleInfo.battleId.toString()
+        break
+      case 'ds':
         if (servant.battleInfo.verticalPosition + 1 > 7 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition + 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition + 1] = servant.battleInfo.battleId.toString()
         break
