@@ -5,6 +5,7 @@ import type CommandManager from '../helper/CommandManager'
 import type WeaponType from '../type/WeaponType'
 import type Attribute from '../type/Attribute'
 import type ArmorType from '../type/ArmorType'
+import { type MovementDirection } from '../type/MovementDirection'
 
 class MessageHandler {
   constructor (private readonly commandManager: CommandManager) {}
@@ -29,7 +30,7 @@ class MessageHandler {
       } else if (treatedMessage[0] === 'remover' && treatedMessage.length === 3) {
         await this.commandManager.removeServantFromBattle(message, treatedMessage[1], treatedMessage[2])
       } else if (this.isDirection(treatedMessage[1]) && treatedMessage.length === 2) {
-        await this.commandManager.moveServant(message, treatedMessage[0], treatedMessage[1])
+        await this.commandManager.moveServant(message, treatedMessage[0], treatedMessage[1] as MovementDirection)
       } else if (treatedMessage[1] === 'info' && treatedMessage.length === 2) {
         await this.commandManager.getInfoFromBattle(message, treatedMessage[0])
       } else if (treatedMessage[1] === 'rodar' && treatedMessage[2] === 'turno' && treatedMessage.length === 3) {
