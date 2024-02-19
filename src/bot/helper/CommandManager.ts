@@ -8,6 +8,7 @@ import type ServantService from '../../service/ServantService'
 import type ServantUpgrader from './ServantUpgrader'
 import type CombatManager from '../../helper/CombatManager'
 import type BattleService from '../../service/BattleService'
+import { type MovementDirection } from '../type/MovementDirection'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
@@ -126,6 +127,17 @@ class CommandManager {
     await this.battleService.update(battleName, battle)
     await this.servantService.update(servantName, servant)
     await message.reply(`O servo ${servantName} foi removido da batalha ${battleName}`)
+  }
+
+  async moveServant (message: Message<boolean>, servantName: string, movementDirection: MovementDirection): Promise<void> {
+    if (!await this.servantService.servantExists(servantName)) throw new Error(`Não existe um servo chamado ${servantName}, tente mover um servo que de fato exista`)
+    const servant = await this.servantService.get(servantName)
+    if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em uma batalha, portando não pode se mover`)
+    const battle = await this.battleService.get(servant.battleInfo.battleName)
+    const moveServantResponse = await battle.moveServant(servant, movementDirection)
+    await this.servantService.update(servant.name, moveServantResponse[0])
+    await this.battleService.update(servant.name, moveServantResponse[1])
+    await this.getInfoFromBattle(message, servant.battleInfo.battleName)
   }
 
   async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
