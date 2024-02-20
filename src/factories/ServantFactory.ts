@@ -289,7 +289,32 @@ class ServantFactory {
   constructor (private readonly randomNumberGenerator = new RandomNumberGenerator(), private readonly uuidGenerator: UuidGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory) {}
 
   create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, attributes: Attributes): Servant {
-    return new Servant(this.randomNumberGenerator, this.armorFactory, this.weaponFactory, this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, attributes)
+    const servant: ServantDTO = {
+      id: this.uuidGenerator.generate(),
+      masterId,
+      name,
+      fatherProfession,
+      youthProfession,
+      currentAttributes: attributes,
+      maximumAttributes: attributes,
+      combatCapabilities: { guard: 0, buff: 0, debuff: 0 },
+      battlePoints: { initiativePoints: 0, movementPoints: 0, actionPoints: 0 },
+      inventory: {
+        primaryArmor: this.armorFactory.createArmorByType('roupa'),
+        secondaryArmor: this.armorFactory.createArmorByType('roupa'),
+        carriedWeapons: [],
+        primaryWeapon: this.weaponFactory.createWeapon('mão nua'),
+        secondaryWeapon: null,
+        denars: 0
+      },
+      maestry: { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 },
+      battleInfo: { isInBattle: false, battleId: 0, battleName: '', horizontalPosition: -1, verticalPosition: -1 }
+    }
+    return new Servant(this.randomNumberGenerator, this.armorFactory, this.weaponFactory, servant)
+  }
+
+  createThroughDto (servant: ServantDTO): Servant {
+    return new Servant(this.randomNumberGenerator, this.armorFactory, this.weaponFactory, servant)
   }
 }
 
