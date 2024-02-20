@@ -80,6 +80,7 @@ class ServantService {
 
   upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<ServantDTO> => {
     const servantToUpgrade = await this.get(name)
+    if (servantToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
     if (propertyToUpgrade === 'agilidade') {
       contentToUpgrade.maximumAttributes.agility += quantityToUpgrade
       contentToUpgrade.currentAttributes.agility += quantityToUpgrade
