@@ -99,6 +99,12 @@ class Servant {
     return (1 + this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 10)) / 10
   }
 
+  getNewBattlePoints (): BattlePoints {
+    this.battlePoints.initiativePoints = this.rollInitiative()
+    this.battlePoints.actionPoints += this.rollActionPoints()
+    this.battlePoints.movementPoints += this.rollMovementPoints()
+    return this.battlePoints
+  }
   upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
     switch (propertyToUpgrade) {
       case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
