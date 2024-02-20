@@ -84,6 +84,25 @@ class Servant {
         throw new Error('Propriedade de aprimoramento inválida')
     }
   }
+
+  wearArmor = (armorTypeToWear: ArmorType): void => {
+    switch (armorTypeToWear) {
+      case 'palha':
+        this.inventory.primaryArmor = this.armorFactory.createArmorByType('placa')
+        this.inventory.secondaryArmor = this.armorFactory.createArmorByType('cota de malha')
+        break
+
+      case 'pouro':
+        this.inventory.primaryArmor = this.armorFactory.createArmorByType('placa')
+        this.inventory.secondaryArmor = this.armorFactory.createArmorByType('couro')
+        break
+
+      default:
+        this.inventory.primaryArmor = this.armorFactory.createArmorByType(armorTypeToWear)
+        break
+    }
+  }
+
 }
 
 class ServantFactory {
