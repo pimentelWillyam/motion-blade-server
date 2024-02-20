@@ -42,7 +42,7 @@ class Battle {
     servant.battleInfo.verticalPosition = verticalPosition
     servant.battleInfo.isInBattle = true
     servant.battleInfo.battleName = this.name
-    this.map[verticalPosition][horizontalPosition] = servant.battleInfo.battleId.toString()
+    this.map[horizontalPosition][verticalPosition] = servant.battleInfo.battleId.toString()
     return servant
   }
 
@@ -114,7 +114,7 @@ class Battle {
         this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition] = '='
         servant.battleInfo.horizontalPosition -= 1
         servant.battleInfo.verticalPosition += 1
-        this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition] = servant.battleInfo.battleId.toString()a
+        this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition] = servant.battleInfo.battleId.toString()
         break
       case 'dw':
         if (servant.battleInfo.verticalPosition - 1 < 0 || servant.battleInfo.horizontalPosition + 1 > 7 || this.map[servant.battleInfo.horizontalPosition + 1][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
