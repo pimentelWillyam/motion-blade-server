@@ -274,7 +274,7 @@ class PostgresDataSource {
       name = $5;
     `
 
-    const result = await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
+    await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
 
     return battleToUpdate
   }
