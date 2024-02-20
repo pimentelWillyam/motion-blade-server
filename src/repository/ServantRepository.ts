@@ -1,8 +1,8 @@
-import type Servant from '../bot/model/Servant'
-import type MariadbDataSource from '../data/MariadbDataSource'
+import type { Servant } from '../factories/ServantFactory'
+import type { PostgresDataSource } from '../data/PostgresDataSource'
 
 class ServantRepository {
-  constructor (readonly dataSource: MariadbDataSource) {}
+  constructor (readonly dataSource: PostgresDataSource) {}
 
   async create (servant: Servant): Promise<Servant> {
     return await this.dataSource.insertServantRegistry(servant)

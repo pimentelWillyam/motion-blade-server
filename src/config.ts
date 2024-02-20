@@ -1,4 +1,4 @@
-const config: any = {
+const config = {
   cryptography: {
     saltRounds: process.env.SALT_ROUNDS_BCRYPT
   },
@@ -25,6 +25,13 @@ const config: any = {
     ssid: process.env.SSID_DATABASE_ORACLE ?? 'xe',
     port: process.env.PORT_DATABASE_ORACLE ?? 3306,
     connectString: process.env.CONNECTION_STRING_DATABASE_ORACLE ?? 'localhost/xe'
+  },
+  postgres: {
+    user: 'postgres',
+    host: 'localhost',
+    database: 'motion_blade_2',
+    password: 'postgres',
+    port: 5432 // 5432 3211
   },
   json: {
     secret: process.env.SECRET_JSON ?? 'secret'

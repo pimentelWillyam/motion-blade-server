@@ -27,6 +27,7 @@ class ServantUpgrader {
     const victorMaximumAttributesSum = victor.maximumAttributes.agility + victor.maximumAttributes.technique + victor.maximumAttributes.strength + victor.maximumAttributes.fortitude + 1
     const defeatedMaximumAttributesSum = defeated.maximumAttributes.agility + defeated.maximumAttributes.technique + defeated.maximumAttributes.strength + defeated.maximumAttributes.fortitude + 1
     const attributePointsToUpgrade = (defeatedMaximumAttributesSum / victorMaximumAttributesSum).toString().split('.')
+    if (attributePointsToUpgrade[1] === undefined) return parseFloat(attributePointsToUpgrade[0])
     return parseFloat(attributePointsToUpgrade[0] + '.' + attributePointsToUpgrade[1][0])
   }
 
