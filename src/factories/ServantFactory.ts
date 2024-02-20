@@ -161,6 +161,10 @@ class Servant {
     this.combatCapabilities.buff += buffValue
   }
 
+  removeBuff = (): void => {
+    this.combatCapabilities.buff = 0
+  }
+
 }
 
 class ServantFactory {
