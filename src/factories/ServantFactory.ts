@@ -173,6 +173,36 @@ class Servant {
     this.combatCapabilities.debuff = 0
   }
 
+  sufferDamage = (damageToSuffer: number): void => {
+    let damageNotDealt = damageToSuffer
+    while (damageNotDealt !== 0) {
+      if (this.currentAttributes.agility !== 0 && this.currentAttributes.agility >= damageNotDealt) {
+        this.currentAttributes.agility -= damageNotDealt
+        damageNotDealt = 0
+      } else if (this.currentAttributes.agility !== 0 && this.currentAttributes.agility < damageNotDealt) {
+        damageNotDealt -= this.currentAttributes.agility
+        this.currentAttributes.agility = 0
+      } else if (this.currentAttributes.technique !== 0 && this.currentAttributes.technique >= damageNotDealt) {
+        this.currentAttributes.technique -= damageNotDealt
+        damageNotDealt = 0
+      } else if (this.currentAttributes.technique !== 0 && this.currentAttributes.technique < damageNotDealt) {
+        damageNotDealt -= this.currentAttributes.technique
+        this.currentAttributes.technique = 0
+      } else if (this.currentAttributes.strength !== 0 && this.currentAttributes.strength >= damageNotDealt) {
+        this.currentAttributes.strength -= damageNotDealt
+        damageNotDealt = 0
+      } else if (this.currentAttributes.strength !== 0 && this.currentAttributes.strength < damageNotDealt) {
+        damageNotDealt -= this.currentAttributes.strength
+        this.currentAttributes.strength = 0
+      } else if (this.currentAttributes.fortitude !== 0 && this.currentAttributes.fortitude >= damageNotDealt) {
+        this.currentAttributes.fortitude -= damageNotDealt
+        damageNotDealt = 0
+      } else if (this.currentAttributes.fortitude !== 0 && this.currentAttributes.fortitude < damageNotDealt) {
+        damageNotDealt -= this.currentAttributes.fortitude
+        this.currentAttributes.fortitude = 0
+      } else if (this.currentAttributes.agility === 0 && this.currentAttributes.technique === 0 && this.currentAttributes.strength === 0 && this.currentAttributes.fortitude === 0) return
+    }
+  }
 }
 
 class ServantFactory {
