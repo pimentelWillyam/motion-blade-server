@@ -35,7 +35,14 @@ class Servant {
     this.currentAttributes = attributes
     this.maximumAttributes = attributes
     this.combatCapabilities = { actionPoints: 0, movementPoints: 0, guard: 0, buff: 0, debuff: 0 }
-    this.inventory = { primaryArmor, secondaryArmor, carriedWeapons: [], primaryWeapon, secondaryWeapon: null, denars: 0 }
+    this.inventory = {
+      primaryArmor: this.armorFactory.createArmorByType('roupa'),
+      secondaryArmor: this.armorFactory.createArmorByType('roupa'),
+      carriedWeapons: [],
+      primaryWeapon: this.weaponFactory.createWeapon('mão nua'),
+      secondaryWeapon: null,
+      denars: 0
+    }
     this.maestry = { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
     this.battleInfo = { isInBattle: false, battleId: 0, battleName: '', horizontalPosition: -1, verticalPosition: -1 }
   }
