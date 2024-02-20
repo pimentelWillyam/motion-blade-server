@@ -1,6 +1,6 @@
 import config from '../config'
 
-import { type Servant } from '../factories/ServantFactory'
+import { type ServantDTO, type Servant } from '../factories/ServantFactory'
 import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
@@ -164,12 +164,12 @@ class PostgresDataSource {
     return battle
   }
 
-  async fetchEveryServantRegistry (): Promise<Servant[]> {
+  async fetchEveryServantRegistry (): Promise<ServantDTO[]> {
     const query = `SELECT * FROM servant;
     `
 
     const databaseData = (await this.client.query(query)).rows as DatabaseServant[]
-    const servantList: Servant[] = []
+    const servantList: ServantDTO[] = []
     databaseData.forEach((servant) => {
       servantList.push({
         id: servant.id,
@@ -279,7 +279,7 @@ class PostgresDataSource {
     return battleToUpdate
   }
 
-  async deleteServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
+  async deleteServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const servant = await this.fetchServantBy(parameter, parameterValue)
     if (servant === null) return null
     const query = `DELETE FROM motion_blade_2.public.servant WHERE ${parameter} = '${parameterValue}';`
