@@ -67,6 +67,23 @@ class Servant {
       default: throw new Error('Atributo ou maestria inválido')
     }
   }
+
+  upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
+    switch (propertyToUpgrade) {
+      case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
+      case 'tecnica': this.maximumAttributes.technique += quantityToUpgrade; this.currentAttributes.technique += quantityToUpgrade; break
+      case 'força': this.maximumAttributes.strength += quantityToUpgrade; this.currentAttributes.strength += quantityToUpgrade; break
+      case 'fortitude': this.maximumAttributes.fortitude += quantityToUpgrade; this.currentAttributes.fortitude += quantityToUpgrade; break
+      case 'mão nua': this.maestry.bareHanded += quantityToUpgrade; break
+      case 'uma mão': this.maestry.oneHanded += quantityToUpgrade; break
+      case 'duas mãos': this.maestry.twoHanded += quantityToUpgrade; break
+      case 'haste': this.maestry.polearm += quantityToUpgrade; break
+      case 'besta': this.maestry.crossbow += quantityToUpgrade; break
+      case 'arco': this.maestry.bow += quantityToUpgrade; break
+      default:
+        throw new Error('Propriedade de aprimoramento inválida')
+    }
+  }
 }
 
 class ServantFactory {
