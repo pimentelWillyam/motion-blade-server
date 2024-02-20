@@ -82,32 +82,32 @@ class ServantService {
     const servantToUpgrade = await this.get(name)
     if (servantToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
     if (propertyToUpgrade === 'agilidade') {
-      contentToUpgrade.maximumAttributes.agility += quantityToUpgrade
-      contentToUpgrade.currentAttributes.agility += quantityToUpgrade
+      servantToUpgrade.maximumAttributes.agility += quantityToUpgrade
+      servantToUpgrade.currentAttributes.agility += quantityToUpgrade
     } else if (propertyToUpgrade === 'tecnica') {
-      contentToUpgrade.maximumAttributes.technique += quantityToUpgrade
-      contentToUpgrade.currentAttributes.technique += quantityToUpgrade
+      servantToUpgrade.maximumAttributes.technique += quantityToUpgrade
+      servantToUpgrade.currentAttributes.technique += quantityToUpgrade
     } else if (propertyToUpgrade === 'força') {
-      contentToUpgrade.maximumAttributes.strength += quantityToUpgrade
-      contentToUpgrade.currentAttributes.strength += quantityToUpgrade
+      servantToUpgrade.maximumAttributes.strength += quantityToUpgrade
+      servantToUpgrade.currentAttributes.strength += quantityToUpgrade
     } else if (propertyToUpgrade === 'fortitude') {
-      contentToUpgrade.maximumAttributes.fortitude += quantityToUpgrade
-      contentToUpgrade.currentAttributes.fortitude += quantityToUpgrade
+      servantToUpgrade.maximumAttributes.fortitude += quantityToUpgrade
+      servantToUpgrade.currentAttributes.fortitude += quantityToUpgrade
     } else if (propertyToUpgrade === 'mão nua') {
-      contentToUpgrade.maestry.bareHanded += quantityToUpgrade
+      servantToUpgrade.maestry.bareHanded += quantityToUpgrade
     } else if (propertyToUpgrade === 'uma mão') {
-      contentToUpgrade.maestry.oneHanded += quantityToUpgrade
+      servantToUpgrade.maestry.oneHanded += quantityToUpgrade
     } else if (propertyToUpgrade === 'duas mãos') {
-      contentToUpgrade.maestry.twoHanded += quantityToUpgrade
+      servantToUpgrade.maestry.twoHanded += quantityToUpgrade
     } else if (propertyToUpgrade === 'haste') {
-      contentToUpgrade.maestry.polearm += quantityToUpgrade
+      servantToUpgrade.maestry.polearm += quantityToUpgrade
     } else if (propertyToUpgrade === 'arco') {
-      contentToUpgrade.maestry.bow += quantityToUpgrade
+      servantToUpgrade.maestry.bow += quantityToUpgrade
     } else if (propertyToUpgrade === 'besta') {
-      contentToUpgrade.maestry.crossbow += quantityToUpgrade
+      servantToUpgrade.maestry.crossbow += quantityToUpgrade
     } else throw new Error('Ofereça um atributo ou maestria válido')
-    await this.servantRepository.update(name, contentToUpgrade)
-    return contentToUpgrade
+    await this.servantRepository.update(name, servantToUpgrade)
+    return servantToUpgrade
   }
 
   wearArmor = async (servant: Servant, armorType: ArmorType): Promise<Servant> => {
