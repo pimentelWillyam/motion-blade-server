@@ -243,7 +243,7 @@ class ServantFactory {
   constructor (private readonly randomNumberGenerator = new RandomNumberGenerator(), private readonly uuidGenerator: UuidGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory) {}
 
   create (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, attributes: Attributes): Servant {
-    return new Servant(this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, this.armorFactory.createArmorByType('roupa'), this.armorFactory.createArmorByType('roupa'), this.weaponFactory.createWeapon('mão nua'), attributes)
+    return new Servant(this.randomNumberGenerator, this.armorFactory, this.weaponFactory, this.uuidGenerator.generate(), masterId, name, fatherProfession, youthProfession, attributes)
   }
 }
 
