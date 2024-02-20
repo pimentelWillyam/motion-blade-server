@@ -50,6 +50,7 @@ class Servant {
   getCurrentAttributes (): Attributes { return this.currentAttributes }
   getMaximumAttributes (): Attributes { return this.maximumAttributes }
   getMaestry (): Maestry { return this.maestry }
+  getInventory (): Maestry { return this.maestry }
 }
 
 class ServantFactory {
