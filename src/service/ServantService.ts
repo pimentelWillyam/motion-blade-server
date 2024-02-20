@@ -110,7 +110,7 @@ class ServantService {
     return servantToUpgrade
   }
 
-  wearArmor = async (servant: Servant, armorType: ArmorType): Promise<Servant> => {
+  wearArmor = async (servant: Servant, armorType: ArmorType): Promise<ServantDTO> => {
     switch (armorType) {
       case 'palha':
         servant.inventory.primaryArmor = this.armorFactory.createArmorByType('placa')
@@ -130,7 +130,7 @@ class ServantService {
     return servant
   }
 
-  removeArmor = async (servant: Servant): Promise<Servant> => {
+  removeArmor = async (servant: Servant): Promise<ServantDTO> => {
     const clothArmor = this.armorFactory.createArmorByType('roupa')
     servant.inventory.primaryArmor = clothArmor
     servant.inventory.secondaryArmor = clothArmor
@@ -181,7 +181,7 @@ class ServantService {
     throw new Error(`O servo ${servantName} não possui nenhua arma do tipo ${weaponType} para que ele possa descartar`)
   }
 
-  disarm = async (servantToBeDisarmed: Servant): Promise<Servant> => {
+  disarm = async (servantToBeDisarmed: Servant): Promise<ServantDTO> => {
     if (servantToBeDisarmed.inventory.primaryWeapon.needsTwoHandsToWield) {
       servantToBeDisarmed.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
     } else if (servantToBeDisarmed.inventory.secondaryWeapon === null) {
@@ -198,7 +198,7 @@ class ServantService {
     return servantToBeDisarmed
   }
 
-  delete = async (name: string): Promise<Servant> => {
+  delete = async (name: string): Promise<ServantDTO> => {
     const servantToBeDeleted = await this.servantRepository.delete(name)
     if (servantToBeDeleted != null) return servantToBeDeleted
     throw new Error('Não é possível remover um servo que não existe')
