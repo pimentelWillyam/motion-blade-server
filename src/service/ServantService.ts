@@ -47,25 +47,24 @@ class ServantService {
   }
 
   getCurrentAttributes = async (name: string): Promise<Attributes> => {
-    const fetchedServant = await this.servantRepository.getByName(name)
+    const fetchedServant = await this.get(name)
     if (fetchedServant != null) return fetchedServant.currentAttributes
     throw new Error(`O servo ${name} não existe`)
   }
 
   getMaximumAttributes = async (name: string): Promise<Attributes> => {
-    const fetchedServant = await this.servantRepository.getByName(name)
-    if (fetchedServant != null) return fetchedServant.maximumAttributes
-    throw new Error(`O servo ${name} não existe`)
+    const fetchedServant = await this.get(name)
+    return fetchedServant.maximumAttributes
   }
 
   getMaestry = async (name: string): Promise<Maestry> => {
-    const fetchedServant = await this.servantRepository.getByName(name)
+    const fetchedServant = await this.get(name)
     if (fetchedServant != null) return fetchedServant.maestry
     throw new Error(`O servo ${name} não existe`)
   }
 
   getInventory = async (name: string): Promise<Inventory> => {
-    const fetchedServant = await this.servantRepository.getByName(name)
+    const fetchedServant = await this.get(name)
     if (fetchedServant != null) return fetchedServant.inventory
     throw new Error(`O servo ${name} não existe`)
   }
@@ -77,12 +76,10 @@ class ServantService {
   }
 
   rollTurnForServants (servantList: Servant[]): void {
-    console.log('oi')
   }
 
-  upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<Servant> => {
-    const contentToUpgrade = await this.servantRepository.getByName(name)
-    if (contentToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
+  upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<ServantDTO> => {
+    const servantToUpgrade = await this.get(name)
     if (propertyToUpgrade === 'agilidade') {
       contentToUpgrade.maximumAttributes.agility += quantityToUpgrade
       contentToUpgrade.currentAttributes.agility += quantityToUpgrade
@@ -140,8 +137,8 @@ class ServantService {
     return servant
   }
 
-  keepWeapon = async (servantName: string, weaponType: WeaponType): Promise<Servant> => {
-    const fetchedServant = await this.servantRepository.getByName(servantName)
+  keepWeapon = async (servantName: string, weaponType: WeaponType): Promise<ServantDTO> => {
+    const fetchedServant = await this.get(servantName)
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
     else if (fetchedServant.inventory.carriedWeapons.length >= 2) throw new Error(`O servo ${fetchedServant.name} já está carregando muitas armas, jogue alguma fora para aumentar o espaço disponível`)
     fetchedServant.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
@@ -151,8 +148,8 @@ class ServantService {
     return fetchedServant
   }
 
-  drawWeapon = async (servantName: string, weaponType: WeaponType): Promise<Servant> => {
-    const fetchedServant = await this.servantRepository.getByName(servantName)
+  drawWeapon = async (servantName: string, weaponType: WeaponType): Promise<ServantDTO> => {
+    const fetchedServant = await this.get(servantName)
     const weaponToBeDrawed = this.weaponFactory.createWeapon(weaponType)
     if (fetchedServant === null) throw new Error('Não é possível encontrar um servo que não existe')
     if (weaponToBeDrawed.type !== 'mão nua' && weaponToBeDrawed.needsTwoHandsToWield && (fetchedServant.inventory.primaryWeapon.type !== 'mão nua' || fetchedServant.inventory.secondaryWeapon != null)) throw new Error(`O servo ${fetchedServant.name} está atualmente com as mãos ocupadas e não pode sacar um(a) ${weaponType}`)
@@ -170,8 +167,8 @@ class ServantService {
     throw new Error(`O servo ${servantName} não possui nenhuma arma do tipo ${weaponType}`)
   }
 
-  dropWeapon = async (servantName: string, weaponType: WeaponType): Promise<Servant> => {
-    const fetchedServant = await this.servantRepository.getByName(servantName)
+  dropWeapon = async (servantName: string, weaponType: WeaponType): Promise<ServantDTO> => {
+    const fetchedServant = await this.get(servantName)
     if (fetchedServant === null) throw new Error(`O servo ${servantName} não existe`)
     for (let i = 0; i < 2; i++) {
       if (fetchedServant.inventory.carriedWeapons[i] !== undefined && fetchedServant.inventory.carriedWeapons[i].type === weaponType) {
@@ -207,7 +204,7 @@ class ServantService {
   }
 
   applyGuard = async (name: string, guardToBeApplied: number): Promise<Servant> => {
-    const servant = await this.servantRepository.getByName(name)
+    const servant = await this.get(name)
     if (servant != null) {
       servant.combatCapabilities.guard = guardToBeApplied
       await this.servantRepository.update(name, servant)
@@ -216,8 +213,8 @@ class ServantService {
     throw new Error('Não é possível aplicar guarda em um servo que não existe')
   }
 
-  buff = async (name: string, buffValue: number): Promise<Servant> => {
-    const servant = await this.servantRepository.getByName(name)
+  buff = async (name: string, buffValue: number): Promise<ServantDTO> => {
+    const servant = await this.get(name)
     if (servant != null) {
       servant.combatCapabilities.buff += buffValue
       await this.servantRepository.update(name, servant)
@@ -226,8 +223,8 @@ class ServantService {
     throw new Error('Não é possível bufar um servo que não existe')
   }
 
-  removeBuff = async (name: string): Promise<Servant> => {
-    const servant = await this.servantRepository.getByName(name)
+  removeBuff = async (name: string): Promise<ServantDTO> => {
+    const servant = await this.get(name)
     if (servant != null) {
       servant.combatCapabilities.buff = 0
       await this.servantRepository.update(name, servant)
@@ -236,8 +233,8 @@ class ServantService {
     throw new Error('Não é possível bufar um servo que não existe')
   }
 
-  debuff = async (name: string, debuffValue: number): Promise<Servant> => {
-    const servant = await this.servantRepository.getByName(name)
+  debuff = async (name: string, debuffValue: number): Promise<ServantDTO> => {
+    const servant = await this.get(name)
     if (servant != null) {
       servant.combatCapabilities.debuff -= debuffValue
       await this.servantRepository.update(name, servant)
@@ -247,7 +244,7 @@ class ServantService {
   }
 
   removeDebuff = async (name: string): Promise<Servant> => {
-    const servant = await this.servantRepository.getByName(name)
+    const servant = await this.get(name)
     if (servant != null) {
       servant.combatCapabilities.debuff = 0
       await this.servantRepository.update(name, servant)
@@ -314,24 +311,24 @@ class ServantService {
     return 'Alive'
   }
 
-  heal = async (servantName: string): Promise<Servant> => {
-    const servantToBeUpdated = await this.servantRepository.getByName(servantName)
+  heal = async (servantName: string): Promise<ServantDTO> => {
+    const servantToBeUpdated = await this.get(servantName)
     if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
     servantToBeUpdated.currentAttributes = servantToBeUpdated.maximumAttributes
     await this.servantRepository.update(servantName, servantToBeUpdated)
     return servantToBeUpdated
   }
 
-  addDenars = async (servantName: string, addedMoney: number): Promise<Servant> => {
-    const servantToBeUpdated = await this.servantRepository.getByName(servantName)
+  addDenars = async (servantName: string, addedMoney: number): Promise<ServantDTO> => {
+    const servantToBeUpdated = await this.get(servantName)
     if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
     servantToBeUpdated.inventory.denars += addedMoney
     await this.servantRepository.update(servantName, servantToBeUpdated)
     return servantToBeUpdated
   }
 
-  removeDenars = async (servantName: string, deductedMoney: number): Promise<Servant> => {
-    const servantToBeUpdated = await this.servantRepository.getByName(servantName)
+  removeDenars = async (servantName: string, deductedMoney: number): Promise<ServantDTO> => {
+    const servantToBeUpdated = await this.get(servantName)
     if (servantToBeUpdated === null) throw new Error(`O servo ${servantName} não existe`)
     servantToBeUpdated.inventory.denars -= deductedMoney
     await this.servantRepository.update(servantName, servantToBeUpdated)
