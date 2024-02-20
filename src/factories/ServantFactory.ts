@@ -152,6 +152,11 @@ class Servant {
       this.inventory.secondaryWeapon = null
     }
   }
+
+  applyGuard = (guardToBeApplied: number): void => {
+    this.combatCapabilities.guard = guardToBeApplied
+  }
+
 }
 
 class ServantFactory {
