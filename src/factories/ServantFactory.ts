@@ -26,7 +26,7 @@ class Servant {
   maestry: Maestry
   battleInfo: BattleInfo
 
-  constructor (id: string, masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, primaryArmor: Armor, secondaryArmor: Armor, primaryWeapon: Weapon, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }) {
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory, id: string, masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }) {
     this.id = id
     this.masterId = masterId
     this.name = name
