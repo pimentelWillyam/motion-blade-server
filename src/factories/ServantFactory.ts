@@ -230,6 +230,10 @@ class Servant {
     }
   }
 
+  addDenars = (denarsToAdd: number): void => {
+    this.inventory.denars += denarsToAdd
+  }
+
 }
 
 class ServantFactory {
