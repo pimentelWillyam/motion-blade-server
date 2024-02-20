@@ -1,12 +1,17 @@
 import type UuidGenerator from '../bot/helper/UuidGenerator'
+import type ArmorType from '../bot/type/ArmorType'
+import type Attribute from '../bot/type/Attribute'
 import type Attributes from '../bot/type/Attributes'
 import type BattleInfo from '../bot/type/BattleInfo'
 import type CombatCapabilities from '../bot/type/CombatCapabilities'
 import type Inventory from '../bot/type/Inventory'
 import type Maestry from '../bot/type/Maestry'
+import type MaestryType from '../bot/type/MaestryType'
 import type Profession from '../bot/type/Profession'
-import { type ArmorFactory, type Armor } from './ArmorFactory'
-import { type WeaponFactory, type Weapon } from './WeaponFactory'
+import type WeaponType from '../bot/type/WeaponType'
+import RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
+import { type ArmorFactory } from './ArmorFactory'
+import { type WeaponFactory } from './WeaponFactory'
 
 class Servant {
   readonly id: string
