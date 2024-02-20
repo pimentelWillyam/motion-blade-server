@@ -15,7 +15,6 @@ class CommandManager {
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `Os comandos que existem são:
-
     1- !ajuda
     2- !profissoes
     3- !rolar
@@ -25,32 +24,33 @@ class CommandManager {
     7- !criar batalha (nomeBatalha)
     8- !inserir (nomeServo) (nomeBatalha)
     9- !remover (nomeServo) (nomeBatalha)
-    10- !(nomeServo) (direcao: a, w, d, s, aw, as, dw, ds)
-    11- !(nomeBatalha) info
-    12- !(nomeBatalha) rodar turno
-    13- !(nomeServo) atributos
-    14- !(nomeServo) atributos maximos
-    15- !(nomeServo) maestria
-    16- !(nomeServo) inventário
-    17- !(nomeServo) veste (nomeArmadura)
-    18- !(nomeServo) remove (nomeArmadura)
-    19- !(nomeServo) guarda (nomeArma)
-    20- !(nomeServo) descarta (nomeArma)
-    21- !(nomeServo) saca (nomeArma)
-    22- !(nomeServo) testa (atributo)
-    23- !(nomeServo) guarda
-    24- !bufar (nomeServo) (valorBuff)
-    25- !remover buff(nomeServo)
-    26- !debufar (nomeServo) (valorDebuff)
-    27- !remover debuff(nomeServo)
-    28- !(nomeAtacante) acerta (nomeDefensor)
-    29- !(nomeAtacante) lança (nomeDefensor)
-    30- !(nomeAtacante) atira (nomeDefensor)
-    31- !(nomeServo) sofre (danoASofrer)
-    32- !curar (nomeServo)
-    33- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
-    34- !(nomeServo) recebe (quantidadeAReceber)
-    35- !(nomeServo) paga (quantidadeAPagar)
+    10- !(nomeServo) gerar pontos
+    11- !(nomeServo) (direcao: a, w, d, s, aw, as, dw, ds)
+    12- !(nomeBatalha) info
+    13- !(nomeBatalha) rodar turno
+    14- !(nomeServo) atributos
+    15- !(nomeServo) atributos maximos
+    16- !(nomeServo) maestria
+    17- !(nomeServo) inventário
+    18- !(nomeServo) veste (nomeArmadura)
+    19- !(nomeServo) remove (nomeArmadura)
+    20- !(nomeServo) guarda (nomeArma)
+    21- !(nomeServo) descarta (nomeArma)
+    22- !(nomeServo) saca (nomeArma)
+    23- !(nomeServo) testa (atributo)
+    24- !(nomeServo) guarda
+    25- !bufar (nomeServo) (valorBuff)
+    26- !remover buff(nomeServo)
+    27- !debufar (nomeServo) (valorDebuff)
+    28- !remover debuff(nomeServo)
+    29- !(nomeAtacante) acerta (nomeDefensor)
+    30- !(nomeAtacante) lança (nomeDefensor)
+    31- !(nomeAtacante) atira (nomeDefensor)
+    32- !(nomeServo) sofre (danoASofrer)
+    33- !curar (nomeServo)
+    34- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
+    35- !(nomeServo) recebe (quantidadeAReceber)
+    36- !(nomeServo) paga (quantidadeAPagar)
     `
 
     await message.reply(guideMessage)
@@ -115,6 +115,8 @@ class CommandManager {
     battle.insertServant(servant)
     await this.battleService.update(battleName, battle)
     await this.servantService.update(servantName, servant)
+    await this.getInfoFromBattle(message, battle.name)
+
     await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
   }
 
@@ -213,8 +215,8 @@ class CommandManager {
     const servantAttributesMessage = `
     Os pontos do servo ${name} são:
 
-      pontos de ação: ${servant.combatCapabilities.actionPoints}
-      pontos de movimento: ${servant.combatCapabilities.movementPoints}
+      pontos de ação: ${servant.battlePoints.actionPoints}
+      pontos de movimento: ${servant.battlePoints.movementPoints}
 
     `
     await message.reply(servantAttributesMessage)
