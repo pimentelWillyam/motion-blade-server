@@ -9,6 +9,7 @@ import type ServantUpgrader from './ServantUpgrader'
 import type CombatManager from '../../helper/CombatManager'
 import type BattleService from '../../service/BattleService'
 import { type MovementDirection } from '../type/MovementDirection'
+import { type Servant } from '../../factories/ServantFactory'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
