@@ -137,6 +137,21 @@ class Servant {
       }
     }
   }
+
+  disarm = (): void => {
+    if (this.inventory.primaryWeapon.needsTwoHandsToWield) {
+      this.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (this.inventory.secondaryWeapon === null) {
+      this.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (this.inventory.secondaryWeapon !== null && (this.inventory.secondaryWeapon.type === 'escudo redondo' || this.inventory.secondaryWeapon.type === 'escudo' || this.inventory.secondaryWeapon.type === 'scutum')) {
+      this.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (this.inventory.secondaryWeapon !== null && (this.inventory.secondaryWeapon.type === 'escudo redondo' || this.inventory.secondaryWeapon.type === 'escudo' || this.inventory.secondaryWeapon.type === 'scutum')) {
+      this.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    } else if (this.inventory.secondaryWeapon !== null && !(this.inventory.secondaryWeapon.type === 'escudo redondo' || this.inventory.secondaryWeapon.type === 'escudo' || this.inventory.secondaryWeapon.type === 'scutum')) {
+      this.inventory.primaryWeapon = this.inventory.secondaryWeapon
+      this.inventory.secondaryWeapon = null
+    }
+  }
 }
 
 class ServantFactory {
