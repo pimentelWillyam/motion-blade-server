@@ -44,26 +44,19 @@ class Servant {
   maestry: Maestry
   battleInfo: BattleInfo
 
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory, id: string, masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }) {
-    this.id = id
-    this.masterId = masterId
-    this.name = name
-    this.fatherProfession = fatherProfession
-    this.youthProfession = youthProfession
-    this.currentAttributes = attributes
-    this.maximumAttributes = attributes
-    this.combatCapabilities = { guard: 0, buff: 0, debuff: 0 }
-    this.battlePoints = { initiativePoints: 0, movementPoints: 0, actionPoints: 0 }
-    this.inventory = {
-      primaryArmor: this.armorFactory.createArmorByType('roupa'),
-      secondaryArmor: this.armorFactory.createArmorByType('roupa'),
-      carriedWeapons: [],
-      primaryWeapon: this.weaponFactory.createWeapon('mão nua'),
-      secondaryWeapon: null,
-      denars: 0
-    }
-    this.maestry = { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
-    this.battleInfo = { isInBattle: false, battleId: 0, battleName: '', horizontalPosition: -1, verticalPosition: -1 }
+  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory, servant: ServantDTO) {
+    this.id = servant.id
+    this.masterId = servant.masterId
+    this.name = servant.name
+    this.fatherProfession = servant.fatherProfession
+    this.youthProfession = servant.youthProfession
+    this.currentAttributes = servant.currentAttributes
+    this.maximumAttributes = servant.maximumAttributes
+    this.combatCapabilities = servant.combatCapabilities
+    this.battlePoints = servant.battlePoints
+    this.inventory = servant.inventory
+    this.maestry = servant.maestry
+    this.battleInfo = servant.battleInfo
   }
 
   getCurrentAttributes (): Attributes { return this.currentAttributes }
