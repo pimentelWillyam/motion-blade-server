@@ -224,8 +224,6 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
-  async getServantPoints (message: Message<boolean>, name: string): Promise<void> {
-    const servant = await this.servantService.get(name)
   async getServantBattlePoints (message: Message<boolean>, servant: Servant): Promise<void> {
     const servantAttributesMessage = `
     Os pontos de batalha do servo ${servant.name} são:
