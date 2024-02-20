@@ -48,6 +48,7 @@ class Servant {
   }
 
   getCurrentAttributes (): Attributes { return this.currentAttributes }
+  getMaximumAttributes (): Attributes { return this.maximumAttributes }
 }
 
 class ServantFactory {
