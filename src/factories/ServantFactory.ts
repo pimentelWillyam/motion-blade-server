@@ -123,6 +123,20 @@ class Servant {
     }
     throw new Error(`O servo ${this.name} não possui nenhua arma do tipo ${weaponType} no seu inventário para que ele possa descartar`)
   }
+
+  drawWeapon = (weaponType: WeaponType): void => {
+    const weaponToBeDrawed = this.weaponFactory.createWeapon(weaponType)
+    if (weaponToBeDrawed.type !== 'mão nua' && weaponToBeDrawed.needsTwoHandsToWield && (this.inventory.primaryWeapon.type !== 'mão nua' || this.inventory.secondaryWeapon != null)) throw new Error(`O servo ${this.name} está atualmente com as mãos ocupadas e não pode sacar um(a) ${weaponType}`)
+    if (weaponToBeDrawed.type !== 'mão nua' && !weaponToBeDrawed.needsTwoHandsToWield && (this.inventory.secondaryWeapon != null)) throw new Error(`O servo ${this.name} não pode sacar um(a) ${weaponType} pois já está com as duas mãos ocupadas`)
+    for (let i = 0; i < 2; i++) {
+      if (this.inventory.carriedWeapons[i].type === weaponToBeDrawed.type) {
+        if ((weaponToBeDrawed.type === 'escudo redondo' || weaponToBeDrawed.type === 'escudo' || weaponToBeDrawed.type === 'scutum') && (this.inventory.secondaryWeapon === null)) this.inventory.secondaryWeapon = weaponToBeDrawed
+        else if (this.inventory.primaryWeapon.type === 'mão nua') this.inventory.primaryWeapon = weaponToBeDrawed
+        else this.inventory.secondaryWeapon = weaponToBeDrawed
+        this.inventory.carriedWeapons.splice(i, 1)
+      }
+    }
+  }
 }
 
 class ServantFactory {
