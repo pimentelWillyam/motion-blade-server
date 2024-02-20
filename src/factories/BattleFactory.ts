@@ -65,9 +65,9 @@ class Battle {
   async moveServant (servant: Servant, movementDirection: MovementDirection): Promise<Servant> {
     if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em nenhuma batalha`)
     if (servant.battleInfo.battleName !== this.name) throw new Error(`O servo ${servant.name} não está nessa batalha`)
+    if (servant.battlePoints.movementPoints < 1) throw new Error(`O servo ${servant.name} não possui pontos o suficiente para se mover `)
     switch (movementDirection) {
       case 'a':
-
         if (servant.battleInfo.verticalPosition - 1 < 0 || this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition - 1] !== '=') throw new Error(`O servo ${servant.name} não pode se mover para esta posição)`)
         this.map[servant.battleInfo.horizontalPosition][servant.battleInfo.verticalPosition] = '='
         servant.battleInfo.verticalPosition -= 1
@@ -152,6 +152,7 @@ class Battle {
       default:
         throw new Error('Direção de movimento inválida')
     }
+    servant.removeBattlePoint('movement')
     return servant
   }
 }
