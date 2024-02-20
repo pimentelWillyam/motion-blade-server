@@ -136,7 +136,7 @@ class PostgresDataSource {
       $8,
       $9,
       $10,
-      $11
+      $11,
       $12
 
   );`
@@ -259,7 +259,6 @@ class PostgresDataSource {
       maximum_attributes = $7,
       combat_capabilities = $8,
       battle_points = $9,
-
       battle_info = $10,
       inventory = $11,
       maestry = $12
