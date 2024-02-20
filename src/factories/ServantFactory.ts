@@ -85,14 +85,14 @@ class Servant {
   }
 
   private rollActionPoints (): number {
-    return (1 + this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 10)) / 10
+    return 1 + ((this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 10)) / 10)
   }
 
   private rollMovementPoints (): number {
-    return (1 + this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 10)) / 10
+    return 1 + ((this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 10)) / 10)
   }
 
-  generateBattlePoints (): BattlePoints {
+  regenerateBattlePoints (): BattlePoints {
     this.battlePoints.initiativePoints = this.rollInitiative()
     this.battlePoints.actionPoints += this.rollActionPoints()
     this.battlePoints.movementPoints += this.rollMovementPoints()
