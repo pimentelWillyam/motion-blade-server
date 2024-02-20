@@ -226,12 +226,12 @@ class CommandManager {
 
   async getServantPoints (message: Message<boolean>, name: string): Promise<void> {
     const servant = await this.servantService.get(name)
+  async getServantBattlePoints (message: Message<boolean>, servant: Servant): Promise<void> {
     const servantAttributesMessage = `
-    Os pontos do servo ${name} são:
-
-      pontos de ação: ${servant.battlePoints.actionPoints}
-      pontos de movimento: ${servant.battlePoints.movementPoints}
-
+    Os pontos de batalha do servo ${servant.name} são:
+      pontos de iniciativa: ${servant.battlePoints.initiativePoints}
+      pontos de ação: ${servant.battlePoints.actionPoints.toFixed(1)}
+      pontos de movimento: ${servant.battlePoints.movementPoints.toFixed(1)}
     `
     await message.reply(servantAttributesMessage)
   }
