@@ -36,7 +36,7 @@ class ServantService {
 
   get = async (name: string): Promise<Servant> => {
     const fetchedServant = await this.servantRepository.getByName(name)
-    if (fetchedServant != null) return fetchedServant
+    if (fetchedServant != null) return this.servantFactory.createThroughDto(fetchedServant)
     throw new Error(`O servo ${name} não existe`)
   }
 
