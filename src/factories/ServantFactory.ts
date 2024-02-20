@@ -108,6 +108,13 @@ class Servant {
     this.inventory.secondaryArmor = this.armorFactory.createArmorByType('roupa')
   }
 
+  addWeaponToInventory = (weaponType: WeaponType): void => {
+    if (this.inventory.carriedWeapons.length >= 2) throw new Error(`O servo ${this.name} já está carregando muitas armas, jogue alguma fora para aumentar o espaço disponível`)
+    this.inventory.primaryWeapon = this.weaponFactory.createWeapon('mão nua')
+    this.inventory.secondaryWeapon = null
+    this.inventory.carriedWeapons.push(this.weaponFactory.createWeapon(weaponType))
+  }
+
 }
 
 class ServantFactory {
