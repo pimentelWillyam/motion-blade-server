@@ -131,6 +131,20 @@ class CommandManager {
     await message.reply(`O servo ${servantName} foi removido da batalha ${battleName}`)
   }
 
+  async regenerateServantBattlePoints (message: Message<boolean>, servantName: string): Promise<void> {
+    const servant = await this.servantService.get(servantName)
+    servant.reduceBattlePoints()
+    const generatedBattlePoints = servant.regenerateBattlePoints()
+    await this.servantService.update(servantName, servant)
+    await this.sleeper.sleep(1000)
+    await message.reply(`O servo ${servantName} gerou ${generatedBattlePoints.initiativePoints} ponto(s) de iniciativa`)
+    await this.sleeper.sleep(1000)
+    await message.reply(`O servo ${servantName} gerou ${generatedBattlePoints.movementPoints.toFixed(1)} ponto(s) de movimento`)
+    await this.sleeper.sleep(1000)
+    await message.reply(`O servo ${servantName} gerou ${generatedBattlePoints.actionPoints.toFixed(1)} ponto(s) de ação`)
+    await this.sleeper.sleep(1000)
+  }
+
   async moveServant (message: Message<boolean>, servantName: string, movementDirection: MovementDirection): Promise<void> {
     if (!await this.servantService.servantExists(servantName)) throw new Error(`Não existe um servo chamado ${servantName}, tente mover um servo que de fato exista`)
     const servant = await this.servantService.get(servantName)
