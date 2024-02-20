@@ -51,6 +51,22 @@ class Servant {
   getMaximumAttributes (): Attributes { return this.maximumAttributes }
   getMaestry (): Maestry { return this.maestry }
   getInventory (): Maestry { return this.maestry }
+
+  rollAttributeOrMaestry (attributeOrMaestryToRoll: Attribute | MaestryType): number {
+    switch (attributeOrMaestryToRoll) {
+      case 'agilidade': return this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 20)
+      case 'tecnica': return this.currentAttributes.technique + this.randomNumberGenerator.generate(1, 20)
+      case 'força': return this.currentAttributes.strength + this.randomNumberGenerator.generate(1, 10)
+      case 'fortitude': return this.currentAttributes.fortitude + this.randomNumberGenerator.generate(1, 10)
+      case 'mão nua': return this.maestry.bareHanded + this.randomNumberGenerator.generate(1, 10)
+      case 'uma mão': return this.maestry.oneHanded + this.randomNumberGenerator.generate(1, 10)
+      case 'duas mãos': return this.maestry.twoHanded + this.randomNumberGenerator.generate(1, 10)
+      case 'haste': return this.maestry.polearm + this.randomNumberGenerator.generate(1, 10)
+      case 'besta': return this.maestry.crossbow + this.randomNumberGenerator.generate(1, 10)
+      case 'arco': return this.maestry.bow + this.randomNumberGenerator.generate(1, 10)
+      default: throw new Error('Atributo ou maestria inválido')
+    }
+  }
 }
 
 class ServantFactory {
