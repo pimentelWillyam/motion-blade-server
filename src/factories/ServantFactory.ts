@@ -157,6 +157,10 @@ class Servant {
     this.combatCapabilities.guard = guardToBeApplied
   }
 
+  buff = (buffValue: number): void => {
+    this.combatCapabilities.buff += buffValue
+  }
+
 }
 
 class ServantFactory {
