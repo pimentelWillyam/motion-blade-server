@@ -300,4 +300,4 @@ class ServantFactory {
   }
 }
 
-export { ServantFactory, Servant }
+export { ServantFactory, Servant, type ServantDTO }
