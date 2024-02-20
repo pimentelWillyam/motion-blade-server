@@ -17,7 +17,7 @@ import type ServantRepository from '../repository/ServantRepository'
 class ServantService {
   constructor (private readonly servantRepository: ServantRepository, private readonly attributesFetcher: AttributesFetcher, private readonly servantFactory: ServantFactory, private readonly armorFactory: ArmorFactory, private readonly weaponFactory: WeaponFactory) {}
 
-  create = async (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, customCreation: boolean, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }): Promise<Servant> => {
+  create = async (masterId: string, name: string, fatherProfession: Profession, youthProfession: Profession, customCreation: boolean, attributes: Attributes = { agility: 0, technique: 0, strength: 0, fortitude: 0 }): Promise<ServantDTO> => {
     if (!await this.servantExists(name)) {
       if (!customCreation) {
         attributes = this.attributesFetcher.fetchAttributesBasedOnBackground(fatherProfession, youthProfession)
