@@ -148,12 +148,13 @@ class CommandManager {
   async moveServant (message: Message<boolean>, servantName: string, movementDirection: MovementDirection): Promise<void> {
     if (!await this.servantService.servantExists(servantName)) throw new Error(`Não existe um servo chamado ${servantName}, tente mover um servo que de fato exista`)
     const servant = await this.servantService.get(servantName)
-    if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em uma batalha, portando não pode se mover`)
+    if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em uma batalha, portanto não pode se mover`)
     const battle = await this.battleService.get(servant.battleInfo.battleName)
     await battle.moveServant(servant, movementDirection)
     await this.servantService.update(servant.name, servant)
     await this.battleService.update(battle.name, battle)
     await this.getInfoFromBattle(message, servant.battleInfo.battleName)
+    await this.getServantBattlePoints(message, servant)
   }
 
   async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
