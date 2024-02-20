@@ -234,6 +234,9 @@ class Servant {
     this.inventory.denars += denarsToAdd
   }
 
+  removeDenars = (servantName: string, deductedMoney: number): void => {
+    this.inventory.denars -= deductedMoney
+  }
 }
 
 class ServantFactory {
