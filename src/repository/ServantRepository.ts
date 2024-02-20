@@ -1,4 +1,4 @@
-import type { Servant } from '../factories/ServantFactory'
+import type { Servant, ServantDTO } from '../factories/ServantFactory'
 import type { PostgresDataSource } from '../data/PostgresDataSource'
 
 class ServantRepository {
