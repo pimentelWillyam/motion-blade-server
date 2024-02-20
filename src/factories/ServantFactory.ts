@@ -39,6 +39,7 @@ class Servant {
   currentAttributes: Attributes
   maximumAttributes: Attributes
   combatCapabilities: CombatCapabilities
+  battlePoints: BattlePoints
   inventory: Inventory
   maestry: Maestry
   battleInfo: BattleInfo
@@ -51,7 +52,8 @@ class Servant {
     this.youthProfession = youthProfession
     this.currentAttributes = attributes
     this.maximumAttributes = attributes
-    this.combatCapabilities = { actionPoints: 0, movementPoints: 0, guard: 0, buff: 0, debuff: 0 }
+    this.combatCapabilities = { guard: 0, buff: 0, debuff: 0 }
+    this.battlePoints = { initiativePoints: 0, movementPoints: 0, actionPoints: 0 }
     this.inventory = {
       primaryArmor: this.armorFactory.createArmorByType('roupa'),
       secondaryArmor: this.armorFactory.createArmorByType('roupa'),
