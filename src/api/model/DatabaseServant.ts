@@ -1,4 +1,5 @@
 import type BattleInfo from '../../bot/type/BattleInfo'
+import { type BattlePoints } from '../../bot/type/BattlePoints'
 import type CombatCapabilities from '../../bot/type/CombatCapabilities'
 import type Inventory from '../../bot/type/Inventory'
 import type Maestry from '../../bot/type/Maestry'
@@ -14,6 +15,8 @@ interface DatabaseServant {
   current_attributes: Attributes
   maximum_attributes: Attributes
   combat_capabilities: CombatCapabilities
+  battle_points: BattlePoints
+
   battle_info: BattleInfo
   inventory: Inventory
   maestry: Maestry
