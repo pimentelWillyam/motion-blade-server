@@ -15,6 +15,21 @@ import { type WeaponFactory } from './WeaponFactory'
 import { type BattlePoints } from '../bot/type/BattlePoints'
 import { type BattlePoint } from '../bot/type/BattlePoint'
 
+interface ServantDTO {
+  readonly id: string
+  readonly masterId: string
+  readonly name: string
+  readonly fatherProfession: Profession
+  readonly youthProfession: Profession
+  currentAttributes: Attributes
+  maximumAttributes: Attributes
+  combatCapabilities: CombatCapabilities
+  battlePoints: BattlePoints
+  inventory: Inventory
+  maestry: Maestry
+  battleInfo: BattleInfo
+}
+
 class Servant {
   readonly id: string
   readonly masterId: string
