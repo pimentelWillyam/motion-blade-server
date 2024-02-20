@@ -87,6 +87,10 @@ class Servant {
     }
   }
 
+  private rollInitiative (): number {
+    return this.currentAttributes.agility + this.randomNumberGenerator.generate(1, 20)
+  }
+
   upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
     switch (propertyToUpgrade) {
       case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
