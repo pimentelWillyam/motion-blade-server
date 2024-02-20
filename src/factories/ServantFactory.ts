@@ -114,6 +114,13 @@ class Servant {
         throw new Error('Ponto de batalha inválido')
     }
   }
+
+  reduceBattlePoints (): void {
+    this.battlePoints.initiativePoints = 0
+    this.battlePoints.actionPoints -= Math.floor(this.battlePoints.actionPoints)
+    this.battlePoints.movementPoints -= Math.floor(this.battlePoints.movementPoints)
+  }
+
   upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
     switch (propertyToUpgrade) {
       case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
