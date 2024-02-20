@@ -46,6 +46,8 @@ class Servant {
     this.maestry = { bow: 0, crossbow: 0, bareHanded: 0, oneHanded: 0, twoHanded: 0, polearm: 0 }
     this.battleInfo = { isInBattle: false, battleId: 0, battleName: '', horizontalPosition: -1, verticalPosition: -1 }
   }
+
+  getCurrentAttributes (): Attributes { return this.currentAttributes }
 }
 
 class ServantFactory {
