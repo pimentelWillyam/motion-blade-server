@@ -30,7 +30,7 @@ class ServantService {
     throw new Error('Já existe um servo com esse nome')
   }
 
-  getAll = async (): Promise<Servant[]> => {
+  getAll = async (): Promise<ServantDTO[]> => {
     return await this.servantRepository.getAll()
   }
 
