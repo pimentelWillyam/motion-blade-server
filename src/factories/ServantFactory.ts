@@ -203,6 +203,33 @@ class Servant {
       } else if (this.currentAttributes.agility === 0 && this.currentAttributes.technique === 0 && this.currentAttributes.strength === 0 && this.currentAttributes.fortitude === 0) return
     }
   }
+
+  heal = (quantityToHeal: number): void => {
+    let healingPointsNotUsed = quantityToHeal
+    while (healingPointsNotUsed !== 0 || this.currentAttributes !== this.maximumAttributes) {
+      if (healingPointsNotUsed <= this.maximumAttributes.fortitude - this.currentAttributes.fortitude) { this.currentAttributes.fortitude = healingPointsNotUsed; return }
+      if (healingPointsNotUsed > this.maximumAttributes.fortitude - this.currentAttributes.fortitude) {
+        this.currentAttributes.fortitude = healingPointsNotUsed - this.maximumAttributes.fortitude + this.currentAttributes.fortitude
+        healingPointsNotUsed -= this.maximumAttributes.fortitude + this.currentAttributes.fortitude
+      }
+      if (healingPointsNotUsed <= this.maximumAttributes.strength - this.currentAttributes.strength) { this.currentAttributes.strength = healingPointsNotUsed; return }
+      if (healingPointsNotUsed > this.maximumAttributes.strength - this.currentAttributes.strength) {
+        this.currentAttributes.strength = healingPointsNotUsed - this.maximumAttributes.strength + this.currentAttributes.fortitude
+        healingPointsNotUsed -= this.maximumAttributes.strength + this.currentAttributes.strength
+      }
+      if (healingPointsNotUsed <= this.maximumAttributes.technique - this.currentAttributes.technique) { this.currentAttributes.technique = healingPointsNotUsed; return }
+      if (healingPointsNotUsed > this.maximumAttributes.technique - this.currentAttributes.technique) {
+        this.currentAttributes.technique = healingPointsNotUsed - this.maximumAttributes.technique + this.currentAttributes.fortitude
+        healingPointsNotUsed -= this.maximumAttributes.technique + this.currentAttributes.technique
+      }
+      if (healingPointsNotUsed <= this.maximumAttributes.agility - this.currentAttributes.agility) { this.currentAttributes.agility = healingPointsNotUsed; return }
+      if (healingPointsNotUsed > this.maximumAttributes.agility - this.currentAttributes.agility) {
+        this.currentAttributes.agility = healingPointsNotUsed - this.maximumAttributes.agility + this.currentAttributes.fortitude
+        healingPointsNotUsed -= this.maximumAttributes.agility + this.currentAttributes.agility
+      }
+    }
+  }
+
 }
 
 class ServantFactory {
