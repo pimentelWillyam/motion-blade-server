@@ -103,6 +103,11 @@ class Servant {
     }
   }
 
+  removeArmor = (): void => {
+    this.inventory.primaryArmor = this.armorFactory.createArmorByType('roupa')
+    this.inventory.secondaryArmor = this.armorFactory.createArmorByType('roupa')
+  }
+
 }
 
 class ServantFactory {
