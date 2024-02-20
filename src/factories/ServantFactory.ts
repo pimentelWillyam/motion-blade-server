@@ -165,6 +165,10 @@ class Servant {
     this.combatCapabilities.buff = 0
   }
 
+  debuff = (debuffValue: number): void => {
+    this.combatCapabilities.debuff -= debuffValue
+  }
+
 }
 
 class ServantFactory {
