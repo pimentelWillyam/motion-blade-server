@@ -12,6 +12,8 @@ import type WeaponType from '../bot/type/WeaponType'
 import RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
 import { type ArmorFactory } from './ArmorFactory'
 import { type WeaponFactory } from './WeaponFactory'
+import { type BattlePoints } from '../bot/type/BattlePoints'
+import { type BattlePoint } from '../bot/type/BattlePoint'
 
 class Servant {
   readonly id: string
