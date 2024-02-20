@@ -69,9 +69,9 @@ class ServantService {
     throw new Error(`O servo ${name} não existe`)
   }
 
-  update = async (name: string, contentToUpdate: Servant): Promise<Servant> => {
+  update = async (name: string, contentToUpdate: Servant): Promise<ServantDTO> => {
     const servantToBeUpdated = await this.servantRepository.update(name, contentToUpdate)
-    if (servantToBeUpdated != null) return servantToBeUpdated
+    if (servantToBeUpdated !== null) return servantToBeUpdated
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
