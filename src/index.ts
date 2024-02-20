@@ -83,7 +83,7 @@ const attributesFetcher = new AttributesFetcher()
 // instanciating factories
 const armorFactory = new ArmorFactory()
 const weaponFactory = new WeaponFactory()
-const servantFactory = new ServantFactory(uuidGenerator, armorFactory, weaponFactory)
+const servantFactory = new ServantFactory(randomNumberGenerator, uuidGenerator, armorFactory, weaponFactory)
 const battleFactory = new BattleFactory(randomNumberGenerator, uuidGenerator)
 
 // instanciating repository
