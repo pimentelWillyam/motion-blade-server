@@ -67,6 +67,7 @@ class PostgresDataSource {
         current_attributes JSON NOT NULL,
         maximum_attributes JSON NOT NULL,
         combat_capabilities JSON NOT NULL,
+        battle_points JSON NOT NULL,
         battle_info JSON NOT NULL,
         inventory JSON NOT NULL,
         maestry JSON NOT NULL,
@@ -120,6 +121,7 @@ class PostgresDataSource {
       current_attributes,
       maximum_attributes,
       combat_capabilities,
+      battle_points,
       battle_info,
       inventory,
       maestry
@@ -135,8 +137,10 @@ class PostgresDataSource {
       $9,
       $10,
       $11
+      $12
+
   );`
-    await this.client.query(query2, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battleInfo, servant.inventory, servant.maestry])
+    await this.client.query(query2, [servant.id, servant.masterId, servant.name, servant.fatherProfession, servant.youthProfession, servant.currentAttributes, servant.maximumAttributes, servant.combatCapabilities, servant.battlePoints, servant.battleInfo, servant.inventory, servant.maestry])
     return servant
   }
 
@@ -180,6 +184,7 @@ class PostgresDataSource {
         currentAttributes: servant.current_attributes,
         maximumAttributes: servant.maximum_attributes,
         combatCapabilities: servant.combat_capabilities,
+        battlePoints: servant.battle_points,
         battleInfo: servant.battle_info,
         inventory: servant.inventory,
         maestry: servant.maestry
@@ -206,7 +211,7 @@ class PostgresDataSource {
     return battleList
   }
 
-  async fetchServantBy (parameter: string, parameterValue: string): Promise<Servant | null> {
+  async fetchServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as unknown as DatabaseServant[]
     if (databaseData[0] === undefined) return null
     else {
@@ -219,6 +224,8 @@ class PostgresDataSource {
         currentAttributes: databaseData[0].current_attributes,
         maximumAttributes: databaseData[0].maximum_attributes,
         combatCapabilities: databaseData[0].combat_capabilities,
+        battlePoints: databaseData[0].battle_points,
+
         battleInfo: databaseData[0].battle_info,
         inventory: databaseData[0].inventory,
         maestry: databaseData[0].maestry
@@ -251,13 +258,15 @@ class PostgresDataSource {
       current_attributes = $6,
       maximum_attributes = $7,
       combat_capabilities = $8,
-      battle_info = $9,
-      inventory = $10,
-      maestry = $11
+      battle_points = $9,
+
+      battle_info = $10,
+      inventory = $11,
+      maestry = $12
     WHERE
       id = $1;
     `
-    await this.client.query(query2, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.combatCapabilities, servantToUpdate.battleInfo, servantToUpdate.inventory, servantToUpdate.maestry])
+    await this.client.query(query2, [servantToUpdate.id, servantToUpdate.masterId, servantToUpdate.name, servantToUpdate.fatherProfession, servantToUpdate.youthProfession, servantToUpdate.currentAttributes, servantToUpdate.maximumAttributes, servantToUpdate.combatCapabilities, servantToUpdate.battlePoints, servantToUpdate.battleInfo, servantToUpdate.inventory, servantToUpdate.maestry])
 
     return servantToUpdate
   }
