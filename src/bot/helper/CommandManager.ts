@@ -134,9 +134,9 @@ class CommandManager {
     const servant = await this.servantService.get(servantName)
     if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em uma batalha, portando não pode se mover`)
     const battle = await this.battleService.get(servant.battleInfo.battleName)
-    const moveServantResponse = await battle.moveServant(servant, movementDirection)
-    await this.servantService.update(servant.name, moveServantResponse[0])
-    await this.battleService.update(servant.name, moveServantResponse[1])
+    await battle.moveServant(servant, movementDirection)
+    await this.servantService.update(servant.name, servant)
+    await this.battleService.update(battle.name, battle)
     await this.getInfoFromBattle(message, servant.battleInfo.battleName)
   }
 
