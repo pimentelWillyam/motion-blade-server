@@ -105,6 +105,15 @@ class Servant {
     this.battlePoints.movementPoints += this.rollMovementPoints()
     return this.battlePoints
   }
+
+  removeBattlePoint (battlePointToRemove: BattlePoint): void {
+    switch (battlePointToRemove) {
+      case 'action': this.battlePoints.actionPoints -= 1; return
+      case 'movement': this.battlePoints.movementPoints -= 1; return
+      default:
+        throw new Error('Ponto de batalha inválido')
+    }
+  }
   upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
     switch (propertyToUpgrade) {
       case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
