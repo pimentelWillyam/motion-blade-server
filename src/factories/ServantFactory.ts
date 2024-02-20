@@ -115,6 +115,14 @@ class Servant {
     this.inventory.carriedWeapons.push(this.weaponFactory.createWeapon(weaponType))
   }
 
+  removeWeaponFromInventory = (weaponType: WeaponType): void => {
+    for (let i = 0; i < 2; i++) {
+      if (this.inventory.carriedWeapons[i] !== undefined && this.inventory.carriedWeapons[i].type === weaponType) {
+        this.inventory.carriedWeapons.splice(i, 1)
+      }
+    }
+    throw new Error(`O servo ${this.name} não possui nenhua arma do tipo ${weaponType} no seu inventário para que ele possa descartar`)
+  }
 }
 
 class ServantFactory {
