@@ -354,7 +354,7 @@ class CommandManager {
   }
 
   async servantAttackServant (message: Message<boolean>, attackerName: string, attackType: 'acerta' | 'lança' | 'atira', defenderName: string): Promise<void> {
-    let attacker = await this.servantService.get(attackerName)
+    const attacker = await this.servantService.get(attackerName)
     const defender = await this.servantService.get(defenderName)
     const attackReport = this.combatManager.servantAttacksServant(attacker, attackType, defender)
     await this.sleeper.sleep(2000)
