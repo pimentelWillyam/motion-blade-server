@@ -99,10 +99,10 @@ class Servant {
     return this.battlePoints
   }
 
-  removeBattlePoint (battlePointToRemove: BattlePoint): void {
-    switch (battlePointToRemove) {
-      case 'action': this.battlePoints.actionPoints -= 1; return
-      case 'movement': this.battlePoints.movementPoints -= 1; return
+  spendBattlePoint (battlePointToSpend: BattlePoint): void {
+    switch (battlePointToSpend) {
+      case 'action': this.battlePoints.actionPoints--; return
+      case 'movement': this.battlePoints.movementPoints--; return
       default:
         throw new Error('Ponto de batalha inválido')
     }
