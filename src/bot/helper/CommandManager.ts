@@ -438,18 +438,12 @@ class CommandManager {
         while (pointsToUpgrade > 0) {
           if (this.servantUpgrader.willServantUpgrade(pointsToUpgrade * 100)) {
             attributeNumber = this.randomNumberGenerator.generate(1, 4)
-            if (attributeNumber === 1) {
-              attacker = this.servantUpgrader.upgradeAttributes(attacker, 'agilidade')
-              await message.reply(`${attackerName} aprimorou sua agilidade`)
-            } else if (attributeNumber === 2) {
-              attacker = this.servantUpgrader.upgradeAttributes(attacker, 'tecnica')
-              await message.reply(`${attackerName} aprimorou sua técnica`)
-            } else if (attributeNumber === 3) {
-              attacker = this.servantUpgrader.upgradeAttributes(attacker, 'força')
-              await message.reply(`${attackerName} aprimorou sua força`)
-            } else if (attributeNumber === 4) {
-              attacker = this.servantUpgrader.upgradeAttributes(attacker, 'fortitude')
-              await message.reply(`${attackerName} aprimorou sua fortitude`)
+            switch (attributeNumber) {
+              case 1: await this.servantService.upgrade(attackerName, 'agilidade', 1); await message.reply(`${attackerName} aprimorou sua agilidade`); break
+              case 2: await this.servantService.upgrade(attackerName, 'tecnica', 1); await message.reply(`${attackerName} aprimorou sua técnica`); break
+              case 3: await this.servantService.upgrade(attackerName, 'força', 1); await message.reply(`${attackerName} aprimorou sua força`); break
+              case 4: await this.servantService.upgrade(attackerName, 'fortitude', 1); await message.reply(`${attackerName} aprimorou sua fortitude`); break
+              default: throw new Error('Número de atributo inesperado')
             }
             await this.sleeper.sleep(2000)
           }
