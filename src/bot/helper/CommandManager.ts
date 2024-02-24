@@ -136,7 +136,6 @@ class CommandManager {
     const servant = await this.servantService.get(servantName)
     servant.reduceBattlePoints()
     const generatedBattlePoints = servant.regenerateBattlePoints()
-    await this.servantService.update(servantName, servant)
     await this.sleeper.sleep(1000)
     await message.reply(`O servo ${servantName} gerou ${generatedBattlePoints.initiativePoints} ponto(s) de iniciativa`)
     await this.sleeper.sleep(1000)
@@ -147,7 +146,6 @@ class CommandManager {
   }
 
   async moveServant (message: Message<boolean>, servantName: string, movementDirection: MovementDirection): Promise<void> {
-    if (!await this.servantService.servantExists(servantName)) throw new Error(`Não existe um servo chamado ${servantName}, tente mover um servo que de fato exista`)
     const servant = await this.servantService.get(servantName)
     if (!servant.battleInfo.isInBattle) throw new Error(`O servo ${servant.name} não está em uma batalha, portanto não pode se mover`)
     const battle = await this.battleService.get(servant.battleInfo.battleName)
@@ -205,7 +203,6 @@ class CommandManager {
   }
 
   async deleteBattle (message: Message<boolean>, battleName: string): Promise<void> {
-    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
     await this.battleService.delete(battleName)
     await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
   }
@@ -371,7 +368,7 @@ class CommandManager {
         return
 
       case 'Disarm':
-        await this.servantService.disarm(attacker)
+        await this.servantService.disarm(attackerName)
         await message.reply(`${attacker.name} tentou acertar ${defender.name} mas acabou sendo desarmado`)
         return
 
@@ -461,10 +458,8 @@ class CommandManager {
         if (this.servantUpgrader.willMaestryBeUpgraded()) {
           await this.sleeper.sleep(2000)
           await message.reply(`${attackerName} aprimorou sua maestria em ${attacker.inventory.primaryWeapon.maestryType} após matar ${defenderName}`)
-          attacker = this.servantUpgrader.upgradeMaestry(attacker, attacker.inventory.primaryWeapon.maestryType)
+          await this.servantService.upgrade(attackerName, attacker.inventory.primaryWeapon.maestryType, 1)
         }
-        await this.servantService.update(attacker.name, attacker)
-        await this.servantService.delete(defender.name)
       }
     }
   }

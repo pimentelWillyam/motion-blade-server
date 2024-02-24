@@ -50,15 +50,20 @@ class ServantService {
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
-  rollTurnForServants (_servantList: Servant[]): void {
+  rollTurnForServants (servantList: Servant[]): void {
   }
 
   upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<ServantDTO> => {
     const servantToUpgrade = await this.get(name)
-    if (servantToUpgrade === null) throw new Error('Não é possível atualizar um servo que não existe')
     servantToUpgrade.upgrade(propertyToUpgrade, quantityToUpgrade)
     await this.servantRepository.update(name, servantToUpgrade)
     return servantToUpgrade
+  }
+
+  regenerateBattlePoints = async (name: string): Promise<void> => {
+    const servant = await this.get(name)
+    servant.regenerateBattlePoints()
+    await this.servantRepository.update(name, servant)
   }
 
   wearArmor = async (name: string, armorType: ArmorType): Promise<void> => {
