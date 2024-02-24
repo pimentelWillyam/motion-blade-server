@@ -291,8 +291,7 @@ class CommandManager {
   }
 
   async servantWearArmor (message: Message<boolean>, name: string, armorType: ArmorType): Promise<void> {
-    const servant = await this.servantService.get(name)
-    await this.servantService.wearArmor(servant, armorType)
+    await this.servantService.wearArmor(name, armorType)
     await message.reply(`O servo ${name} vestiu uma armadura de ${armorType}`)
   }
 
@@ -304,7 +303,7 @@ class CommandManager {
   }
 
   async servantKeepWeapon (message: Message<boolean>, name: string, weaponType: WeaponType): Promise<void> {
-    await this.servantService.keepWeapon(name, weaponType)
+    await this.servantService.addWeaponToInventory(name, weaponType)
     await message.reply(`O servo ${name} guardou um(a) ${weaponType} em seu inventário`)
   }
 
