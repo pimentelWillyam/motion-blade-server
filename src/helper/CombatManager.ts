@@ -3,19 +3,19 @@ import type RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
 import { type Armor } from '../factories/ArmorFactory'
 import { type Weapon } from '../factories/WeaponFactory'
 import type AttackReport from '../bot/type/AttackReport'
+import type ServantService from '../service/ServantService'
+import type ServantUpgrader from '../bot/helper/ServantUpgradeCalculator'
 
 class CombatManager {
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator) {}
+  constructor (private readonly servantService: ServantService, private readonly servantUpgrader: ServantUpgrader, readonly randomNumberGenerator: RandomNumberGenerator) {}
 
-  servantAttacksServant (attacker: Servant, attackType: 'acerta' | 'lança' | 'atira', defender: Servant): AttackReport {
-    if (attackType === 'acerta' && !attacker.inventory.primaryWeapon.strikable) throw new Error(`A arma usada por ${attacker.name} não pode ser usada para acertar alguém`)
-    if (attackType === 'lança' && !attacker.inventory.primaryWeapon.throwable) throw new Error(`A arma usada por ${attacker.name} não pode ser usada para lançar alguém`)
-    if (attackType === 'atira' && !attacker.inventory.primaryWeapon.shootable) throw new Error(`A arma usada por ${attacker.name} não pode ser usada para lançar alguém`)
+  async servantAttacksServant (attackerName: string, attackType: 'acerta' | 'lança' | 'atira', defenderName: string): Promise<AttackReport> {
     const attackReport: AttackReport = {
+      attacker: await this.servantService.get(attackerName),
+      defender: await this.servantService.get(defenderName),
       attackFactor: undefined,
       defenseFactor: undefined,
       defenderTriedToBlock: undefined,
-      result: undefined,
       defenderHadArmor: undefined,
       secondaryArmorHittingFactor: undefined,
       secondaryArmorEvasionFactor: undefined,
@@ -23,11 +23,23 @@ class CombatManager {
       powerFactor: undefined,
       resilienceFactor: undefined,
       weaponArmorDamageRelation: undefined,
-      damageDealtToDefender: undefined
+      damageDealtToDefender: undefined,
+      result: undefined,
+      defenderSurvived: undefined,
+      amountOfTimesServantWillUpgrade: undefined,
+      attributePointsToUpgrade: undefined,
+      willMaestryBeUpgraded: undefined
     }
-    attackReport.defenderTriedToBlock = this.defenderWillTryToBlock(defender)
-    attackReport.attackFactor = this.getAttackFactor(attacker, attackType)
-    attackReport.defenseFactor = this.getDefenseFactor(defender)
+    if (attackReport.attacker.battlePoints.actionPoints < 1) throw new Error(`O servo ${attackerName} não possui pontos o suficiente para executar essa ação`)
+    if ((attackReport.attacker.battleInfo.isInBattle && !attackReport.defender.battleInfo.isInBattle) || (!attackReport.attacker.battleInfo.isInBattle && attackReport.defender.battleInfo.isInBattle)) throw new Error('Comando inválido: um servo só pode atacar outro se os dois estiverem em uma batalha ou os dois estiverem fora de batalha')
+    if (attackReport.attacker.battleInfo.battleId !== attackReport.defender.battleInfo.battleId) throw new Error('Comando inválido: um servo em batalha só pode atacar outro servo se os dois estiverem na mesma batalha')
+    if (attackType === 'acerta' && !attackReport.attacker.inventory.primaryWeapon.strikable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para acertar alguém`)
+    if (attackType === 'lança' && !attackReport.attacker.inventory.primaryWeapon.throwable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para lançar alguém`)
+    if (attackType === 'atira' && !attackReport.attacker.inventory.primaryWeapon.shootable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para lançar alguém`)
+    await this.servantService.spendBattlePoints(attackerName, 'action')
+    attackReport.defenderTriedToBlock = this.defenderWillTryToBlock(attackReport.defender)
+    attackReport.attackFactor = this.getAttackFactor(attackReport.attacker, attackType)
+    attackReport.defenseFactor = this.getDefenseFactor(attackReport.defender)
     if (attackReport.defenseFactor.value >= attackReport.attackFactor.value * 2 && !attackReport.defenderTriedToBlock && attackType === 'acerta') {
       attackReport.result = 'Counter'
       return attackReport
@@ -56,25 +68,31 @@ class CombatManager {
       attackReport.result = 'Dodge'
       return attackReport
     }
-    attackReport.powerFactor = this.getPowerFactor(attacker)
-    attackReport.resilienceFactor = this.getResilienceFactor(defender)
+    attackReport.powerFactor = this.getPowerFactor(attackReport.attacker)
+    attackReport.resilienceFactor = this.getResilienceFactor(attackReport.defender)
 
-    if (defender.inventory.primaryArmor.type !== 'roupa') {
+    if (attackReport.defender.inventory.primaryArmor.type !== 'roupa') {
       attackReport.defenderHadArmor = true
-      attackReport.secondaryArmorHittingFactor = this.randomNumberGenerator.generate(1, 20) + attacker.currentAttributes.technique
-      attackReport.secondaryArmorEvasionFactor = this.randomNumberGenerator.generate(1, 20) + defender.currentAttributes.technique
+      attackReport.secondaryArmorHittingFactor = this.randomNumberGenerator.generate(1, 20) + attackReport.attacker.currentAttributes.technique
+      attackReport.secondaryArmorEvasionFactor = this.randomNumberGenerator.generate(1, 20) + attackReport.defender.currentAttributes.technique
 
-      attackReport.defenderSecondaryArmorHasBeenHit = this.defenderSecondaryArmorWillBeHit(attacker, attackReport.secondaryArmorHittingFactor, defender, attackReport.secondaryArmorEvasionFactor)
+      attackReport.defenderSecondaryArmorHasBeenHit = this.defenderSecondaryArmorWillBeHit(attackReport.secondaryArmorHittingFactor, attackReport.secondaryArmorEvasionFactor)
     } else {
       attackReport.defenderHadArmor = false
       attackReport.defenderSecondaryArmorHasBeenHit = false
     }
     if (attackReport.defenderHadArmor && attackReport.defenderSecondaryArmorHasBeenHit) {
-      attackReport.weaponArmorDamageRelation = this.getWeaponArmorDamageRelation(attacker.inventory.primaryWeapon, defender.inventory.secondaryArmor)
+      attackReport.weaponArmorDamageRelation = this.getWeaponArmorDamageRelation(attackReport.attacker.inventory.primaryWeapon, attackReport.defender.inventory.secondaryArmor)
     } else {
-      attackReport.weaponArmorDamageRelation = this.getWeaponArmorDamageRelation(attacker.inventory.primaryWeapon, defender.inventory.primaryArmor)
+      attackReport.weaponArmorDamageRelation = this.getWeaponArmorDamageRelation(attackReport.attacker.inventory.primaryWeapon, attackReport.defender.inventory.primaryArmor)
     }
     attackReport.damageDealtToDefender = attackReport.powerFactor + attackReport.weaponArmorDamageRelation - attackReport.resilienceFactor
+    attackReport.defenderSurvived = this.defenderWillSurvive(attackReport.defender, attackReport.damageDealtToDefender)
+    if (!attackReport.defenderSurvived) {
+      attackReport.attributePointsToUpgrade = this.servantUpgrader.getAttributePointsToUpgrade(attackReport.attacker, attackReport.defender)
+      attackReport.amountOfTimesServantWillUpgrade = this.servantUpgrader.getAmmountOfTimesServantWillUpgrade(attackReport.attributePointsToUpgrade)
+      attackReport.willMaestryBeUpgraded = this.servantUpgrader.willMaestryBeUpgraded()
+    }
     return attackReport
   }
 
@@ -154,8 +172,13 @@ class CombatManager {
     throw new Error('Erro no calculo de dano na armadura')
   }
 
-  private defenderSecondaryArmorWillBeHit (attacker: Servant, secondaryArmorHittingFactor: number, defender: Servant, secondaryArmorEvasionFactor: number): boolean {
+  private defenderSecondaryArmorWillBeHit (secondaryArmorHittingFactor: number, secondaryArmorEvasionFactor: number): boolean {
     if (secondaryArmorHittingFactor > secondaryArmorEvasionFactor) return true
+    return false
+  }
+
+  private readonly defenderWillSurvive = (defender: Servant, damagerDealt: number): boolean => {
+    if (damagerDealt <= (defender.currentAttributes.agility + defender.currentAttributes.technique + defender.currentAttributes.strength + defender.currentAttributes.fortitude)) return true
     return false
   }
 }
