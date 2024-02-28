@@ -132,10 +132,9 @@ class CommandManager {
     await message.reply(`O servo ${servantName} foi removido da batalha ${battleName}`)
   }
 
-  async regenerateServantBattlePoints (message: Message<boolean>, servantName: string): Promise<void> {
-    const servant = await this.servantService.get(servantName)
-    servant.reduceBattlePoints()
-    const generatedBattlePoints = servant.regenerateBattlePoints()
+  async generateServantBattlePoints (message: Message<boolean>, servantName: string): Promise<void> {
+    await this.servantService.reduceBattlePoints(servantName)
+    const generatedBattlePoints = await this.servantService.generateServantBattlePoints(servantName)
     await this.sleeper.sleep(1000)
     await message.reply(`O servo ${servantName} gerou ${generatedBattlePoints.initiativePoints} ponto(s) de iniciativa`)
     await this.sleeper.sleep(1000)

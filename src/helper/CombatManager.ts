@@ -30,9 +30,9 @@ class CombatManager {
       attributePointsToUpgrade: undefined,
       willMaestryBeUpgraded: undefined
     }
-    if (attackReport.attacker.battlePoints.actionPoints < 1) throw new Error(`O servo ${attackerName} não possui pontos o suficiente para executar essa ação`)
+    if (attackReport.attacker.battleInfo.isInBattle && attackReport.defender.battleInfo.isInBattle && attackReport.attacker.battlePoints.actionPoints < 1) throw new Error(`O servo ${attackerName} não possui pontos o suficiente para executar essa ação`)
     if ((attackReport.attacker.battleInfo.isInBattle && !attackReport.defender.battleInfo.isInBattle) || (!attackReport.attacker.battleInfo.isInBattle && attackReport.defender.battleInfo.isInBattle)) throw new Error('Comando inválido: um servo só pode atacar outro se os dois estiverem em uma batalha ou os dois estiverem fora de batalha')
-    if (attackReport.attacker.battleInfo.battleId !== attackReport.defender.battleInfo.battleId) throw new Error('Comando inválido: um servo em batalha só pode atacar outro servo se os dois estiverem na mesma batalha')
+    if (attackReport.attacker.battleInfo.battleName !== attackReport.defender.battleInfo.battleName) throw new Error('Um servo em batalha só pode atacar outro servo se os dois estiverem na mesma batalha')
     if (attackType === 'acerta' && !attackReport.attacker.inventory.primaryWeapon.strikable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para acertar alguém`)
     if (attackType === 'lança' && !attackReport.attacker.inventory.primaryWeapon.throwable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para lançar alguém`)
     if (attackType === 'atira' && !attackReport.attacker.inventory.primaryWeapon.shootable) throw new Error(`A arma usada por ${attackReport.attacker.name} não pode ser usada para lançar alguém`)

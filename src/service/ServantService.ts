@@ -3,6 +3,7 @@ import type ArmorType from '../bot/type/ArmorType'
 import type Attribute from '../bot/type/Attribute'
 import type Attributes from '../bot/type/Attributes'
 import { type BattlePoint } from '../bot/type/BattlePoint'
+import { type BattlePoints } from '../bot/type/BattlePoints'
 import type MaestryType from '../bot/type/MaestryType'
 import type Profession from '../bot/type/Profession'
 import type ServantLifeStatus from '../bot/type/ServantLifeStatus'
@@ -67,10 +68,17 @@ class ServantService {
     await this.servantRepository.update(name, servant)
   }
 
-  regenerateBattlePoints = async (name: string): Promise<void> => {
+  reduceBattlePoints = async (name: string): Promise<void> => {
     const servant = await this.get(name)
-    servant.regenerateBattlePoints()
+    servant.reduceBattlePoints()
     await this.servantRepository.update(name, servant)
+  }
+
+  generateServantBattlePoints = async (name: string): Promise<BattlePoints> => {
+    const servant = await this.get(name)
+    const generatedBattlePoints = servant.generateBattlePoints()
+    await this.servantRepository.update(name, servant)
+    return generatedBattlePoints
   }
 
   wearArmor = async (name: string, armorType: ArmorType): Promise<void> => {

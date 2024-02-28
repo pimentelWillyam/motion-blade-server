@@ -152,7 +152,7 @@ class Battle {
       default:
         throw new Error('Direção de movimento inválida')
     }
-    servant.removeBattlePoint('movement')
+    servant.spendBattlePoint('movement')
     return servant
   }
 }

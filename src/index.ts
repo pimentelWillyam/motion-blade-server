@@ -104,7 +104,7 @@ const servantController = new ServantController(servantService, servantValidator
 const battleController = new BattleController(battleService, battleValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(randomNumberGenerator))
+const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(servantService, new ServantUpgrader(randomNumberGenerator), randomNumberGenerator))
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 

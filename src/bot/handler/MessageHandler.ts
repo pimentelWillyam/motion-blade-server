@@ -22,7 +22,7 @@ class MessageHandler {
       else if (treatedMessage[0] === 'criar' && treatedMessage[1] === 'batalha' && treatedMessage.length === 3) await this.commandManager.createBattle(message, treatedMessage[2])
       else if (treatedMessage[0] === 'inserir' && treatedMessage.length === 3) await this.commandManager.insertServantInBattle(message, treatedMessage[1], treatedMessage[2])
       else if (treatedMessage[0] === 'remover' && treatedMessage.length === 3) await this.commandManager.removeServantFromBattle(message, treatedMessage[1], treatedMessage[2])
-      else if (treatedMessage[1] === 'gerar' && treatedMessage[2] === 'pontos' && treatedMessage.length === 3) await this.commandManager.regenerateServantBattlePoints(message, treatedMessage[0])
+      else if (treatedMessage[1] === 'gerar' && treatedMessage[2] === 'pontos' && treatedMessage.length === 3) await this.commandManager.generateServantBattlePoints(message, treatedMessage[0])
       else if (this.isDirection(treatedMessage[1]) && treatedMessage.length === 2) await this.commandManager.moveServant(message, treatedMessage[0], treatedMessage[1] as MovementDirection)
       else if (treatedMessage[1] === 'info' && treatedMessage.length === 2) await this.commandManager.getInfoFromBattle(message, treatedMessage[0])
       else if (treatedMessage[1] === 'rodar' && treatedMessage[2] === 'turno' && treatedMessage.length === 3) await this.commandManager.rollBattleTurn(message, treatedMessage[0])
