@@ -113,7 +113,6 @@ class MariadbDataSource2 {
   }
 
   async insertBattleRegistry (battle: Battle): Promise<Battle> {
-    console.log('batalha:', battle)
     const query = 'INSERT INTO motion_blade_2.battle (id, name, map) VALUES (?,?,?);'
     await this.pool?.query(query, [battle.id, battle.name, battle.map])
     return battle
