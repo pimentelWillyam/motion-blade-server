@@ -26,6 +26,7 @@ class MessageHandler {
       else if (this.isDirection(treatedMessage[1]) && treatedMessage.length === 2) await this.commandManager.moveServant(message, treatedMessage[0], treatedMessage[1] as MovementDirection)
       else if (treatedMessage[1] === 'info' && treatedMessage.length === 2) await this.commandManager.getInfoFromBattle(message, treatedMessage[0])
       else if (treatedMessage[1] === 'rodar' && treatedMessage[2] === 'turno' && treatedMessage.length === 3) await this.commandManager.rollBattleTurn(message, treatedMessage[0])
+      else if (treatedMessage[0] === 'deletar' && treatedMessage[1] === 'batalha' && treatedMessage.length === 3) await this.commandManager.deleteBattle(message, treatedMessage[2])
       else if (treatedMessage[1] === 'atributos' && treatedMessage.length === 2) await this.commandManager.getServantAttributes(message, treatedMessage[0])
       else if (treatedMessage[1] === 'atributos' && treatedMessage[2] === 'maximos' && treatedMessage.length === 3) await this.commandManager.getServantMaximumAttributes(message, treatedMessage[0])
       else if (treatedMessage[1] === 'maestria' && treatedMessage.length === 2) await this.commandManager.getServantMaestry(message, treatedMessage[0])
