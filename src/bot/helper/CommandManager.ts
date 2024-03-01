@@ -16,42 +16,60 @@ class CommandManager {
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `Os comandos que existem são:
-    1- !ajuda
-    2- !profissoes
-    3- !rolar
-    4- !criar servo (nomeServo)
-    5- !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
-    6- !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
-    7- !criar batalha (nomeBatalha)
-    8- !inserir (nomeServo) (nomeBatalha)
-    9- !remover (nomeServo) (nomeBatalha)
-    10- !(nomeServo) gerar pontos
-    11- !(nomeServo) (direcao: a, w, d, s, aw, as, dw, ds)
-    12- !(nomeBatalha) info
-    13- !(nomeBatalha) rodar turno
-    14- !(nomeServo) atributos
-    15- !(nomeServo) atributos maximos
-    16- !(nomeServo) maestria
-    17- !(nomeServo) inventário
-    18- !(nomeServo) veste (nomeArmadura)
-    19- !(nomeServo) remove (nomeArmadura)
-    20- !(nomeServo) guarda (nomeArma)
-    21- !(nomeServo) descarta (nomeArma)
-    22- !(nomeServo) saca (nomeArma)
-    23- !(nomeServo) testa (atributo)
-    24- !(nomeServo) guarda
-    25- !bufar (nomeServo) (valorBuff)
-    26- !remover buff(nomeServo)
-    27- !debufar (nomeServo) (valorDebuff)
-    28- !remover debuff(nomeServo)
-    29- !(nomeAtacante) acerta (nomeDefensor)
-    30- !(nomeAtacante) lança (nomeDefensor)
-    31- !(nomeAtacante) atira (nomeDefensor)
-    32- !(nomeServo) sofre (danoASofrer)
-    33- !curar (nomeServo)
-    34- !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
-    35- !(nomeServo) recebe (quantidadeAReceber)
-    36- !(nomeServo) paga (quantidadeAPagar)
+
+    Comandos informativos de um modo geral
+
+    !ajuda
+    !profissoes
+
+    Comandos informativos sobre os servos
+    !(nomeServo) atributos
+
+    Comandos informativos sobre as batalhas
+    !(nomeBatalha) info
+
+
+    Comandos relacionados a rolagem de dados
+
+    !rolar (dadoASerRolado)
+
+    Comandos relacionados a criação de servos
+    !criar servo (nomeServo)
+    !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
+    !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
+    !(nomeServo) gerar pontos
+
+    Comandos relacionados a criação e manutenção de batalhas
+    !criar batalha (nomeBatalha)
+    !inserir (nomeServo) (nomeBatalha)
+    !remover (nomeServo) (nomeBatalha)
+    !deletar batalha (nomeBatalha)
+
+    Comandos relacionados ao combate
+    !(nomeServo) (direcao: a, w, d, s, aw, as, dw, ds)
+    !(nomeBatalha) rodar turno
+    !(nomeServo) atributos maximos
+    !(nomeServo) maestria
+    !(nomeServo) inventário
+    !(nomeServo) veste (nomeArmadura)
+    !(nomeServo) remove (nomeArmadura)
+    !(nomeServo) guarda (nomeArma)
+    !(nomeServo) descarta (nomeArma)
+    !(nomeServo) saca (nomeArma)
+    !(nomeServo) testa (atributo)
+    !(nomeServo) guarda
+    !bufar (nomeServo) (valorBuff)
+    !remover buff(nomeServo)
+    !debufar (nomeServo) (valorDebuff)
+    !remover debuff(nomeServo)
+    !(nomeAtacante) acerta (nomeDefensor)
+    !(nomeAtacante) lança (nomeDefensor)
+    !(nomeAtacante) atira (nomeDefensor)
+    !(nomeServo) sofre (danoASofrer)
+    !curar (nomeServo)
+    !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
+    !(nomeServo) recebe (quantidadeAReceber)
+    !(nomeServo) paga (quantidadeAPagar)
     `
 
     await message.reply(guideMessage)
