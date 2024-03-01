@@ -46,17 +46,13 @@ class Battle {
     return servant
   }
 
-  removeServant (servant: Servant): Servant {
+  removeServant (servant: Servant): void {
     if (servant.battleInfo.battleName !== this.name) throw new Error(`O servo ${servant.name} não pode ser removido pois não está nessa batalha`)
     for (let i = 0; i < this.participantsList.length; i++) {
       if (servant.name === this.participantsList[i].name) {
         this.map[servant.battleInfo.verticalPosition][servant.battleInfo.horizontalPosition] = '='
         this.participantsList.splice(i, 1)
-        servant.battleInfo.horizontalPosition = -1
-        servant.battleInfo.verticalPosition = -1
-        servant.battleInfo.isInBattle = false
-        servant.battleInfo.battleId = -1
-        return servant
+        return
       }
     }
     throw new Error(`O servo ${servant.name} não está inserido nessa batalha`)
