@@ -221,8 +221,11 @@ class CommandManager {
   }
 
   async deleteBattle (message: Message<boolean>, battleName: string): Promise<void> {
-    await this.battleService.delete(battleName)
-    await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
+    const battle = await this.battleService.get(battleName)
+    for (let i = 0; i < battle.participantsList.length; i++) {
+      await this.removeServantFromBattle(message, battleName, battle.participantsList[i].name)
+    }
+    await message.reply('Todos os participantes da batalha foram removidos e a batalha foi deletada')
   }
 
   async getServantAttributes (message: Message<boolean>, name: string): Promise<void> {
