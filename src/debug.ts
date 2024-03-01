@@ -23,7 +23,6 @@ const debug = async () => {
   // console.log(battle.map[6].toString())
   // console.log(battle.map[7].toString())
   // console.log('\n\n\n')
-  console.log(battle)
 
   // const moveServantReturn = await battle.moveServant(servant1, 'c')
   // console.log('o id de batalha do servo 1 é ', servant1.battleInfo.battleId)
