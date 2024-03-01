@@ -114,6 +114,14 @@ class Servant {
     this.battlePoints.movementPoints -= Math.floor(this.battlePoints.movementPoints)
   }
 
+  removeBattleInfo (): void {
+    this.battleInfo.battleName = ''
+    this.battleInfo.horizontalPosition = -1
+    this.battleInfo.verticalPosition = -1
+    this.battleInfo.battleId = -1
+    this.battleInfo.isInBattle = false
+  }
+
   upgrade = (propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): void => {
     switch (propertyToUpgrade) {
       case 'agilidade': this.maximumAttributes.agility += quantityToUpgrade; this.currentAttributes.agility += quantityToUpgrade; break
