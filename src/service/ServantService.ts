@@ -52,7 +52,11 @@ class ServantService {
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
-  rollTurnForServants (servantList: Servant[]): void {
+  async rollTurnForServants (servantList: Servant[]): Promise<void> {
+    for (let i = 0; i < servantList.length; i++) {
+      servantList[i].generateBattlePoints()
+      await this.update(servantList[i].name, servantList[i])
+    }
   }
 
   upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<ServantDTO> => {
