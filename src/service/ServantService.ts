@@ -212,10 +212,7 @@ class ServantService {
       } else if (servant.currentAttributes.fortitude !== 0 && servant.currentAttributes.fortitude < damageNotDealt) {
         damageNotDealt -= servant.currentAttributes.fortitude
         servant.currentAttributes.fortitude = 0
-      } else if (servant.currentAttributes.agility === 0 && servant.currentAttributes.technique === 0 && servant.currentAttributes.strength === 0 && servant.currentAttributes.fortitude === 0) {
-        await this.delete(servant.name)
-        return 'Dead'
-      }
+      } else if (servant.currentAttributes.agility === 0 && servant.currentAttributes.technique === 0 && servant.currentAttributes.strength === 0 && servant.currentAttributes.fortitude === 0) return 'Dead'
     }
     await this.servantRepository.update(servant.name, servant)
     return 'Alive'
