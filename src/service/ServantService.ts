@@ -60,6 +60,12 @@ class ServantService {
     }
   }
 
+  async rollTurnForServant (servantName: string): Promise<void> {
+    const servant = await this.get(servantName)
+    servant.generateBattlePoints()
+    await this.update(servant.name, servant)
+  }
+
   upgrade = async (name: string, propertyToUpgrade: MaestryType | Attribute, quantityToUpgrade: number): Promise<ServantDTO> => {
     const servantToUpgrade = await this.get(name)
     servantToUpgrade.upgrade(propertyToUpgrade, quantityToUpgrade)
