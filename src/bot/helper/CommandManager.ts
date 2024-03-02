@@ -18,58 +18,67 @@ class CommandManager {
     const guideMessage = `Os comandos que existem são:
 
     Comandos informativos de um modo geral
+      !ajuda
+      !profissoes
 
-    !ajuda
-    !profissoes
 
     Comandos informativos sobre os servos
-    !(nomeServo) atributos
+      !(nomeServo) atributos
+      !(nomeServo) atributos maximos
+      !(nomeServo) maestria
+      !(nomeServo) inventário
+
 
     Comandos informativos sobre as batalhas
-    !(nomeBatalha) info
+      !(nomeBatalha) info
 
 
     Comandos relacionados a rolagem de dados
+      !rolar (dadoASerRolado)
+      !(nomeServo) testa (atributo)
 
-    !rolar (dadoASerRolado)
 
     Comandos relacionados a criação de servos
-    !criar servo (nomeServo)
-    !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
-    !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
-    !(nomeServo) gerar pontos
+      !criar servo (nomeServo)
+      !criar servo (nomeServo) (profissaoPaterna) (profissaoJuventude)
+      !criar servo (nomeServo) (agilidade) (tecnica) (força) (fortitude)
+
 
     Comandos relacionados a criação e manutenção de batalhas
-    !criar batalha (nomeBatalha)
-    !inserir (nomeServo) (nomeBatalha)
-    !remover (nomeServo) (nomeBatalha)
-    !deletar batalha (nomeBatalha)
+      !criar batalha (nomeBatalha)
+      !inserir (nomeServo) (nomeBatalha)
+      !remover (nomeServo) (nomeBatalha)
+      !deletar batalha (nomeBatalha)
+      !(nomeBatalha) rodar turno
+
+
+    Comandos relacionados a administração do inventário
+      !(nomeServo) veste (nomeArmadura)
+      !(nomeServo) remove (nomeArmadura)
+      !(nomeServo) guarda (nomeArma)
+      !(nomeServo) descarta (nomeArma)
+      !(nomeServo) saca (nomeArma)
+
 
     Comandos relacionados ao combate
     !(nomeServo) (direcao: a, w, d, s, aw, as, dw, ds)
-    !(nomeBatalha) rodar turno
-    !(nomeServo) atributos maximos
-    !(nomeServo) maestria
-    !(nomeServo) inventário
-    !(nomeServo) veste (nomeArmadura)
-    !(nomeServo) remove (nomeArmadura)
-    !(nomeServo) guarda (nomeArma)
-    !(nomeServo) descarta (nomeArma)
-    !(nomeServo) saca (nomeArma)
-    !(nomeServo) testa (atributo)
     !(nomeServo) guarda
-    !bufar (nomeServo) (valorBuff)
-    !remover buff(nomeServo)
-    !debufar (nomeServo) (valorDebuff)
-    !remover debuff(nomeServo)
     !(nomeAtacante) acerta (nomeDefensor)
     !(nomeAtacante) lança (nomeDefensor)
     !(nomeAtacante) atira (nomeDefensor)
+    !(nomeServo) gerar pontos
+
+    Comandos relacionados aos buffs e debuffs
+      !bufar (nomeServo) (valorBuff)
+      !remover buff(nomeServo)
+      !debufar (nomeServo) (valorDebuff)
+      !remover debuff(nomeServo)
+
+
+    Comandos relacionados a cura, aplicação de dano e melhorias
+      !curar (nomeServo)
     !(nomeServo) sofre (danoASofrer)
-    !curar (nomeServo)
-    !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
-    !(nomeServo) recebe (quantidadeAReceber)
-    !(nomeServo) paga (quantidadeAPagar)
+      !(nomeServo) melhora (nomeAtributo | nomeMaestria) (quantidadeAAumentar)
     `
 
     await message.reply(guideMessage)
