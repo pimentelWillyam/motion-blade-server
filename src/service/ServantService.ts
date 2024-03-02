@@ -60,6 +60,7 @@ class ServantService {
 
   async rollTurnForServant (servantName: string): Promise<void> {
     const servant = await this.get(servantName)
+    servant.reduceBattlePoints()
     servant.generateBattlePoints()
     await this.update(servant.name, servant)
   }
