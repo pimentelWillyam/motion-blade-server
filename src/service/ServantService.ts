@@ -54,9 +54,7 @@ class ServantService {
 
   async rollTurnForServants (servantList: Servant[]): Promise<void> {
     for (let i = 0; i < servantList.length; i++) {
-      console.log(servantList[0].generateBattlePoints())
-      servantList[i].generateBattlePoints()
-      await this.update(servantList[i].name, servantList[i])
+      await this.rollTurnForServant(servantList[i].name)
     }
   }
 
