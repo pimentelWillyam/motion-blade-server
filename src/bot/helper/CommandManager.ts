@@ -24,6 +24,7 @@ class CommandManager {
     Comandos informativos sobre os servos
       !(nomeServo) atributos
       !(nomeServo) atributos maximos
+      !(nomeServo) pontos
       !(nomeServo) maestria
       !(nomeServo) inventário
 
