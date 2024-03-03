@@ -9,7 +9,6 @@ import type ServantUpgrader from './ServantUpgradeCalculator'
 import type CombatManager from '../../helper/CombatManager'
 import type BattleService from '../../service/BattleService'
 import { type MovementDirection } from '../type/MovementDirection'
-import { type Servant } from '../../factories/ServantFactory'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
@@ -180,7 +179,7 @@ class CommandManager {
     await this.servantService.update(servant.name, servant)
     await this.battleService.update(battle.name, battle)
     await this.getInfoFromBattle(message, servant.battleInfo.battleName)
-    await this.getServantBattlePoints(message, servant)
+    await this.getServantBattlePoints(message, servant.name)
   }
 
   async getInfoFromBattle (message: Message<boolean>, battleName: string): Promise<void> {
@@ -253,7 +252,8 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
-  async getServantBattlePoints (message: Message<boolean>, servant: Servant): Promise<void> {
+  async getServantBattlePoints (message: Message<boolean>, servantName: string): Promise<void> {
+    const servant = await this.servantService.get(servantName)
     const servantAttributesMessage = `
     Os pontos de batalha do servo ${servant.name} são:
       pontos de iniciativa: ${servant.battlePoints.initiativePoints}
@@ -465,7 +465,6 @@ class CommandManager {
     }
     await this.sleeper.sleep(2000)
     await message.reply(`O servo ${attackReport.defender.name} foi morto`)
-    await this.servantService.delete(defenderName)
     await this.sleeper.sleep(2000)
     await message.reply(`${attackerName} recebeu ${attackReport.attributePointsToUpgrade as number} pontos de fator de aprimoramento`)
     let attributeNumber
@@ -486,6 +485,7 @@ class CommandManager {
       await message.reply(`${attackerName} aprimorou sua maestria em ${attackReport.defender.inventory.primaryWeapon.maestryType} após matar ${defenderName}`)
       await this.servantService.upgrade(attackerName, attackReport.attacker.inventory.primaryWeapon.maestryType, 1)
     }
+    await this.getServantBattlePoints(message, attackReport.attacker.name)
   }
 
   async damageServantArmor (message: Message<boolean>, name: string, armorToDamage: string, damageToDeal: number): Promise<void> {
