@@ -222,6 +222,13 @@ class CommandManager {
     `)
   }
 
+  async getBattlePlayOrder (battle: Battle): Promise<string[]> {
+    
+    for (let i = 0; i < battle.participantsList.length; i++) {
+      battlePlayOrder = `${battle.participantsList[i].name}  (${battle.participantsList[i].battleInfo.battleId})`
+    }
+  }
+
   async rollBattleTurn (message: Message<boolean>, battleName: string): Promise<void> {
     if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
     const battle = await this.battleService.get(battleName)
