@@ -151,6 +151,10 @@ class Battle {
     servant.spendBattlePoint('movement')
     return servant
   }
+
+  getServantsInBattleOrderedByInitiative (): Servant[] {
+    return this.servantSorter.initiativeServantBubbleSort(this.participantsList)
+  }
 }
 
 class BattleFactory {
