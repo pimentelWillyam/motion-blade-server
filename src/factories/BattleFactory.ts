@@ -3,6 +3,7 @@ import type RandomNumberGenerator from '../bot/helper/RandomNumberGenerator'
 import type TurnInfo from '../bot/type/TurnInfo'
 import type UuidGenerator from '../bot/helper/UuidGenerator'
 import { type MovementDirection } from '../bot/type/MovementDirection'
+import { type ServantSorter } from '../bot/helper/ServantSorter'
 
 interface BattleDTO {
   id: string
@@ -18,7 +19,7 @@ class Battle {
   map: string[][]
   turnInfo: TurnInfo
 
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, id: string, name: string, participantsList: Servant[], map: string[][]) {
+  constructor (private readonly servantSorter: ServantSorter, private readonly randomNumberGenerator: RandomNumberGenerator, id: string, name: string, participantsList: Servant[], map: string[][]) {
     this.id = id
     this.name = name
     this.participantsList = participantsList
@@ -158,7 +159,7 @@ class Battle {
 }
 
 class BattleFactory {
-  constructor (readonly randomNumberGenerator: RandomNumberGenerator, readonly uuidGenerator: UuidGenerator) {}
+  constructor (readonly servantSorter: ServantSorter, readonly randomNumberGenerator: RandomNumberGenerator, readonly uuidGenerator: UuidGenerator) {}
   create (name: string): Battle {
     const battleMap = [
       ['=', '=', '=', '=', '=', '=', '=', '='],
@@ -170,7 +171,7 @@ class BattleFactory {
       ['=', '=', '=', '=', '=', '=', '=', '='],
       ['=', '=', '=', '=', '=', '=', '=', '=']
     ]
-    return new Battle(this.randomNumberGenerator, this.uuidGenerator.generate(), name, [], battleMap)
+    return new Battle(this.servantSorter, this.randomNumberGenerator, this.uuidGenerator.generate(), name, [], battleMap)
   }
 }
 
