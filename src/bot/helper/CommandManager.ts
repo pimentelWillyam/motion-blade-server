@@ -9,6 +9,7 @@ import type ServantUpgrader from './ServantUpgradeCalculator'
 import type CombatManager from '../../helper/CombatManager'
 import type BattleService from '../../service/BattleService'
 import { type MovementDirection } from '../type/MovementDirection'
+import { type Battle } from '../../factories/BattleFactory'
 
 class CommandManager {
   constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
@@ -189,8 +190,7 @@ class CommandManager {
     const infoToShow = {
       battleName,
       participantsList: '',
-      servantAboutToPlay: '',
-      servantsYetToPlay: ''
+      OrderOfServantPlay: ''
     }
     for (let i = 0; i < battle.participantsList.length; i++) {
       infoToShow.participantsList += battle.participantsList[i].name
@@ -207,8 +207,7 @@ class CommandManager {
     Nome: ${battle.name}
     Participantes da batalha: ${infoToShow.participantsList}
 
-    Servo da vez: ${infoToShow.servantAboutToPlay}
-    Servos aguardando sua vez: ${infoToShow.servantsYetToPlay}
+    Ordem de jogada dos servos: ${infoToShow.OrderOfServantPlay}
 
     ${battle.map[0].toString()}
     ${battle.map[1].toString()}
