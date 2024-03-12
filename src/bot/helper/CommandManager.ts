@@ -344,6 +344,14 @@ class CommandManager {
     await message.reply(servantAttributesMessage)
   }
 
+  async getServantsFromBattle (battle: Battle): Promise<Servant[]> {
+    const servantList = []
+    for (let i = 0; i < battle.participantsNameList.length; i++) {
+      servantList.push(await this.servantService.get(battle.participantsNameList[i]))
+    }
+    return servantList
+  }
+
   async servantWearArmor (message: Message<boolean>, name: string, armorType: ArmorType): Promise<void> {
     await this.servantService.wearArmor(name, armorType)
     await message.reply(`O servo ${name} vestiu uma armadura de ${armorType}`)
