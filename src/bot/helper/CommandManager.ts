@@ -192,24 +192,19 @@ class CommandManager {
     const infoToShow = {
       battleName,
       participantsList: '',
-      OrderOfServantPlay: ''
+      battlePlayOrder: ''
     }
-    for (let i = 0; i < battle.participantsList.length; i++) {
-      infoToShow.participantsList += battle.participantsList[i].name
-      if (i !== battle.participantsList.length - 1) infoToShow.participantsList += ', '
+    for (let i = 0; i < battle.participantsNameList.length; i++) {
+      infoToShow.participantsList += battle.participantsNameList[i]
+      if (i !== battle.participantsNameList.length - 1) infoToShow.participantsList += ', '
     }
-    if (battle.turnInfo.servantsYetToPlay !== undefined) {
-      for (let i = 0; i < battle.turnInfo.servantsYetToPlay.length; i++) {
-        infoToShow.servantsYetToPlay += battle.turnInfo.servantsYetToPlay[i].name
-        if (i !== battle.turnInfo.servantsYetToPlay.length - 1) infoToShow.servantsYetToPlay += ', '
-      }
-    }
+    infoToShow.battlePlayOrder = await this.getBattlePlayOrder(battle)
     await message.reply(`
     Informações relevantes sobre esta batalha:
     Nome: ${battle.name}
     Participantes da batalha: ${infoToShow.participantsList}
 
-    Ordem de jogada dos servos: ${infoToShow.OrderOfServantPlay}
+    Ordem de jogada dos servos: ${infoToShow.battlePlayOrder}
 
     ${battle.map[0].toString()}
     ${battle.map[1].toString()}
