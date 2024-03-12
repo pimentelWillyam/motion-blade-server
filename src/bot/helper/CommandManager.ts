@@ -146,7 +146,7 @@ class CommandManager {
     battle.insertServant(servant)
     await this.battleService.update(battleName, battle)
     await this.servantService.update(servantName, servant)
-    await this.getInfoFromBattle(message, battle.name)
+    await this.getBattleMap(message, battle.name)
 
     await message.reply(`O servo ${servantName} foi inserido na batalha ${battleName}`)
   }
