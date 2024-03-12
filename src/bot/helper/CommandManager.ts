@@ -250,7 +250,7 @@ class CommandManager {
   async rollBattleTurn (message: Message<boolean>, battleName: string): Promise<void> {
     if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
     const battle = await this.battleService.get(battleName)
-    await this.servantService.rollTurnForServants(battle.participantsList)
+    await this.servantService.rollTurnForServants(await this.getServantsFromBattle(battle))
     await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
   }
 
