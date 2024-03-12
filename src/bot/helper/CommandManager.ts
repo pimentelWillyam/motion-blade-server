@@ -218,10 +218,24 @@ class CommandManager {
     `)
   }
 
-  async getBattlePlayOrder (battle: Battle): Promise<string[]> {
-    
-    for (let i = 0; i < battle.participantsList.length; i++) {
-      battlePlayOrder = `${battle.participantsList[i].name}  (${battle.participantsList[i].battleInfo.battleId})`
+  async getBattleMap (message: Message<boolean>, battleName: string): Promise<void> {
+    if (!await this.battleService.battleExists(battleName)) throw new Error(`Não existe uma batalha chamada ${battleName}, tente inserir uma batalha que de fato exista`)
+    const battle = await this.battleService.get(battleName)
+    await message.reply(`
+    Nome da batalha: ${battle.name}
+
+    ${battle.map[0].toString()}
+    ${battle.map[1].toString()}
+    ${battle.map[2].toString()}
+    ${battle.map[3].toString()}
+    ${battle.map[4].toString()}
+    ${battle.map[5].toString()}
+    ${battle.map[6].toString()}
+    ${battle.map[7].toString()}
+
+    `)
+  }
+
     }
   }
 
