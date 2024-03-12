@@ -1,11 +1,10 @@
-import { type Servant } from '../../factories/ServantFactory'
 import type TurnInfo from '../../bot/type/TurnInfo'
 
 interface DatabaseBattle {
   id: string
   name: string
-  participants_list: Servant[]
-  turnInfo: TurnInfo
+  participants_name_list: string[]
+  turn_info: TurnInfo
   map: string[][]
 }
 
