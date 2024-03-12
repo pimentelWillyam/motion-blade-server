@@ -10,9 +10,11 @@ import type CombatManager from '../../helper/CombatManager'
 import type BattleService from '../../service/BattleService'
 import { type MovementDirection } from '../type/MovementDirection'
 import { type Battle } from '../../factories/BattleFactory'
+import { type ServantSorter } from './ServantSorter'
+import { type Servant } from '../../factories/ServantFactory'
 
 class CommandManager {
-  constructor (private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
+  constructor (private readonly servantSorter: ServantSorter, private readonly randomNumberGenerator: RandomNumberGenerator, private readonly sleeper: Sleeper, private readonly servantService: ServantService, private readonly battleService: BattleService, private readonly servantUpgrader: ServantUpgrader, private readonly combatManager: CombatManager) {}
 
   async help (message: Message<boolean>): Promise<void> {
     const guideMessage = `Os comandos que existem são:
