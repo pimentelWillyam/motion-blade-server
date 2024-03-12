@@ -256,9 +256,10 @@ class CommandManager {
 
   async deleteBattle (message: Message<boolean>, battleName: string): Promise<void> {
     const battle = await this.battleService.get(battleName)
-    for (let i = 0; i < battle.participantsList.length; i++) {
-      await this.removeServantFromBattle(message, battleName, battle.participantsList[i].name)
+    for (let i = 0; i < battle.participantsNameList.length; i++) {
+      await this.removeServantFromBattle(message, battleName, battle.participantsNameList[i])
     }
+    await this.battleService.delete(battleName)
     await message.reply('Todos os participantes da batalha foram removidos e a batalha foi deletada')
   }
 
