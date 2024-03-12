@@ -89,7 +89,7 @@ class PostgresDataSource {
     const query2 = `CREATE TABLE battle (
         id UUID NOT NULL,
         name VARCHAR(50) NOT NULL DEFAULT '',
-        participants_list JSON[] NOT NULL,
+        participants_list TEXT[] NOT NULL,
         turn_info JSON,
         map TEXT[][] NOT NULL
     );`
@@ -164,7 +164,7 @@ class PostgresDataSource {
   //   return battle
 
     const query2 = 'INSERT INTO battle (id, name, participants_list, turn_info, map) VALUES ($1,$2,$3,$4,$5);'
-    await this.client.query(query2, [battle.id, battle.name, battle.participantsList, battle.turnInfo, battle.map])
+    await this.client.query(query2, [battle.id, battle.name, battle.participantsNameList, battle.turnInfo, battle.map])
     return battle
   }
 
@@ -204,7 +204,7 @@ class PostgresDataSource {
         id: battle.id,
         map: battle.map,
         name: battle.name,
-        participantsList: battle.participants_list,
+        participantsNameList: battle.participants_name_list,
         turnInfo: { servantAboutToPlay: undefined, servantsYetToPlay: undefined }
       })
     })
@@ -237,12 +237,12 @@ class PostgresDataSource {
   async fetchBattleBy (parameter: string, parameterValue: string): Promise<BattleDTO | null> {
     const battleList = await this.client.query(`SELECT * FROM battle WHERE ${parameter} = '${parameterValue}' ;`)
     if (battleList.rows[0] === undefined) return null
-    const battle = battleList.rows[0]
+    const battle = battleList.rows[0] as DatabaseBattle
     return {
       id: battle.id,
       map: battle.map,
       name: battle.name,
-      participantsList: battle.participants_list,
+      participantsNameList: battle.participants_name_list,
       turnInfo: battle.turn_info
     }
   }
@@ -282,7 +282,7 @@ class PostgresDataSource {
       name = $5;
     `
 
-    await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
+    await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsNameList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
 
     return battleToUpdate
   }

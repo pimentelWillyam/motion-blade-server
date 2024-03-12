@@ -62,6 +62,7 @@ import { Client } from 'pg'
 import BattleRouter from './api/router/BattleRouter'
 import BattleController from './api/controller/BattleController'
 import BattleValidator from './api/validator/BattleValidator'
+import { ServantSorter } from './bot/helper/ServantSorter'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -84,7 +85,7 @@ const attributesFetcher = new AttributesFetcher()
 const armorFactory = new ArmorFactory()
 const weaponFactory = new WeaponFactory()
 const servantFactory = new ServantFactory(randomNumberGenerator, uuidGenerator, armorFactory, weaponFactory)
-const battleFactory = new BattleFactory(randomNumberGenerator, uuidGenerator)
+const battleFactory = new BattleFactory(new ServantSorter(), randomNumberGenerator, uuidGenerator)
 
 // instanciating repository
 const servantRepository = new ServantRepository(postgresDataSource)
@@ -104,7 +105,7 @@ const servantController = new ServantController(servantService, servantValidator
 const battleController = new BattleController(battleService, battleValidator)
 
 // instanciating the command manager
-const commandManager = new CommandManager(randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(servantService, new ServantUpgrader(randomNumberGenerator), randomNumberGenerator))
+const commandManager = new CommandManager(new ServantSorter(), randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(servantService, new ServantUpgrader(randomNumberGenerator), randomNumberGenerator))
 // instanciating message handler
 const messageHandler = new MessageHandler(commandManager)
 

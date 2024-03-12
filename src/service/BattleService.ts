@@ -21,7 +21,7 @@ class BattleService {
     if (fetchedBattle == null) throw new Error(`a batalha ${battleName} não existe`)
     const battle = this.battleFactory.create(fetchedBattle.name)
     battle.id = fetchedBattle.id
-    battle.participantsList = fetchedBattle.participantsList
+    battle.participantsNameList = fetchedBattle.participantsNameList
     battle.map = fetchedBattle.map
     battle.turnInfo = fetchedBattle.turnInfo
     return battle
