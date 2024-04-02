@@ -89,7 +89,7 @@ class PostgresDataSource {
     const query2 = `CREATE TABLE battle (
         id UUID NOT NULL,
         name VARCHAR(50) NOT NULL DEFAULT '',
-        participants_list TEXT[] NOT NULL,
+        participants_name_list TEXT[] NOT NULL,
         turn_info JSON,
         map TEXT[][] NOT NULL
     );`
@@ -163,7 +163,7 @@ class PostgresDataSource {
   //   await this.client.query(query2, [battle.id, battle.name, battle.participantsList, battle.turnInfo, battle.map])
   //   return battle
 
-    const query2 = 'INSERT INTO battle (id, name, participants_list, turn_info, map) VALUES ($1,$2,$3,$4,$5);'
+    const query2 = 'INSERT INTO battle (id, name, participants_name_list, turn_info, map) VALUES ($1,$2,$3,$4,$5);'
     await this.client.query(query2, [battle.id, battle.name, battle.participantsNameList, battle.turnInfo, battle.map])
     return battle
   }
@@ -275,7 +275,7 @@ class PostgresDataSource {
     const query2 = `UPDATE battle
     SET
       name = $1,
-      participants_list = $2,
+      participants_name_list = $2,
       turn_info = $3,
       map = $4
     WHERE
