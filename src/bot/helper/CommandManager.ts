@@ -239,7 +239,6 @@ class CommandManager {
   async getBattlePlayOrder (battle: Battle): Promise<string> {
     const sortedServantList = this.servantSorter.initiativeServantBubbleSort(await this.getServantsFromBattle(battle))
     let battlePlayOrder = ''
-    console.log(sortedServantList.length)
     for (let i = 0; i < sortedServantList.length; i++) {
       battlePlayOrder += `${sortedServantList[i].name} (iniciativa: ${sortedServantList[i].battlePoints.initiativePoints}) (${sortedServantList[i].battleInfo.battleId})`
       if (i !== sortedServantList.length - 1) battlePlayOrder += ', '
