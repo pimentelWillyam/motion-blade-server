@@ -252,6 +252,7 @@ class CommandManager {
     const battle = await this.battleService.get(battleName)
     await this.servantService.rollTurnForServants(await this.getServantsFromBattle(battle))
     await message.reply('Todos os participantes da batalha receberam seus pontos de ação e movimento')
+    await this.getInfoFromBattle(message, battleName)
   }
 
   async deleteBattle (message: Message<boolean>, battleName: string): Promise<void> {
