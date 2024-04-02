@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "server": "ts-node src/index.ts",
+    "server": "ts-node-dev src/index.ts",
     "debug": "ts-node src/debug.ts",
     "new": "ts-node src/newIndex.ts",
     "test": "jest --runInBand",
