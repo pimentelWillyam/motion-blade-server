@@ -22,3 +22,4 @@ class UserFactory {
   }
 }
 
+export { UserFactory, User }
