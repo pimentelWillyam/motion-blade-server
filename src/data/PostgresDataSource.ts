@@ -5,6 +5,7 @@ import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
+import { User } from '../factories/UserFactory.ts'
 
 class PostgresDataSource {
   private readonly databaseCreator: Client
@@ -114,7 +115,6 @@ class PostgresDataSource {
     if (!await this.tableExists('servant')) await this.createServantTable()
     if (!await this.tableExists('battle')) await this.createBattleTable()
     if (!await this.tableExists('user')) await this.createUserTable()
-
   }
 
   async bootstrap (): Promise<void> {
@@ -122,6 +122,23 @@ class PostgresDataSource {
     if (!await this.motionBladeDatabaseExists()) await this.createMotionBladeDatabase()
     await this.client.connect()
     await this.createNecessaryTables()
+  }
+
+  async insertUserRegistry (user: User): Promise<User> {
+    // const query = 'INSERT INTO motion_blade_2.servant (id, master_id, name, father_profession, youth_profession, current_attributes, maximum_attributes, combat_capabilities, battle_info, inventory, maestry) VALUES (?,?,?,?,?,?,?,?,?,?,?);'
+    const query2 = `INSERT INTO user (
+      id,
+      login,
+      password,
+      type,
+  ) VALUES (
+      $1,
+      $2,
+      $3,
+      $4,
+  );`
+    await this.client.query(query2, [user.id, user.login, user.password, user.type])
+    return user
   }
 
   async insertServantRegistry (servant: Servant): Promise<Servant> {
