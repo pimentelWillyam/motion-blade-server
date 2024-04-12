@@ -5,7 +5,7 @@ import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
-import { User } from '../factories/UserFactory.ts'
+import { type User } from '../factories/UserFactory.ts'
 
 class PostgresDataSource {
   private readonly databaseCreator: Client
@@ -99,14 +99,13 @@ class PostgresDataSource {
     return true
   }
 
-  private async createUserTable (): Promise<boolean> {
+  private async createMasterTable (): Promise<boolean> {
     const query2 = `CREATE TABLE user (
         id UUID NOT NULL,
-        login VARCHAR(50) NOT NULL DEFAULT '',
-        password VARCHAR(50) NOT NULL DEFAULT '',
-        type VARCHAR(50) NOT NULL DEFAULT '',
+        login VARCHAR(50) NOT NULL,
+        password VARCHAR(50) NOT NULL,
+        type VARCHAR(50) NOT NULL,
     );`
-    // })
     await this.client.query(query2)
     return true
   }
@@ -114,7 +113,7 @@ class PostgresDataSource {
   private async createNecessaryTables (): Promise<void> {
     if (!await this.tableExists('servant')) await this.createServantTable()
     if (!await this.tableExists('battle')) await this.createBattleTable()
-    if (!await this.tableExists('user')) await this.createUserTable()
+    if (!await this.tableExists('master')) await this.createMasterTable()
   }
 
   async bootstrap (): Promise<void> {
