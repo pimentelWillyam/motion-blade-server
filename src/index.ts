@@ -129,7 +129,5 @@ dotenv.config()
 
 // starting database and app
 void postgresDataSource.bootstrap()
-
 app.start()
-
 discordBot.client.start()
