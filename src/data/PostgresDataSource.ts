@@ -94,7 +94,6 @@ class PostgresDataSource {
         turn_info JSON,
         map TEXT[][] NOT NULL
     );`
-    // })
     await this.client.query(query2)
     return true
   }
@@ -106,7 +105,7 @@ class PostgresDataSource {
       login VARCHAR(50) NOT NULL,
       password VARCHAR(50) NOT NULL,
       type VARCHAR(50) NOT NULL,
-      servants_name_list JSON,
+      servants_name_list JSON
   );`
     await this.client.query(query2)
     return true
