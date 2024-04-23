@@ -5,7 +5,7 @@ import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
-import { type User } from '../factories/UserFactory.ts'
+import { type Master } from '../factories/MasterFactory'
 
 class PostgresDataSource {
   private readonly databaseCreator: Client
@@ -100,12 +100,14 @@ class PostgresDataSource {
   }
 
   private async createMasterTable (): Promise<boolean> {
-    const query2 = `CREATE TABLE user (
-        id UUID NOT NULL,
-        login VARCHAR(50) NOT NULL,
-        password VARCHAR(50) NOT NULL,
-        type VARCHAR(50) NOT NULL,
-    );`
+    const query2 = `CREATE TABLE master (
+      id UUID NOT NULL,
+      name VARCHAR(50) NOT NULL DEFAULT '',
+      login VARCHAR(50) NOT NULL,
+      password VARCHAR(50) NOT NULL,
+      type VARCHAR(50) NOT NULL,
+      servants_name_list JSON,
+  );`
     await this.client.query(query2)
     return true
   }
@@ -123,9 +125,9 @@ class PostgresDataSource {
     await this.createNecessaryTables()
   }
 
-  async insertUserRegistry (user: User): Promise<User> {
+  async insertMasterRegistry (master: Master): Promise<Master> {
     // const query = 'INSERT INTO motion_blade_2.servant (id, master_id, name, father_profession, youth_profession, current_attributes, maximum_attributes, combat_capabilities, battle_info, inventory, maestry) VALUES (?,?,?,?,?,?,?,?,?,?,?);'
-    const query2 = `INSERT INTO user (
+    const query2 = `INSERT INTO master (
       id,
       login,
       password,
@@ -136,8 +138,8 @@ class PostgresDataSource {
       $3,
       $4,
   );`
-    await this.client.query(query2, [user.id, user.login, user.password, user.type])
-    return user
+    await this.client.query(query2, [master.id, master.login, master.password, master.type])
+    return master
   }
 
   async insertServantRegistry (servant: Servant): Promise<Servant> {
