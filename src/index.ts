@@ -60,9 +60,16 @@ import { BattleFactory } from './factories/BattleFactory'
 import { PostgresDataSource } from './data/PostgresDataSource'
 import { Client } from 'pg'
 import BattleRouter from './api/router/BattleRouter'
+import MasterRouter from './api/router/MasterRouter'
+
 import BattleController from './api/controller/BattleController'
 import BattleValidator from './api/validator/BattleValidator'
 import { ServantSorter } from './bot/helper/ServantSorter'
+import MasterController from './api/controller/MasterController'
+import MasterRepository from './repository/MasterRepository'
+import MasterService from './service/MasterService'
+import { MasterFactory } from './factories/MasterFactory'
+import MasterValidator from './api/validator/MasterValidator'
 
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
@@ -86,23 +93,28 @@ const armorFactory = new ArmorFactory()
 const weaponFactory = new WeaponFactory()
 const servantFactory = new ServantFactory(randomNumberGenerator, uuidGenerator, armorFactory, weaponFactory)
 const battleFactory = new BattleFactory(new ServantSorter(), randomNumberGenerator, uuidGenerator)
+const masterFactory = new MasterFactory(uuidGenerator)
 
 // instanciating repository
 const servantRepository = new ServantRepository(postgresDataSource)
 const battleRepository = new BattleRepository(postgresDataSource)
+const masterRepository = new MasterRepository(postgresDataSource)
 
 // instanciating services
 
 const servantService = new ServantService(servantRepository, attributesFetcher, servantFactory, armorFactory, weaponFactory)
 const battleService = new BattleService(battleRepository, battleFactory)
+const masterService = new MasterService(masterRepository, masterFactory)
 
 // instanciating validators
 const servantValidator = new ServantValidator()
 const battleValidator = new BattleValidator()
+const masterValidator = new MasterValidator()
 
 // instanciating the servant controller
 const servantController = new ServantController(servantService, servantValidator)
 const battleController = new BattleController(battleService, battleValidator)
+const masterController = new MasterController(masterService, masterValidator)
 
 // instanciating the command manager
 const commandManager = new CommandManager(new ServantSorter(), randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(servantService, new ServantUpgrader(randomNumberGenerator), randomNumberGenerator))
@@ -119,9 +131,10 @@ const server = new Server()
 
 const servantRouter = new ServantRouter(servantController)
 const battleRouter = new BattleRouter(battleController)
+const masterRouter = new MasterRouter(masterController)
 
 // instanciating app related classes
-const api = new Api(express(), servantRouter, battleRouter)
+const api = new Api(express(), servantRouter, battleRouter, masterRouter)
 const app = new App(api, server)
 
 // getting .env configuration
