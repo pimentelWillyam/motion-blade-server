@@ -1,4 +1,13 @@
+import type UuidGenerator from '../bot/helper/UuidGenerator'
 import { type UserType } from '../bot/type/UserType'
+
+interface MasterDTO {
+  readonly id: string
+  readonly login: string
+  readonly password: string
+  readonly type: UserType
+  readonly servantNameList: string[]
+}
 
 class Master {
   readonly id: string
@@ -17,9 +26,15 @@ class Master {
 }
 
 class MasterFactory {
-  createMaster (id: string, login: string, password: string, type: UserType): Master {
-    return new Master(id, login, password, type)
+  constructor (private readonly uuidGenerator: UuidGenerator) {}
+
+  create (login: string, password: string, type: UserType): Master {
+    return new Master(this.uuidGenerator.generate(), login, password, type)
+  }
+
+  createByDTO (master: MasterDTO): Master {
+    return new Master(master.id, master.login, master.password, master.type)
   }
 }
 
-export { MasterFactory, Master }
+export { MasterFactory, type MasterDTO, Master }
