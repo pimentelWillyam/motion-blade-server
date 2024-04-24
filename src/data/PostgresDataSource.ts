@@ -5,7 +5,8 @@ import { type BattleDTO } from '../factories/BattleFactory'
 import type DatabaseServant from '../api/model/DatabaseServant'
 import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
-import { type Master } from '../factories/MasterFactory'
+import { type MasterDTO, type Master } from '../factories/MasterFactory'
+import type DatabaseMaster from '../api/model/DatabaseMaster'
 
 class PostgresDataSource {
   private readonly databaseCreator: Client
@@ -130,12 +131,12 @@ class PostgresDataSource {
       id,
       login,
       password,
-      type,
+      type
   ) VALUES (
       $1,
       $2,
       $3,
-      $4,
+      $4
   );`
     await this.client.query(query2, [master.id, master.login, master.password, master.type])
     return master
@@ -242,6 +243,23 @@ class PostgresDataSource {
     return battleList
   }
 
+  async fetchEveryMasterRegistry (): Promise<MasterDTO[]> {
+    const query = 'SELECT * FROM master;'
+
+    const databaseData = (await this.client.query(query)).rows as DatabaseMaster[]
+    const masterList: MasterDTO[] = []
+    databaseData.forEach((master) => {
+      masterList.push({
+        id: master.id,
+        login: master.login,
+        password: master.password,
+        type: master.type,
+        servantNameList: master.servants_name_list
+      })
+    })
+    return masterList
+  }
+
   async fetchServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as unknown as DatabaseServant[]
     if (databaseData[0] === undefined) return null
@@ -275,6 +293,19 @@ class PostgresDataSource {
       name: battle.name,
       participantsNameList: battle.participants_name_list,
       turnInfo: battle.turn_info
+    }
+  }
+
+  async fetchMasterBy (parameter: string, parameterValue: string): Promise<MasterDTO | null> {
+    const masterList = await this.client.query(`SELECT * FROM master WHERE ${parameter} = '${parameterValue}' ;`)
+    if (masterList.rows[0] === undefined) return null
+    const battle = masterList.rows[0] as DatabaseMaster
+    return {
+      id: battle.id,
+      login: battle.login,
+      password: battle.password,
+      type: battle.type,
+      servantNameList: battle.servants_name_list
     }
   }
 
@@ -318,6 +349,23 @@ class PostgresDataSource {
     return battleToUpdate
   }
 
+  async updateMasterBy (parameter: string, parameterValue: string, masterToUpdate: MasterDTO): Promise<MasterDTO> {
+    // const query = `UPDATE motion_blade_2.public.battle SET id=?,name=?,participants_list=?,turn_info=?,map=? WHERE ${parameter} = '${parameterValue}'`
+    const query2 = `UPDATE master
+    SET
+      login = $1,
+      password = $2,
+      type = $3,
+      servants_name_list = $4
+    WHERE
+      id = $5;
+    `
+
+    await this.client.query(query2, [masterToUpdate.login, masterToUpdate.password, masterToUpdate.type, masterToUpdate.servantNameList, parameterValue])
+
+    return masterToUpdate
+  }
+
   async deleteServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const servant = await this.fetchServantBy(parameter, parameterValue)
     if (servant === null) return null
@@ -332,6 +380,14 @@ class PostgresDataSource {
     const query = `DELETE FROM motion_blade_2.public.battle WHERE ${parameter} = '${parameterValue}';`
     await this.client.query(query)
     return battle
+  }
+
+  async deleteMasterBy (parameter: string, parameterValue: string): Promise<MasterDTO | null> {
+    const master = await this.fetchMasterBy(parameter, parameterValue)
+    if (master === null) return null
+    const query = `DELETE FROM motion_blade_2.public.master WHERE ${parameter} = '${parameterValue}';`
+    await this.client.query(query)
+    return master
   }
 }
 
