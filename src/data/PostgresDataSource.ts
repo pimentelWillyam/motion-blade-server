@@ -115,6 +115,18 @@ class PostgresDataSource {
     return true
   }
 
+  private async createUserTable (): Promise<boolean> {
+    const query2 = `CREATE TABLE "user" (
+      id UUID NOT NULL,
+      login VARCHAR(50) NOT NULL,
+      password VARCHAR(50) NOT NULL,
+      servant_list JSONB NOT NULL,
+      battle_list JSONB NOT NULL
+    );`
+    await this.client.query(query2)
+    return true
+  }
+
   private async createNecessaryTables (): Promise<void> {
     if (!await this.tableExists('servant')) await this.createServantTable()
     if (!await this.tableExists('battle')) await this.createBattleTable()
