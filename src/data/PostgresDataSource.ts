@@ -282,6 +282,23 @@ class PostgresDataSource {
     return masterList
   }
 
+  async fetchEveryUserRegistry (): Promise<UserDTO[]> {
+    const query = 'SELECT * FROM user;'
+
+    const databaseData = (await this.client.query(query)).rows as DatabaseUser[]
+    const userList: UserDTO[] = []
+    databaseData.forEach((user) => {
+      userList.push({
+        id: user.id,
+        login: user.login,
+        password: user.password,
+        servantList: user.servant_list,
+        battleList: user.battle_list
+      })
+    })
+    return userList
+  }
+
   async fetchServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const databaseData = (await this.client.query(`SELECT * FROM servant WHERE ${parameter} = '${parameterValue}' ;`)).rows as unknown as DatabaseServant[]
     if (databaseData[0] === undefined) return null
