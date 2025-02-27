@@ -7,6 +7,9 @@ import { type Client } from 'pg'
 import type DatabaseBattle from '../api/model/DatabaseBattle'
 import { type MasterDTO, type Master } from '../factories/MasterFactory'
 import type DatabaseMaster from '../api/model/DatabaseMaster'
+import { type UserDTO, type User } from '../factories/UserFactory'
+
+import type DatabaseUser from '../api/model/DatabaseUser'
 
 class PostgresDataSource {
   private readonly databaseCreator: Client
