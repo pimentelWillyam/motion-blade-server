@@ -348,6 +348,19 @@ class PostgresDataSource {
     }
   }
 
+  async fetchUserBy (parameter: string, parameterValue: string): Promise<UserDTO | null> {
+    const userList = await this.client.query(`SELECT * FROM user WHERE ${parameter} = '${parameterValue}' ;`)
+    if (userList.rows[0] === undefined) return null
+    const user = userList.rows[0] as DatabaseUser
+    return {
+      id: user.id,
+      login: user.login,
+      password: user.password,
+      servantList: user.servant_list,
+      battleList: user.battle_list
+    }
+  }
+
   async updateServantBy (parameter: string, parameterValue: string, servantToUpdate: Servant): Promise<Servant> {
     // const query = `UPDATE motion_blade_2.public.servant SET id=? , masterId=? , name=? , fatherProfession=? , youthProfession=? , currentAttributes=? , maximumAttributes=? , guard=? , buff=? , debuff=? , inventory=? , maestry=? WHERE ${parameter} = '${parameterValue}'`
     const query2 = `UPDATE servant
