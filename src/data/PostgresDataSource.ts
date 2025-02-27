@@ -216,6 +216,12 @@ class PostgresDataSource {
     return battle
   }
 
+  async insertUserRegistry (user: User): Promise<User> {
+    const query2 = 'INSERT INTO user (id, login, password, servant_list, battle_list) VALUES ($1,$2,$3,$4,$5);'
+    await this.client.query(query2, [user.id, user.login, user.password, user.servantList, user.battleList])
+    return user
+  }
+
   async fetchEveryServantRegistry (): Promise<ServantDTO[]> {
     const query = `SELECT * FROM servant;
     `
