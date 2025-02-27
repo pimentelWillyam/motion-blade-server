@@ -457,6 +457,14 @@ class PostgresDataSource {
     await this.client.query(query)
     return master
   }
+
+  async deleteUserBy (parameter: string, parameterValue: string): Promise<UserDTO | null> {
+    const user = await this.fetchUserBy(parameter, parameterValue)
+    if (user === null) return null
+    const query = `DELETE FROM motion_blade_2.public.user WHERE ${parameter} = '${parameterValue}';`
+    await this.client.query(query)
+    return user
+  }
 }
 
 export { PostgresDataSource }
