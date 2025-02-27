@@ -418,6 +418,22 @@ class PostgresDataSource {
     return masterToUpdate
   }
 
+  async updateUserBy (parameter: string, parameterValue: string, userToUpdate: UserDTO): Promise<UserDTO> {
+    const query2 = `UPDATE user
+    SET
+      login = $1,
+      password = $2,
+      servant_list = $3,
+      battle_list = $4
+    WHERE
+      id = $5;
+    `
+
+    await this.client.query(query2, [userToUpdate.login, userToUpdate.password, userToUpdate.servantList, userToUpdate.battleList, parameterValue])
+
+    return userToUpdate
+  }
+
   async deleteServantBy (parameter: string, parameterValue: string): Promise<ServantDTO | null> {
     const servant = await this.fetchServantBy(parameter, parameterValue)
     if (servant === null) return null
