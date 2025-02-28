@@ -20,6 +20,11 @@ class UserRouter {
     this.routes.get('/user/:login', (req: Request, res: Response) => {
       void userController.get(req, res)
     })
+
+    this.routes.patch('/user/:login', (req: Request, res: Response) => {
+      void userController.update(req, res)
+    })
+
     this.routes.delete('/user/:login', (req: Request, res: Response) => {
       void userController.delete(req, res)
     })

@@ -53,6 +53,25 @@ class UserController {
     return res.status(400).send(UserError.USER_INVALID_REQUEST)
   }
 
+  async update (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      if (this.userValidator.isUserValid('need to test better')) {
+        if (req.body.login === undefined || req.body.password === undefined) {
+          const user = await this.userService.get(req.params.login)
+          if (user == null) throw new Error(UserError.USER_NOT_UPDATED)
+          if (req.body.password !== undefined) user.password = req.body.password
+          if (req.body.battleList !== undefined) user.battleList = req.body.battleList
+          if (req.body.servantList !== undefined) user.servantList = req.body.servantList
+          const updatedUser = await this.userService.update(req.params.login, user)
+          return res.status(200).json(updatedUser)
+        }
+      }
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(UserError.USER_INVALID_REQUEST)
+  }
+
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const user = await this.userService.delete(req.params.login)

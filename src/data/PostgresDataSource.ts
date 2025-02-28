@@ -217,7 +217,7 @@ class PostgresDataSource {
   }
 
   async insertUserRegistry (user: User): Promise<User> {
-    const query2 = 'INSERT INTO user (id, login, password, servant_list, battle_list) VALUES ($1,$2,$3,$4,$5);'
+    const query2 = 'INSERT INTO "user" (id, login, password, servant_list, battle_list) VALUES ($1,$2,$3,$4,$5);'
     await this.client.query(query2, [user.id, user.login, user.password, user.servantList, user.battleList])
     return user
   }
@@ -336,7 +336,11 @@ class PostgresDataSource {
   }
 
   async fetchMasterBy (parameter: string, parameterValue: string): Promise<MasterDTO | null> {
+    console.log(parameter)
+    console.log(parameterValue)
+
     const masterList = await this.client.query(`SELECT * FROM master WHERE ${parameter} = '${parameterValue}' ;`)
+    console.log(masterList.rows)
     if (masterList.rows[0] === undefined) return null
     const battle = masterList.rows[0] as DatabaseMaster
     return {
@@ -349,7 +353,7 @@ class PostgresDataSource {
   }
 
   async fetchUserBy (parameter: string, parameterValue: string): Promise<UserDTO | null> {
-    const userList = await this.client.query(`SELECT * FROM user WHERE ${parameter} = '${parameterValue}' ;`)
+    const userList = await this.client.query(`SELECT * FROM "user" WHERE ${parameter} = '${parameterValue}' ;`)
     if (userList.rows[0] === undefined) return null
     const user = userList.rows[0] as DatabaseUser
     return {
@@ -410,7 +414,7 @@ class PostgresDataSource {
       type = $3,
       servants_name_list = $4
     WHERE
-      id = $5;
+      login = $5;
     `
 
     await this.client.query(query2, [masterToUpdate.login, masterToUpdate.password, masterToUpdate.type, masterToUpdate.servantNameList, parameterValue])
@@ -419,14 +423,14 @@ class PostgresDataSource {
   }
 
   async updateUserBy (parameter: string, parameterValue: string, userToUpdate: UserDTO): Promise<UserDTO> {
-    const query2 = `UPDATE user
+    const query2 = `UPDATE "user"
     SET
       login = $1,
       password = $2,
       servant_list = $3,
       battle_list = $4
     WHERE
-      id = $5;
+      login = $5;
     `
 
     await this.client.query(query2, [userToUpdate.login, userToUpdate.password, userToUpdate.servantList, userToUpdate.battleList, parameterValue])

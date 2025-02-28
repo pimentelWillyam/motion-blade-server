@@ -5,17 +5,17 @@ import { type Battle } from './BattleFactory'
 interface UserDTO {
   readonly id: string
   readonly login: string
-  readonly password: string
-  readonly servantList: Servant[]
-  readonly battleList: Battle[]
+  password: string
+  servantList: Servant[]
+  battleList: Battle[]
 }
 
 class User {
   readonly id: string
   readonly login: string
-  readonly password: string
-  readonly servantList: Servant[]
-  readonly battleList: Battle[]
+  password: string
+  servantList: Servant[]
+  battleList: Battle[]
 
   constructor (user: UserDTO) {
     this.id = user.id

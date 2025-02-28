@@ -9,7 +9,7 @@ class UserService {
       const user = this.userFactory.create(login, password)
       return await this.userRepository.create(user)
     }
-    throw new Error('Já existe um servo com esse login')
+    throw new Error('Já existe um usuário com esse login')
   }
 
   getAll = async (): Promise<UserDTO[]> => {
@@ -19,7 +19,7 @@ class UserService {
   get = async (login: string): Promise<User> => {
     const fetchedUser = await this.userRepository.getByLogin(login)
     if (fetchedUser != null) return this.userFactory.createThroughDto(fetchedUser)
-    throw new Error(`O servo ${login} não existe`)
+    throw new Error(`O usuário ${login} não existe`)
   }
 
   userExists = async (login: string): Promise<boolean> => {
@@ -31,13 +31,13 @@ class UserService {
   update = async (login: string, contentToUpdate: User): Promise<UserDTO> => {
     const userToBeUpdated = await this.userRepository.update(login, contentToUpdate)
     if (userToBeUpdated !== null) return userToBeUpdated
-    throw new Error('Não é possível atualizar um servo que não existe')
+    throw new Error('Não é possível atualizar um usuário que não existe')
   }
 
   delete = async (login: string): Promise<UserDTO> => {
     const userToBeDeleted = await this.userRepository.delete(login)
     if (userToBeDeleted !== null) return userToBeDeleted
-    throw new Error('Não é possível deletar um servo que não existe')
+    throw new Error('Não é possível deletar um usuário que não existe')
   }
 }
 
