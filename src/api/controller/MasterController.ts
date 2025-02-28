@@ -49,6 +49,23 @@ class MasterController {
     return res.status(400).send(MasterError.MASTER_INVALID_REQUEST)
   }
 
+  async update (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      if (this.masterValidator.isMasterValid('need to test better')) {
+        const master = await this.masterService.get(req.params.login)
+        if (master == null) throw new Error(MasterError.MASTER_NOT_UPDATED)
+        if (req.body.password !== undefined) master.password = req.body.password
+        if (req.body.type !== undefined) master.type = req.body.type
+        if (req.body.servantNameList !== undefined) master.servantNameList = req.body.servantNameList
+        const updatedMaster = await this.masterService.update(req.params.login, master)
+        return res.status(200).json(updatedMaster)
+      }
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(MasterError.MASTER_INVALID_REQUEST)
+  }
+
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const master = await this.masterService.delete(req.params.name)
