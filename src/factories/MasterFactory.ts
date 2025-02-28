@@ -4,17 +4,17 @@ import { type UserType } from '../bot/type/UserType'
 interface MasterDTO {
   readonly id: string
   readonly login: string
-  readonly password: string
-  readonly type: UserType
-  readonly servantNameList: string[]
+  password: string
+  type: UserType
+  servantNameList: string[]
 }
 
 class Master {
   readonly id: string
   readonly login: string
-  readonly password: string
-  readonly type: UserType
-  readonly servantNameList: string[]
+  password: string
+  type: UserType
+  servantNameList: string[]
 
   constructor (id: string, login: string, password: string, type: UserType) {
     this.id = id

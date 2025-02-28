@@ -12,8 +12,8 @@ class MasterRepository {
     return await this.dataSource.fetchEveryMasterRegistry()
   }
 
-  async get (name: string): Promise<MasterDTO | null> {
-    return await this.dataSource.fetchMasterBy('login', name)
+  async get (login: string): Promise<MasterDTO | null> {
+    return await this.dataSource.fetchMasterBy('login', login)
   }
 
   async update (name: string, updatedMaster: Master): Promise<MasterDTO | null> {

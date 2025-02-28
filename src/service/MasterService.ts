@@ -17,8 +17,9 @@ class MasterService {
     return await this.masterRepository.getAll()
   }
 
-  get = async (name: string): Promise<Master> => {
-    const fetchedMaster = await this.masterRepository.get(name)
+  get = async (login: string): Promise<Master> => {
+    const fetchedMaster = await this.masterRepository.get(login)
+    console.log(fetchedMaster)
     if (fetchedMaster != null) return this.masterFactory.createByDTO(fetchedMaster)
     throw new Error(`O servo ${name} não existe`)
   }
@@ -29,14 +30,14 @@ class MasterService {
     return false
   }
 
-  update = async (name: string, contentToUpdate: Master): Promise<MasterDTO> => {
-    const masterToBeUpdated = await this.masterRepository.update(name, contentToUpdate)
+  update = async (login: string, contentToUpdate: Master): Promise<MasterDTO> => {
+    const masterToBeUpdated = await this.masterRepository.update(login, contentToUpdate)
     if (masterToBeUpdated !== null) return masterToBeUpdated
     throw new Error('Não é possível atualizar um servo que não existe')
   }
 
-  delete = async (name: string): Promise<MasterDTO> => {
-    const masterToBeDeleted = await this.masterRepository.delete(name)
+  delete = async (login: string): Promise<MasterDTO> => {
+    const masterToBeDeleted = await this.masterRepository.delete(login)
     if (masterToBeDeleted != null) return masterToBeDeleted
     throw new Error('Não é possível remover um servo que não existe')
   }
