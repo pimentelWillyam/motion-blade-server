@@ -336,11 +336,7 @@ class PostgresDataSource {
   }
 
   async fetchMasterBy (parameter: string, parameterValue: string): Promise<MasterDTO | null> {
-    console.log(parameter)
-    console.log(parameterValue)
-
     const masterList = await this.client.query(`SELECT * FROM master WHERE ${parameter} = '${parameterValue}' ;`)
-    console.log(masterList.rows)
     if (masterList.rows[0] === undefined) return null
     const battle = masterList.rows[0] as DatabaseMaster
     return {
