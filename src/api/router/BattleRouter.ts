@@ -20,6 +20,9 @@ class BattleRouter {
     this.routes.get('/battle/:name', (req: Request, res: Response) => {
       void battleController.get(req, res)
     })
+    this.routes.patch('/battle/:name', (req: Request, res: Response) => {
+      void battleController.update(req, res)
+    })
     this.routes.delete('/battle/:name', (req: Request, res: Response) => {
       void battleController.delete(req, res)
     })

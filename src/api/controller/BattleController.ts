@@ -49,6 +49,27 @@ class BattleController {
     return res.status(400).send(BattleError.SERVANT_INVALID_REQUEST)
   }
 
+  async update (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      if (this.battleValidator.isBattleValid('need to test better')) {
+        const battle = await this.battleService.get(req.params.name)
+        if (battle == null) throw new Error(BattleError.SERVANT_NOT_UPDATED)
+        if (req.body.participantsNameList != null) battle.participantsNameList = req.body.participantsNameList
+        if (req.body.map != null) battle.map = req.body.map
+        if (req.body.turnInfo != null) battle.turnInfo = req.body.turnInfo
+        const updatedBattle = await this.battleService.update(req.params.name, battle)
+        if (battle != null) {
+          return res.status(200).json(updatedBattle)
+        } else {
+          return res.status(404).send(BattleError.SERVANT_NOT_UPDATED)
+        }
+      }
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(BattleError.SERVANT_INVALID_REQUEST)
+  }
+
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const battle = await this.battleService.delete(req.params.name)
