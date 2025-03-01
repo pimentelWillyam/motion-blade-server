@@ -53,6 +53,28 @@ class ServantController {
     return res.status(400).send(ServantError.SERVANT_INVALID_REQUEST)
   }
 
+  async update (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      if (this.servantValidator.isServantValid('need to test better')) {
+        const servant = await this.servantService.get(req.params.name)
+        if (servant === null) throw new Error(ServantError.SERVANT_NOT_FOUND)
+        if (req.body.agility !== undefined) servant.currentAttributes.agility = req.body.agility; servant.maximumAttributes.agility = req.body.agility
+        if (req.body.technique !== undefined) servant.currentAttributes.technique = req.body.technique; servant.maximumAttributes.technique = req.body.technique
+        if (req.body.strength !== undefined) servant.currentAttributes.strength = req.body.strength; servant.maximumAttributes.strength = req.body.strength
+        if (req.body.fortitude !== undefined) servant.currentAttributes.fortitude = req.body.fortitude; servant.maximumAttributes.fortitude = req.body.fortitude
+        const updatedServant = await this.servantService.update(req.params.name, servant)
+        if (servant != null) {
+          return res.status(200).json(updatedServant)
+        } else {
+          return res.status(404).send(ServantError.SERVANT_NOT_UPDATED)
+        }
+      }
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(ServantError.SERVANT_INVALID_REQUEST)
+  }
+
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const servant = await this.servantService.delete(req.params.name)

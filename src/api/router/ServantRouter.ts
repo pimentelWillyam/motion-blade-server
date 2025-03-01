@@ -20,6 +20,9 @@ class ServantRouter {
     this.routes.get('/servant/:name', (req: Request, res: Response) => {
       void servantController.get(req, res)
     })
+    this.routes.patch('/servant/:name', (req: Request, res: Response) => {
+      void servantController.update(req, res)
+    })
     this.routes.delete('/servant/:name', (req: Request, res: Response) => {
       void servantController.delete(req, res)
     })
