@@ -37,7 +37,7 @@ class MasterController {
 
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const master = await this.masterService.get(req.params.name)
+      const master = await this.masterService.get(req.params.login)
       if (master != null) {
         return res.status(200).json(master)
       } else {
@@ -68,7 +68,7 @@ class MasterController {
 
   async delete (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
-      const master = await this.masterService.delete(req.params.name)
+      const master = await this.masterService.delete(req.params.login)
       if (master != null) {
         return res.status(200).json(master)
       } else {

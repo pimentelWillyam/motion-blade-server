@@ -6,7 +6,10 @@ class MasterService {
   constructor (private readonly masterRepository: MasterRepository, private readonly masterFactory: MasterFactory) {}
 
   create = async (login: string, password: string, type: UserType): Promise<MasterDTO> => {
+    console.log('bateu aqui')
     if (!await this.masterExists(login)) {
+      console.log('bateu aqui')
+
       const master = this.masterFactory.create(login, password, type)
       return await this.masterRepository.create(master)
     }
@@ -21,11 +24,11 @@ class MasterService {
     const fetchedMaster = await this.masterRepository.get(login)
     console.log(fetchedMaster)
     if (fetchedMaster != null) return this.masterFactory.createByDTO(fetchedMaster)
-    throw new Error(`O servo ${name} não existe`)
+    throw new Error(`O servo ${login} não existe`)
   }
 
-  masterExists = async (name: string): Promise<boolean> => {
-    const fetchedMaster = await this.masterRepository.get(name)
+  masterExists = async (login: string): Promise<boolean> => {
+    const fetchedMaster = await this.masterRepository.get(login)
     if (fetchedMaster != null) return true
     return false
   }

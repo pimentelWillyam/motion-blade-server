@@ -20,8 +20,8 @@ class MasterRepository {
     return await this.dataSource.updateMasterBy('login', name, updatedMaster)
   }
 
-  async delete (name: string): Promise<MasterDTO | null> {
-    return await this.dataSource.deleteMasterBy('login', name)
+  async delete (login: string): Promise<MasterDTO | null> {
+    return await this.dataSource.deleteMasterBy('login', login)
   }
 }
 
