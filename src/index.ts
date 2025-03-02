@@ -77,7 +77,12 @@ import UserService from './service/UserService'
 import UserRepository from './repository/UserRepository'
 import UserValidator from './api/validator/UserValidator'
 import { UserFactory } from './factories/UserFactory'
+import AuthController from './api/controller/AuthController'
+import TokenManager from './helper/TokenManager'
+import AuthRouter from './api/router/AuthRouter'
 
+// helpers
+const tokenManager = new TokenManager()
 // instanciating uuid generator
 const uuidGenerator = new UuidGenerator()
 
@@ -127,6 +132,7 @@ const servantController = new ServantController(servantService, servantValidator
 const battleController = new BattleController(battleService, battleValidator)
 const masterController = new MasterController(masterService, masterValidator)
 const userController = new UserController(userService, userValidator)
+const authController = new AuthController(userService, tokenManager)
 
 // instanciating the command manager
 const commandManager = new CommandManager(new ServantSorter(), randomNumberGenerator, new Sleeper(), servantService, battleService, new ServantUpgrader(randomNumberGenerator), new CombatManager(servantService, new ServantUpgrader(randomNumberGenerator), randomNumberGenerator))
@@ -145,9 +151,10 @@ const servantRouter = new ServantRouter(servantController)
 const battleRouter = new BattleRouter(battleController)
 const masterRouter = new MasterRouter(masterController)
 const userRouter = new UserRouter(userController)
+const authRouter = new AuthRouter(authController)
 
 // instanciating app related classes
-const api = new Api(express(), servantRouter, battleRouter, masterRouter, userRouter)
+const api = new Api(express(), servantRouter, battleRouter, masterRouter, userRouter, authRouter)
 const app = new App(api, server)
 
 // getting .env configuration
