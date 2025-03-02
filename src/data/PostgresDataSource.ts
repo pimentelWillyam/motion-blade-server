@@ -283,8 +283,7 @@ class PostgresDataSource {
   }
 
   async fetchEveryUserRegistry (): Promise<UserDTO[]> {
-    const query = 'SELECT * FROM user;'
-
+    const query = 'SELECT * FROM "user";'
     const databaseData = (await this.client.query(query)).rows as DatabaseUser[]
     const userList: UserDTO[] = []
     databaseData.forEach((user) => {

@@ -32,6 +32,7 @@ class UserController {
   async getAll (res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const userList = await this.userService.getAll()
+      console.log(userList)
       return res.status(200).json(userList)
     } catch (erro) {
       console.error(erro)
