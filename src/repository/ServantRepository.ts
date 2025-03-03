@@ -12,6 +12,10 @@ class ServantRepository {
     return await this.dataSource.fetchEveryServantRegistry()
   }
 
+  async getAllByUser (login: string): Promise<ServantDTO[]> {
+    return await this.dataSource.fetchEveryServantRegistryByUser(login)
+  }
+
   async getByName (name: string): Promise<ServantDTO | null> {
     return await this.dataSource.fetchServantBy('name', name)
   }

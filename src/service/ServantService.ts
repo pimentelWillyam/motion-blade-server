@@ -40,6 +40,10 @@ class ServantService {
     throw new Error(`O servo ${name} não existe`)
   }
 
+  getAllByUser = async (login: string): Promise<ServantDTO[]> => {
+    return await this.servantRepository.getAllByUser(login)
+  }
+
   servantExists = async (name: string): Promise<boolean> => {
     const fetchedServant = await this.servantRepository.getByName(name)
     if (fetchedServant != null) return true
