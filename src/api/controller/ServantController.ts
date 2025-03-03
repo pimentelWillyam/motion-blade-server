@@ -39,6 +39,16 @@ class ServantController {
     return res.status(400).send(ServantError.SERVANT_INVALID_REQUEST)
   }
 
+  async getAllByUser (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    try {
+      const servantList = await this.servantService.getAllByUser(req.params.login)
+      return res.status(200).json(servantList)
+    } catch (erro) {
+      console.error(erro)
+    }
+    return res.status(400).send(ServantError.SERVANT_INVALID_REQUEST)
+  }
+
   async get (req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       const servant = await this.servantService.get(req.params.name)
