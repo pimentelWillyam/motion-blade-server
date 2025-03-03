@@ -17,6 +17,9 @@ class ServantRouter {
     this.routes.get('/servant', (req: Request, res: Response) => {
       void servantController.getAll(res)
     })
+    this.routes.get('/servants/:login', (req: Request, res: Response) => {
+      void servantController.getAllByUser(req, res)
+    })
     this.routes.get('/servant/:name', (req: Request, res: Response) => {
       void servantController.get(req, res)
     })
