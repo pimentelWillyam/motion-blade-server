@@ -162,14 +162,14 @@ class BattleFactory {
   constructor (readonly servantSorter: ServantSorter, readonly randomNumberGenerator: RandomNumberGenerator, readonly uuidGenerator: UuidGenerator) {}
   create (name: string): Battle {
     const battleMap = [
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '='],
-      ['=', '=', '=', '=', '=', '=', '=', '=']
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', ''],
+      ['', '', '', '', '', '', '', '']
     ]
     return new Battle(this.servantSorter, this.randomNumberGenerator, this.uuidGenerator.generate(), name, [], battleMap)
   }
