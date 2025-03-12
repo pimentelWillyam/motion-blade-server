@@ -11,6 +11,7 @@ interface BattleDTO {
   participantsNameList: string[]
   map: string[][]
   turnInfo: TurnInfo
+  messagesLog: string[]
 }
 class Battle {
   id: string
@@ -18,6 +19,8 @@ class Battle {
   participantsNameList: string[]
   map: string[][]
   turnInfo: TurnInfo
+  messagesLog: string[]
+
 
   constructor (private readonly servantSorter: ServantSorter, private readonly randomNumberGenerator: RandomNumberGenerator, id: string, name: string, participantsNameList: string[], map: string[][]) {
     this.id = id
@@ -25,6 +28,7 @@ class Battle {
     this.participantsNameList = participantsNameList
     this.map = map
     this.turnInfo = { servantAboutToPlay: undefined, servantsYetToPlay: [] }
+    this.messagesLog = []
   }
 
   insertServant (servant: Servant): Servant {
