@@ -39,6 +39,48 @@ class PostgresDataSource {
     await this.client.end()
   }
 
+  async getClient (): Promise<Client> {
+    return this.client
+  }
+
+  private async createAuditFunction (): Promise<void> {
+    const query = `
+      CREATE OR REPLACE FUNCTION notify_table_change() RETURNS TRIGGER AS $$
+      BEGIN
+        -- Log para debug
+        RAISE NOTICE 'Trigger executado: operação % na tabela %', TG_OP, TG_TABLE_NAME;
+        
+        PERFORM pg_notify('table_changes', json_build_object(
+          'operation', TG_OP,
+          'table', TG_TABLE_NAME,
+          'new', row_to_json(NEW),
+          'old', row_to_json(OLD)
+        )::text);
+        
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `
+    await this.client.query(query)
+    console.log('Função de auditoria criada/atualizada')
+  }
+
+  private async createTriggers (): Promise<void> {
+    const tables = ['servant', 'battle', 'master', '"user"']
+    for (const table of tables) {
+      const tableName = table.replace(/"/g, '')
+      const triggerQuery = `
+        DROP TRIGGER IF EXISTS ${tableName}_changes_trigger ON ${table};
+        CREATE TRIGGER ${tableName}_changes_trigger
+        AFTER INSERT OR UPDATE OR DELETE ON ${table}
+        FOR EACH ROW
+        EXECUTE FUNCTION notify_table_change();
+      `
+      await this.client.query(triggerQuery)
+      console.log(`Trigger criado para a tabela ${table}`)
+    }
+  }
+
   private async motionBladeDatabaseExists (): Promise<boolean> {
     const query = "SELECT datname FROM pg_database WHERE datname LIKE '%motion_blade_2%';"
     const databaseList = await this.databaseCreator.query(query)
@@ -97,6 +139,8 @@ class PostgresDataSource {
         participants_name_list TEXT[] NOT NULL,
         turn_info JSON,
         map TEXT[][] NOT NULL
+        message_log TEXT[] NOT NULL
+
     );`
     await this.client.query(query2)
     return true
@@ -139,6 +183,8 @@ class PostgresDataSource {
     if (!await this.motionBladeDatabaseExists()) await this.createMotionBladeDatabase()
     await this.client.connect()
     await this.createNecessaryTables()
+    await this.createAuditFunction()
+    await this.createTriggers()
   }
 
   async insertMasterRegistry (master: Master): Promise<Master> {
@@ -284,7 +330,8 @@ class PostgresDataSource {
         map: battle.map,
         name: battle.name,
         participantsNameList: battle.participants_name_list,
-        turnInfo: { servantAboutToPlay: undefined, servantsYetToPlay: undefined }
+        turnInfo: { servantAboutToPlay: undefined, servantsYetToPlay: undefined },
+        messagesLog: []
       })
     })
     return battleList
@@ -355,7 +402,8 @@ class PostgresDataSource {
       map: battle.map,
       name: battle.name,
       participantsNameList: battle.participants_name_list,
-      turnInfo: battle.turn_info
+      turnInfo: battle.turn_info,
+      messagesLog: []
     }
   }
 

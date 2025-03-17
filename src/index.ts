@@ -27,6 +27,7 @@ import * as express from 'express'
 
 // importing helpers
 import Api from './helper/Api'
+import WebSocket from './helper/WebSocket'
 
 // importing data classes
 // import MariadbDataSource from './data/MariadbDataSource'
@@ -156,11 +157,11 @@ const authRouter = new AuthRouter(authController)
 // instanciating app related classes
 const api = new Api(express(), servantRouter, battleRouter, masterRouter, userRouter, authRouter)
 const app = new App(api, server)
-
 // getting .env configuration
 dotenv.config()
 
 // starting database and app
 void postgresDataSource.bootstrap()
+const webSocket = new WebSocket(postgresDataSource)
 app.start()
-discordBot.client.start()
+// discordBot.client.start()

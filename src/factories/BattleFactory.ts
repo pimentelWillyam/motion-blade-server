@@ -21,7 +21,6 @@ class Battle {
   turnInfo: TurnInfo
   messagesLog: string[]
 
-
   constructor (private readonly servantSorter: ServantSorter, private readonly randomNumberGenerator: RandomNumberGenerator, id: string, name: string, participantsNameList: string[], map: string[][]) {
     this.id = id
     this.name = name
