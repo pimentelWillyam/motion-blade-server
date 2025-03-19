@@ -12,12 +12,6 @@ class WebSocket {
       const databaseClient = await this.postgresDataSource.getClient()
       console.log('Cliente do banco de dados obtido')
 
-      // Verificar estado da conexão
-
-      // Reconectar para garantir
-      await databaseClient.connect()
-      console.log('Conexão estabelecida com o banco de dados')
-
       // Verificar se o LISTEN está funcionando
       await databaseClient.query('UNLISTEN *') // Limpa todos os listeners anteriores
       await databaseClient.query('LISTEN table_changes')
@@ -89,16 +83,41 @@ class WebSocket {
         console.log('Novo cliente conectado ao WebSocket')
         console.log('Total de clientes:', this.server.clients.size)
 
+        // Enviar mensagem de boas-vindas
         ws.send(JSON.stringify({
           type: 'connection',
           message: 'Conectado ao servidor WebSocket',
           timestamp: new Date().toISOString()
         }))
 
+        // Receber mensagens do cliente
+        ws.on('message', (data) => {
+          try {
+            console.log('\n=== Mensagem Recebida do Cliente ===')
+            const message = Buffer.from(data as Buffer).toString()
+            console.log('Mensagem:', message)
+            
+            // Enviar eco da mensagem de volta
+            ws.send(JSON.stringify({
+              type: 'echo',
+              message,
+              timestamp: new Date().toISOString()
+            }))
+          } catch (error) {
+            console.error('Erro ao processar mensagem do cliente:', error)
+          }
+        })
+
         // Monitorar desconexão
         ws.on('close', () => {
           console.log('\n=== Cliente Desconectado ===')
           console.log('Total de clientes restantes:', this.server.clients.size)
+        })
+
+        // Monitorar erros
+        ws.on('error', (error) => {
+          console.error('\n=== Erro na Conexão WebSocket ===')
+          console.error('Erro:', error)
         })
       })
 
@@ -108,7 +127,7 @@ class WebSocket {
     } catch (error) {
       console.error('\n=== Erro de Inicialização ===')
       console.error('Erro ao iniciar o WebSocket:', error)
-      throw error // Propagar o erro para saber se falhou na inicialização
+      throw error
     }
   }
 

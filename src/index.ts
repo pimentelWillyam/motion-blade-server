@@ -164,4 +164,6 @@ dotenv.config()
 void postgresDataSource.bootstrap()
 const webSocket = new WebSocket(postgresDataSource)
 app.start()
+void webSocket.start()
+
 // discordBot.client.start()

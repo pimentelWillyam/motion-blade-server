@@ -46,23 +46,22 @@ class PostgresDataSource {
   private async createAuditFunction (): Promise<void> {
     const query = `
       CREATE OR REPLACE FUNCTION notify_table_change() RETURNS TRIGGER AS $$
+      DECLARE
+        payload text;
       BEGIN
-        -- Log para debug
-        RAISE NOTICE 'Trigger executado: operação % na tabela %', TG_OP, TG_TABLE_NAME;
-        
-        PERFORM pg_notify('table_changes', json_build_object(
+        payload := json_build_object(
           'operation', TG_OP,
           'table', TG_TABLE_NAME,
-          'new', row_to_json(NEW),
-          'old', row_to_json(OLD)
-        )::text);
+          'new', CASE WHEN TG_OP != 'DELETE' THEN row_to_json(NEW) ELSE null END,
+          'old', CASE WHEN TG_OP != 'INSERT' THEN row_to_json(OLD) ELSE null END
+        )::text;
         
+        PERFORM pg_notify('table_changes', payload);
         RETURN NEW;
       END;
       $$ LANGUAGE plpgsql;
     `
     await this.client.query(query)
-    console.log('Função de auditoria criada/atualizada')
   }
 
   private async createTriggers (): Promise<void> {
