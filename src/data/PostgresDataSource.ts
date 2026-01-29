@@ -137,7 +137,7 @@ class PostgresDataSource {
         name VARCHAR(50) NOT NULL DEFAULT '',
         participants_name_list TEXT[] NOT NULL,
         turn_info JSON,
-        map TEXT[][] NOT NULL
+        map TEXT[][] NOT NULL,
         message_log TEXT[] NOT NULL
 
     );`
