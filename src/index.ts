@@ -27,7 +27,7 @@ import * as express from 'express'
 
 // importing helpers
 import Api from './helper/Api'
-import WebSocket from './helper/WebSocket'
+import WebSocket from './helper/Socket'
 
 // importing data classes
 // import MariadbDataSource from './data/MariadbDataSource'
