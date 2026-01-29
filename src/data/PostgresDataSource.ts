@@ -256,8 +256,9 @@ class PostgresDataSource {
   //   await this.client.query(query2, [battle.id, battle.name, battle.participantsList, battle.turnInfo, battle.map])
   //   return battle
 
-    const query2 = 'INSERT INTO battle (id, name, participants_name_list, turn_info, map) VALUES ($1,$2,$3,$4,$5);'
-    await this.client.query(query2, [battle.id, battle.name, battle.participantsNameList, battle.turnInfo, battle.map])
+    console.log('query 1')
+    const query2 = 'INSERT INTO battle (id, name, participants_name_list, turn_info, map, message_log) VALUES ($1,$2,$3,$4,$5,$6);'
+    await this.client.query(query2, [battle.id, battle.name, battle.participantsNameList, battle.turnInfo, battle.map, []])
     return battle
   }
 
