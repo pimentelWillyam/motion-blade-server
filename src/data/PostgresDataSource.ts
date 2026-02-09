@@ -458,17 +458,19 @@ class PostgresDataSource {
 
   async updateBattleBy (parameter: string, parameterValue: string, battleToUpdate: BattleDTO): Promise<BattleDTO> {
     // const query = `UPDATE motion_blade_2.public.battle SET id=?,name=?,participants_list=?,turn_info=?,map=? WHERE ${parameter} = '${parameterValue}'`
+    console.log('query 2')
     const query2 = `UPDATE battle
     SET
       name = $1,
       participants_name_list = $2,
       turn_info = $3,
-      map = $4
+      map = $4,
+      message_log = $5
     WHERE
-      name = $5;
+      $6 = $7;
     `
 
-    await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsNameList, battleToUpdate.turnInfo, battleToUpdate.map, parameterValue])
+    await this.client.query(query2, [battleToUpdate.name, battleToUpdate.participantsNameList, battleToUpdate.turnInfo, battleToUpdate.map, battleToUpdate.messagesLog, parameter, parameterValue])
 
     return battleToUpdate
   }
